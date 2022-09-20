@@ -22,7 +22,8 @@ long division(long firstValue, long secondValue) {
 }
 
 double exponentiation(long value, int power) {
-    if (power == 0) return 1;
+    double result;
+    if (power == 0) result = 1;
     else {
         bool positiveOrNegative;
         if (power < 0) positiveOrNegative = 0;
@@ -33,9 +34,11 @@ double exponentiation(long value, int power) {
             if (positiveOrNegative) power--;
             else power++;
         }
-        if (positiveOrNegative) return exponentiationValue;
-        else return 1 / exponentiationValue;
+        if (positiveOrNegative) result = exponentiationValue;
+        else result = 1 / exponentiationValue;
     }
+    printf("Result = %f\n", result);
+    return result;
 }
 
 double rooting(long value, int power) {

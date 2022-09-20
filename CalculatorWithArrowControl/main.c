@@ -56,20 +56,17 @@ int main() {
                     printf("Enter the second number for '/'\n");
                     secondValue = validationForDivide();
                     firstValue = division(firstValue, secondValue);
-                    printf("Result = %ld\n", firstValue);
                     break;
                 case 5:
                     printf("Enter the power\n");
                     power = validation();
                     firstValue = (long) exponentiation(firstValue, power);
-                    printf("Result = %ld\n", firstValue);
                     break;
                 case 6:
                     if (validationForRoot(firstValue)) {
                         printf("Enter the power root\n");
                         power = validation();
                         firstValue = (long) rooting(firstValue, power);
-                        printf("Result = %ld\n", firstValue);
                     } else printf("Wrong value! Value less then zero! Change it and try again");
                     break;
                 case 7:
