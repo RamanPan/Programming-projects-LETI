@@ -16,9 +16,9 @@ long division(long firstValue, long secondValue) {
         printf("Denominator equals zero!!!");
         exit(3);
     }
-    double result = (double)firstValue / secondValue;
+    double result = (double) firstValue / secondValue;
     printf("Result = %f\n", result);
-    return (long)result;
+    return (long) result;
 }
 
 double exponentiation(long value, int power) {
@@ -42,24 +42,20 @@ double exponentiation(long value, int power) {
 }
 
 double rooting(long value, int power) {
-    if (value < 0 || power < 0) {
-        printf("Value or power in root < 0!!!");
-        exit(3);
-    } else {
-        double rootValue = ((double) value / power);
-        double eps = 0.00001;
-        double rootNumber = value;
-        while (fabs(rootValue - rootNumber) >= eps) {
-            rootNumber = value;
-            for (int i = 1; i < power; i++) {
-                rootNumber = rootNumber / rootValue;
-            }
-            rootValue = 0.5 * (rootNumber + rootValue);
+    double rootValue = ((double) value / power);
+    double eps = 0.00001;
+    double rootNumber = value;
+    while (fabs(rootValue - rootNumber) >= eps) {
+        rootNumber = value;
+        for (int i = 1; i < power; i++) {
+            rootNumber = rootNumber / rootValue;
         }
-        printf("Result = %f\n", rootValue);
-        return rootValue;
+        rootValue = 0.5 * (rootNumber + rootValue);
     }
+    printf("Result = %f\n", rootValue);
+    return rootValue;
 }
+
 
 void showMenu(int position) {
     clearScreen();
@@ -88,7 +84,7 @@ long validation() {
             fflush(stdin);
         }
     }
-    return (long)result;
+    return (long) result;
 }
 
 long validationForDivide() {
