@@ -42,8 +42,8 @@ double exponentiation(long value, int power) {
 }
 
 double rooting(long value, int power) {
-    if (value < 0) {
-        printf("Value in root < 0!!!");
+    if (value < 0 || power < 0) {
+        printf("Value or power in root < 0!!!");
         exit(3);
     } else {
         double rootValue = ((double) value / power);
@@ -80,15 +80,15 @@ void clearScreen() {
 
 long validation() {
     bool validationFlag = false;
-    long result;
+    double result;
     while (!validationFlag) {
-        if (scanf("%ld", &result)) validationFlag = true;
+        if (scanf("%lf", &result)) validationFlag = true;
         else {
             printf("Wrong enter! Try again\n");
             fflush(stdin);
         }
     }
-    return result;
+    return (long)result;
 }
 
 long validationForDivide() {
