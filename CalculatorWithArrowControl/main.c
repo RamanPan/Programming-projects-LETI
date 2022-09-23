@@ -15,7 +15,6 @@ int main() {
     printf("Welcome to Calculator without shit\n");
     printf("Enter the number\n");
     firstValue = validation();
-    showMenu(position);
     while (!exitFlag) {
         if (GetAsyncKeyState(VK_UP) && permissionToInput) {
             keybd_event(VK_UP, 0, KEYEVENTF_KEYUP, 0);//Отжимаем кнопку
@@ -23,7 +22,6 @@ int main() {
                 position--;
             else
                 position = maxPosition;
-            showMenu(position);
         }
         if (GetAsyncKeyState(VK_DOWN) && permissionToInput) {
             keybd_event(VK_DOWN, 0, KEYEVENTF_KEYUP, 0);
@@ -31,7 +29,6 @@ int main() {
                 position++;
             else
                 position = minPosition;
-            showMenu(position);
         }
         permissionToInput = true;
         if (GetAsyncKeyState(VK_RETURN)) {
@@ -64,7 +61,6 @@ int main() {
                         break;
                     case 4:
                         printf("Enter the second number for '/'\n");
-                        secondValue = validationForDivide();
                         permissionToInput = false;
                         permissionToChoice = false;
                         firstValue = division(firstValue, secondValue);

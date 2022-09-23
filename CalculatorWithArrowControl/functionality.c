@@ -4,21 +4,45 @@
 #include <math.h>
 #include <stdbool.h>
 
+long add(long firstValue, long secondValue) {
+    long result = firstValue + secondValue;
+    if (checkOverflow(result)) return result;
+    else {
+        printf("Result overflow! Try again");
+        return firstValue;
+    }
+}
 
-long add(long firstValue, long secondValue) { return firstValue + secondValue; }
+long multiply(long firstValue, long secondValue) {
+    long result = firstValue * secondValue;
+    if (checkOverflow(result)) return result;
+    else {
+        printf("Result overflow! Try again");
+        return firstValue;
+    }
+}
 
-long multiply(long firstValue, long secondValue) { return firstValue * secondValue; }
-
-long subtraction(long firstValue, long secondValue) { return firstValue - secondValue; }
+long subtraction(long firstValue, long secondValue) {
+    long result = firstValue - secondValue;
+    if (checkOverflow(result)) return result;
+    else {
+        printf("Result overflow! Try again");
+        return firstValue;
+    }
+}
 
 long division(long firstValue, long secondValue) {
     if (secondValue == 0) {
         printf("Denominator equals zero!!!");
         exit(3);
     }
-    double result = (double) firstValue / secondValue;
-    printf("Result = %f\n", result);
-    return (long) result;
+    long result = firstValue / secondValue;
+    if (checkOverflow(result)) {
+        return (long) result;
+    } else {
+        printf("Result overflow! Try again");
+        return firstValue;
+    }
 }
 
 double exponentiation(long value, int power) {
@@ -37,8 +61,13 @@ double exponentiation(long value, int power) {
         if (positiveOrNegative) result = exponentiationValue;
         else result = 1 / exponentiationValue;
     }
-    printf("Result = %f\n", result);
-    return result;
+    if (checkOverflow(result)) {
+        printf("Result = %ld\n", (long) result);
+        return (long) result;
+    } else {
+        printf("Result overflow! Try again");
+        return value;
+    }
 }
 
 double rooting(long value, int power) {
@@ -52,34 +81,43 @@ double rooting(long value, int power) {
         }
         rootValue = 0.5 * (rootNumber + rootValue);
     }
-    printf("Result = %f\n", rootValue);
-    return rootValue;
+    if (checkOverflow(rootValue)) {
+        printf("Result = %ld\n", (long) rootValue);
+        return (long) rootValue;
+    } else {
+        printf("Result overflow! Try again");
+        return value;
+    }
 }
 
 
-void showMenu(int position) {
-    clearScreen();
-    printf("%s1) Add(+)\n", position == 1 ? ">" : " ");
-    printf("%s2) Multiply(*)\n", position == 2 ? ">" : " ");
-    printf("%s3) Subtract(-)\n", position == 3 ? ">" : " ");
-    printf("%s4) Division(/)\n", position == 4 ? ">" : " ");
-    printf("%s5) Exponentiation(^)\n", position == 5 ? ">" : " ");
-    printf("%s6) Root\n", position == 6 ? ">" : " ");
-    printf("%s7) Change value\n", position == 7 ? ">" : " ");
-    printf("%s8) Exit\n", position == 8 ? ">" : " ");
+void showMenu(int position, long firstValue, long secondValue) {
+    system("cls");
+    printf("Calculator\n");
+    printf("First value = %ld, second value = %ld\n", firstValue, secondValue);
+    printf("%s1) Add(+)\n", position == 1 ? "->" : " ");
+    printf("%s2) Multiply(*)\n", position == 2 ? "->" : " ");
+    printf("%s3) Subtract(-)\n", position == 3 ? "->" : " ");
+    printf("%s4) Division(/)\n", position == 4 ? "->" : " ");
+    printf("%s5) Exponentiation(^)(Enter power)\n", position == 5 ? "->" : " ");
+    printf("%s6) Root(Enter root)\n", position == 6 ? "->" : " ");
+    printf("%s7) Change first value\n", position == 7 ? "->" : " ");
+    printf("%s8) Change second value\n", position == 8 ? "->" : " ");
+    printf("%s9) Swap first and second values\n", position == 9 ? "->" : " ");
+    printf("%s10) Exit\n", position == 10 ? "->" : " ");
 }
 
-void clearScreen() {
-    for (int i = 0; i < 6; i++)
-        printf("\n");
-}
 
 long validation() {
     bool validationFlag = false;
     double result;
     while (!validationFlag) {
-        if (scanf("%lf", &result)) validationFlag = true;
-        else {
+        if (scanf("%lf", &result)) {
+            if (!checkOverflow(result)) {
+                printf("Wrong enter! Overflow value! Try again\n");
+                fflush(stdin);
+            } else validationFlag = true;
+        } else {
             printf("Wrong enter! Try again\n");
             fflush(stdin);
         }
@@ -87,18 +125,17 @@ long validation() {
     return (long) result;
 }
 
-long validationForDivide() {
-    bool validationFlag = false;
-    long result;
-    while (!validationFlag) {
-        result = validation();
-        if (result != 0) validationFlag = true;
-        else {
-            printf("Wrong enter! Value equals zero! Try again\n");
-            fflush(stdin);
-        }
+bool checkOverflow(double d) {
+    return d >= -2147483648 && d <= 2147483647;
+}
+
+bool validationForDivide(long value) {
+    if (value == 0) {
+        printf("Second value equals zero! Change it and try again\n");
+        fflush(stdin);
+        return false;
     }
-    return result;
+    return true;
 }
 
 bool validationForRoot(long value) {
