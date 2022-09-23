@@ -1,6 +1,6 @@
+#ifndef CALCULATOR_FUNCTIONALITY_H
+#define CALCULATOR_FUNCTIONALITY_H
 
-#ifndef TESTPROJECT_FUNCTIONALITY_H
-#define TESTPROJECT_FUNCTIONALITY_H
 
 #include <stdbool.h>
 
@@ -16,14 +16,15 @@ double exponentiation(long value, int power);
 
 double rooting(long value, int power);
 
-void showMenu(int position);
-
-void clearScreen();
+void showMenu(int position, long firstValue, long secondValue);
 
 long validation();
 
 bool validationForRoot(long value);
 
-long validationForDivide();
+bool checkOverflow(double d);
 
-#endif //TESTPROJECT_FUNCTIONALITY_H
+bool validationForDivide(long value);
+
+
+#endif //CALCULATOR_FUNCTIONALITY_H
