@@ -8,7 +8,7 @@ long add(long firstValue, long secondValue) {
     long result = firstValue + secondValue;
     if (checkOverflow(result)) return result;
     else {
-        printf("Result overflow! Try again");
+        printf("Результат вышел за границу допустимого значения! Попробуйте снова!");
         return firstValue;
     }
 }
@@ -17,7 +17,7 @@ long multiply(long firstValue, long secondValue) {
     long result = firstValue * secondValue;
     if (checkOverflow(result)) return result;
     else {
-        printf("Result overflow! Try again");
+        printf("Результат вышел за границу допустимого значения! Попробуйте снова!");
         return firstValue;
     }
 }
@@ -26,27 +26,27 @@ long subtraction(long firstValue, long secondValue) {
     long result = firstValue - secondValue;
     if (checkOverflow(result)) return result;
     else {
-        printf("Result overflow! Try again");
+        printf("Результат вышел за границу допустимого значения! Попробуйте снова!");
         return firstValue;
     }
 }
 
 long division(long firstValue, long secondValue) {
-    if (secondValue == 0) {
-        printf("Denominator equals zero!!!");
-        exit(3);
-    }
     long result = firstValue / secondValue;
     if (checkOverflow(result)) {
         return (long) result;
     } else {
-        printf("Result overflow! Try again");
+        printf("Результат вышел за границу допустимого значения! Попробуйте снова!");
         return firstValue;
     }
 }
 
 double exponentiation(long value, int power) {
     double result;
+    if (value == 0 && power == 0) {
+        printf("Значение нуль в степени нуля является неопределенностью!");
+        return 0;
+    }
     if (power == 0) result = 1;
     else {
         bool positiveOrNegative;
@@ -62,10 +62,10 @@ double exponentiation(long value, int power) {
         else result = 1 / exponentiationValue;
     }
     if (checkOverflow(result)) {
-        printf("Result = %ld\n", (long) result);
+        printf("Результат = %ld\n", (long) result);
         return (long) result;
     } else {
-        printf("Result overflow! Try again");
+        printf("Результат вышел за границу допустимого значения! Попробуйте снова!");
         return value;
     }
 }
@@ -82,10 +82,10 @@ double rooting(long value, int power) {
         rootValue = 0.5 * (rootNumber + rootValue);
     }
     if (checkOverflow(rootValue)) {
-        printf("Result = %ld\n", (long) rootValue);
+        printf("Результат = %ld\n", (long) rootValue);
         return (long) rootValue;
     } else {
-        printf("Result overflow! Try again");
+        printf("Результат вышел за границу допустимого значения! Попробуйте снова!");
         return value;
     }
 }
@@ -93,18 +93,18 @@ double rooting(long value, int power) {
 
 void showMenu(int position, long firstValue, long secondValue) {
     system("cls");
-    printf("Calculator\n");
-    printf("First value = %ld, second value = %ld\n", firstValue, secondValue);
-    printf("%s1) Add(+)\n", position == 1 ? "->" : " ");
-    printf("%s2) Multiply(*)\n", position == 2 ? "->" : " ");
-    printf("%s3) Subtract(-)\n", position == 3 ? "->" : " ");
-    printf("%s4) Division(/)\n", position == 4 ? "->" : " ");
-    printf("%s5) Exponentiation(^)(Enter power)\n", position == 5 ? "->" : " ");
-    printf("%s6) Root(Enter root)\n", position == 6 ? "->" : " ");
-    printf("%s7) Change first value\n", position == 7 ? "->" : " ");
-    printf("%s8) Change second value\n", position == 8 ? "->" : " ");
-    printf("%s9) Swap first and second values\n", position == 9 ? "->" : " ");
-    printf("%s10) Exit\n", position == 10 ? "->" : " ");
+    printf("Калькулятор 'Расчёт БИСТРО и ЧЁТКА'\n");
+    printf("Первое число = %ld, Второе число = %ld\n", firstValue, secondValue);
+    printf("%s1) Сложение(+)\n", position == 1 ? "->" : " ");
+    printf("%s2) Умножение(*)\n", position == 2 ? "->" : " ");
+    printf("%s3) Вычитание(-)\n", position == 3 ? "->" : " ");
+    printf("%s4) Деление(/)\n", position == 4 ? "->" : " ");
+    printf("%s5) Возведение в степень(^)(С вводом степени)\n", position == 5 ? "->" : " ");
+    printf("%s6) Извлечение корня(С вводом степени корня)\n", position == 6 ? "->" : " ");
+    printf("%s7) Смена первого числа\n", position == 7 ? "->" : " ");
+    printf("%s8) Смена второго числа\n", position == 8 ? "->" : " ");
+    printf("%s9) Обмен значениями первого и второго числа\n", position == 9 ? "->" : " ");
+    printf("%s0) Выход\n", position == 10 ? "->" : " ");
 }
 
 
@@ -114,11 +114,11 @@ long validation() {
     while (!validationFlag) {
         if (scanf("%lf", &result)) {
             if (!checkOverflow(result)) {
-                printf("Wrong enter! Overflow value! Try again\n");
+                printf("Неправильный ввод! Число вышло за границу дозволенного! Попробуйте снова!\n");
                 fflush(stdin);
             } else validationFlag = true;
         } else {
-            printf("Wrong enter! Try again\n");
+            printf("Неправильный ввод! Попробуйте снова!\n");
             fflush(stdin);
         }
     }
@@ -129,14 +129,6 @@ bool checkOverflow(double d) {
     return d >= -2147483648 && d <= 2147483647;
 }
 
-bool validationForDivide(long value) {
-    if (value == 0) {
-        printf("Second value equals zero! Change it and try again\n");
-        fflush(stdin);
-        return false;
-    }
-    return true;
-}
 
 bool validationForRoot(long value) {
     return value >= 0;

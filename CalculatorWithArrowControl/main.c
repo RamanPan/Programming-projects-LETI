@@ -2,8 +2,10 @@
 #include "functionality.h"
 #include <stdbool.h>
 #include <conio.h>
+#include <windows.h>
 
 int main() {
+    SetConsoleOutputCP(CP_UTF8);
     long firstValue;
     long secondValue;
     int power;
@@ -14,10 +16,10 @@ int main() {
     long swap;
     bool exitFlag = false;
     bool permissionFlag;
-    printf("Welcome to Calculator!\n");
-    printf("Enter first number\n");
+    printf("Добро пожаловать в калькулятор студента группы 2375 Панаёта Романа,\nкоторый очень хочет сдать всё без ошибок и вылетов!\n");
+    printf("Введите первое число!\n");
     firstValue = validation();
-    printf("Enter second number\n");
+    printf("Введите второе число!\n");
     secondValue = validation();
     showMenu(position, firstValue, secondValue);
     while (!exitFlag) {
@@ -78,55 +80,57 @@ int main() {
         if (permissionFlag) {
             switch (position) {
                 case 1:
-                    printf("Result = %ld\n", add(firstValue, secondValue));
+                    printf("Результат = %ld\n", add(firstValue, secondValue));
                     break;
                 case 2:
-                    printf("Result = %ld\n", multiply(firstValue, secondValue));
+                    printf("Результат = %ld\n", multiply(firstValue, secondValue));
                     break;
                 case 3:
-                    printf("Result = %ld\n", subtraction(firstValue, secondValue));
+                    printf("Результат = %ld\n", subtraction(firstValue, secondValue));
                     break;
                 case 4:
-                    if (validationForDivide(secondValue))
-                        printf("Result = %ld\n", division(firstValue, secondValue));
+                    if (secondValue == 0)
+                        printf("Деление на ноль!!! Измените число и попробуйте снова!");
+                    else
+                        printf("Результат = %ld\n", division(firstValue, secondValue));
                     break;
                 case 5:
-                    printf("Enter the power\n");
+                    printf("Введите степень числа!\n");
                     power = validation();
                     exponentiation(firstValue, power);
                     break;
                 case 6:
                     if (validationForRoot(firstValue)) {
-                        printf("Enter the power root\n");
+                        printf("Введите степень корня!\n");
                         power = validation();
                         if (power <= 0) {
-                            printf("Wrong power! Power less or equals zero! Try again");
+                            printf("Неверная степень! Степень меньше или равна нулю! Попробуйте снова!");
                             break;
                         }
                         rooting(firstValue, power);
-                    } else printf("Wrong value! Value less then zero! Change it and try again");
+                    } else printf("Неверное число! Число меньше нуля! Поменяйте его и попробуйте снова!");
                     break;
                 case 7:
-                    printf("Enter the number for change\n");
+                    printf("Введите число для смены!\n");
                     firstValue = validation();
                     showMenu(position, firstValue, secondValue);
-                    printf("First value changed\n");
+                    printf("Первое число успешно изменено!\n");
                     break;
                 case 8:
-                    printf("Enter the number for change\n");
+                    printf("Введите число для смены!\n");
                     secondValue = validation();
                     showMenu(position, firstValue, secondValue);
-                    printf("Second value changed\n");
+                    printf("Второе число успешно изменено!\n");
                     break;
                 case 9:
                     swap = firstValue;
                     firstValue = secondValue;
                     secondValue = swap;
                     showMenu(position, firstValue, secondValue);
-                    printf("Values was changed successfully");
+                    printf("Числа успешно поменялись!");
                     break;
                 case 10:
-                    printf("Are you sure you wanna exit?(Y/N)\n");
+                    printf("Вы уверены что хотите выйти?(Y/N)\n");
                     scanf("%s", &YN);
                     if (YN == 'Y') exitFlag = true;
                     break;
@@ -135,6 +139,6 @@ int main() {
             }
         }
     }
-    printf("See you soon!");
+    printf("Всего хорошего! До скорых будущих расчётов!");
     return 0;
 }
