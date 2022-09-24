@@ -20,11 +20,25 @@ long validation() {
 }
 
 void showMenu(int n, int area[][n]) {
-    for(int i = 0; i < n; ++i)
-        for(int j = 0; j < n; ++j) {
-            printSymbol((short)area[i][j]);
-            if(j == n - 1) printf("\n");
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < n; ++j) {
+            printSymbol((short) area[i][j]);
+            if (j == n - 1) printf("\n");
         }
+}
+
+void fillingArea(int n, int area[][n]) {
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < n; ++j) {}
+}
+
+void showHelloMessage() {
+    printf("Добро пожаловать в Змейку!!!\n");
+    printf("Краткий гайд:\n");
+    printf("Первая змейка обозначается $, вторая @\n");
+    printf("Первая змейка ходит на стрелочки, вторая на WASD\n");
+    printf("Еда выглядит - e\n");
+    printf("Стенки - /\n");
 }
 
 void printSymbol(short numberSymbol) {
