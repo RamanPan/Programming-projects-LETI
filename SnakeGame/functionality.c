@@ -19,6 +19,45 @@ long validation() {
     return (long) result;
 }
 
+void showMenu(int n, int area[][n]) {
+    for(int i = 0; i < n; ++i)
+        for(int j = 0; j < n; ++j) {
+            printSymbol((short)area[i][j]);
+            if(j == n - 1) printf("\n");
+        }
+}
+
+void printSymbol(short numberSymbol) {
+    switch (numberSymbol) {
+        case 36:
+            printf("$");
+            break;
+        case 38:
+            printf("&");
+            break;
+        case 47:
+            printf("/");
+            break;
+        case 101:
+            printf("e");
+            break;
+        default:
+            printf(" ");
+    }
+}
+
+
+long validationGameArea() {
+    long result;
+    short minArea = 3, maxArea = 10;
+    do {
+        result = validation();
+        if (result > maxArea || result < minArea)
+            printf("Неверный ввод размера поля! Размер поля может принимать значения от %hd до %hd", minArea, maxArea);
+    } while (result > maxArea || result < minArea);
+    return result;
+}
+
 bool checkOverflow(double d) {
     return d >= -2147483648 && d <= 2147483647;
 }
