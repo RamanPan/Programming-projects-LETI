@@ -1,5 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include "functionality.h"
 
 long validation() {
@@ -8,11 +10,11 @@ long validation() {
     while (!validationFlag) {
         if (scanf("%lf", &result)) {
             if (!checkOverflow(result)) {
-                printf("Wrong enter! Overflow value! Try again\n");
+                printf("Неправильный ввод! Число вышло за границу дозволенного! Попробуйте снова!\n");
                 fflush(stdin);
             } else validationFlag = true;
         } else {
-            printf("Wrong enter! Try again\n");
+            printf("Неправильный ввод! Попробуйте снова!\n");
             fflush(stdin);
         }
     }
@@ -28,14 +30,49 @@ void showMenu(int n, int area[][n]) {
 }
 
 void fillingArea(int n, int area[][n]) {
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < n; ++j) {}
+    for (int i = 0; i < n; ++i) {
+        area[i][0] = '/';
+        area[i][n - 1] = '/';
+    }
+    for (int j = 0; j < n; ++j) {
+        area[0][j] = '/';
+        area[n - 1][j] = '/';
+    }
 }
+
+void generateFood(int n, int gameData[], int area[][n]) {
+//    bool opportunityToGenerate = true;
+//    while (gameData[1] != 4 || opportunityToGenerate) {
+//        srand(time(NULL));
+//        int i = 1 + rand() % (n - 1);
+//        int j = 1 + rand() % (n - 1);
+//
+//    }
+}
+
+void generatePositionSnakes(int n, int area[][n], int positionSnakes[]) {
+    int i1 = 1 + rand() % (n - 2), j1 = 1 + rand() % (n - 2);
+    int i2 = 1 + rand() % (n - 2), j2 = 1 + rand() % (n - 2);
+    area[i1][j2] = 49;
+    if (i1 != i2 || j1 != j2) area[i2][j2] = 50;
+    else {
+        i2 = 1 + rand() % (n - 2);
+        j2 = 1 + rand() % (n - 2);
+        area[i2][j2] = 50;
+    }
+    positionSnakes[0] = i1;
+    positionSnakes[1] = j1;
+    positionSnakes[2] = i2;
+    positionSnakes[3] = j2;
+}
+
 
 void showHelloMessage() {
     printf("Добро пожаловать в Змейку!!!\n");
     printf("Краткий гайд:\n");
-    printf("Первая змейка обозначается $, вторая @\n");
+    printf("Размер поля может быть от 3x3 до 10x10\n");
+    printf("Голова первой змейки обозначается 1, второй 2\n");
+    printf("Хвост первой змейки обозначается $, второй @\n");
     printf("Первая змейка ходит на стрелочки, вторая на WASD\n");
     printf("Еда выглядит - e\n");
     printf("Стенки - /\n");
@@ -52,6 +89,12 @@ void printSymbol(short numberSymbol) {
         case 47:
             printf("/");
             break;
+        case 49:
+            printf("1");
+            break;
+        case 50:
+            printf("2");
+            break;
         case 101:
             printf("e");
             break;
@@ -67,7 +110,8 @@ long validationGameArea() {
     do {
         result = validation();
         if (result > maxArea || result < minArea)
-            printf("Неверный ввод размера поля! Размер поля может принимать значения от %hd до %hd", minArea, maxArea);
+            printf("Неверный ввод размера поля! Размер поля может принимать значения от %hd до %hd\n", minArea,
+                   maxArea);
     } while (result > maxArea || result < minArea);
     return result;
 }

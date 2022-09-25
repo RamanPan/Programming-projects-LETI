@@ -10,7 +10,7 @@ void showMenu(int n, int area[][n]);
 
 void fillingArea(int n, int area[][n]);
 
-void generateFood(int n, int area[][n]);
+void generateFood(int n, int gameData[], int area[][n]);
 
 void generatePositionSnakes(int n, int area[][n], int positionSnakes[]);
 
