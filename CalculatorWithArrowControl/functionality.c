@@ -71,16 +71,7 @@ double exponentiation(long value, int power) {
 }
 
 double rooting(long value, int power) {
-    double rootValue = ((double) value / power);
-    double eps = 0.00001;
-    double rootNumber = value;
-    while (fabs(rootValue - rootNumber) >= eps) {
-        rootNumber = value;
-        for (int i = 1; i < power; i++) {
-            rootNumber = rootNumber / rootValue;
-        }
-        rootValue = 0.5 * (rootNumber + rootValue);
-    }
+    double rootValue = pow(value, (double) 1 / power);
     if (checkOverflow(rootValue)) {
         printf("Результат = %ld\n", (long) rootValue);
         return (long) rootValue;
