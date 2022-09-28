@@ -38,6 +38,7 @@ int main() {
                     position = minPosition;
                 break;
             case 27:
+                printf("Вы уверены что хотите выйти?(Y/N)\n");
                 scanf("%s", &YN);
                 if (YN == 'Y') exitFlag = true;
                 break;

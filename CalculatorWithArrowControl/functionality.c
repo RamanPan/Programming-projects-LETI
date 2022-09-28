@@ -106,12 +106,11 @@ long validation() {
         if (scanf("%lf", &result)) {
             if (!checkOverflow(result)) {
                 printf("Неправильный ввод! Число вышло за границу дозволенного! Попробуйте снова!\n");
-                fflush(stdin);
             } else validationFlag = true;
         } else {
             printf("Неправильный ввод! Попробуйте снова!\n");
-            fflush(stdin);
         }
+        fflush(stdin);
     }
     return (long) result;
 }
