@@ -6,7 +6,7 @@ long validation();
 
 long validationGameArea();
 
-void showMenu(int n, int area[][n]);
+void showMenu(int n, int gameData[], int area[][n]);
 
 void fillingArea(int n, int area[][n]);
 
@@ -19,5 +19,6 @@ void showHelloMessage();
 void printSymbol(short numberSymbol);
 
 bool checkOverflow(double d);
+
 
 #endif //SNAKEGAME_FUNCTIONALITY_H

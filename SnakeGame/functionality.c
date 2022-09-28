@@ -21,33 +21,45 @@ long validation() {
     return (long) result;
 }
 
-void showMenu(int n, int area[][n]) {
+void showMenu(int n,int gameData[], int area[][n]) {
+    system("cls");
     for (int i = 0; i < n; ++i)
         for (int j = 0; j < n; ++j) {
             printSymbol((short) area[i][j]);
             if (j == n - 1) printf("\n");
         }
+    printf("Счёт: %d %d",gameData[2],gameData[3]);
 }
 
 void fillingArea(int n, int area[][n]) {
     for (int i = 0; i < n; ++i) {
-        area[i][0] = '/';
-        area[i][n - 1] = '/';
+        area[i][0] = '#';
+        area[i][n - 1] = '#';
     }
     for (int j = 0; j < n; ++j) {
-        area[0][j] = '/';
-        area[n - 1][j] = '/';
+        area[0][j] = '#';
+        area[n - 1][j] = '#';
     }
+
 }
 
 void generateFood(int n, int gameData[], int area[][n]) {
-//    bool opportunityToGenerate = true;
-//    while (gameData[1] != 4 || opportunityToGenerate) {
-//        srand(time(NULL));
-//        int i = 1 + rand() % (n - 1);
-//        int j = 1 + rand() % (n - 1);
-//
-//    }
+    bool opportunityToGenerate = true;
+    if (gameData[0] < 4) {
+        opportunityToGenerate = false;
+        return;
+    }
+    printf("%d", gameData[0]);
+    while (gameData[1] != 4) {
+        srand(time(NULL));
+        int i = 1 + rand() % (n - 2);
+        int j = 1 + rand() % (n - 2);
+        if (area[i][j] != 36 && area[i][j] != 38 && area[i][j] != 49 && area[i][j] != 50 && area[i][j] != 101) {
+            area[i][j] = 101;
+            gameData[1] = gameData[1] + 1;
+            gameData[0] = gameData[0] - 1;
+        }
+    }
 }
 
 void generatePositionSnakes(int n, int area[][n], int positionSnakes[]) {
@@ -75,7 +87,7 @@ void showHelloMessage() {
     printf("Хвост первой змейки обозначается $, второй @\n");
     printf("Первая змейка ходит на стрелочки, вторая на WASD\n");
     printf("Еда выглядит - e\n");
-    printf("Стенки - /\n");
+    printf("Стенки - #\n");
 }
 
 void printSymbol(short numberSymbol) {
@@ -86,8 +98,8 @@ void printSymbol(short numberSymbol) {
         case 38:
             printf("&");
             break;
-        case 47:
-            printf("/");
+        case 35:
+            printf("#");
             break;
         case 49:
             printf("1");
