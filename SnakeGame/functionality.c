@@ -21,14 +21,14 @@ long validation() {
     return (long) result;
 }
 
-void showMenu(int n,int gameData[], int area[][n]) {
+void showMenu(int n, int gameData[], int area[][n]) {
     system("cls");
     for (int i = 0; i < n; ++i)
         for (int j = 0; j < n; ++j) {
             printSymbol((short) area[i][j]);
             if (j == n - 1) printf("\n");
         }
-    printf("Счёт: %d %d",gameData[2],gameData[3]);
+    printf("Счёт: %d %d", gameData[2], gameData[3]);
 }
 
 void fillingArea(int n, int area[][n]) {
@@ -43,13 +43,62 @@ void fillingArea(int n, int area[][n]) {
 
 }
 
+bool snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], short orientation, bool whichSnake) {
+    if (!whichSnake) {
+        switch (orientation) {
+            case 3:
+                positionSnakes[1] = positionSnakes[1] + 1;
+                area[positionSnakes[0]][positionSnakes[1]] = 49;
+                area[positionSnakes[0]][positionSnakes[1] - 1] = 0;
+                break;
+            case 2:
+                positionSnakes[1] = positionSnakes[1] - 1;
+                area[positionSnakes[0]][positionSnakes[1]] = 49;
+                area[positionSnakes[0]][positionSnakes[1] + 1] = 0;
+                break;
+            case 0:
+                positionSnakes[0] = positionSnakes[0] - 1;
+                area[positionSnakes[0]][positionSnakes[1]] = 49;
+                area[positionSnakes[0] + 1][positionSnakes[1]] = 0;
+                break;
+            case 1:
+                positionSnakes[0] = positionSnakes[0] + 1;
+                area[positionSnakes[0]][positionSnakes[1]] = 49;
+                area[positionSnakes[0] - 1][positionSnakes[1]] = 0;
+                break;
+        }
+    } else {
+        switch (orientation) {
+            case 3:
+                positionSnakes[3] = positionSnakes[3] + 1;
+                area[positionSnakes[2]][positionSnakes[3]] = 50;
+                area[positionSnakes[2]][positionSnakes[3] - 1] = 0;
+                break;
+            case 2:
+                positionSnakes[3] = positionSnakes[3] - 1;
+                area[positionSnakes[2]][positionSnakes[3]] = 50;
+                area[positionSnakes[2]][positionSnakes[3] + 1] = 0;
+                break;
+            case 0:
+                positionSnakes[2] = positionSnakes[2] - 1;
+                area[positionSnakes[2]][positionSnakes[3]] = 50;
+                area[positionSnakes[2] + 1][positionSnakes[3]] = 0;
+                break;
+            case 1:
+                positionSnakes[2] = positionSnakes[2] + 1;
+                area[positionSnakes[2]][positionSnakes[3]] = 50;
+                area[positionSnakes[2] - 1][positionSnakes[3]] = 0;
+                break;
+        }
+    }
+}
+
 void generateFood(int n, int gameData[], int area[][n]) {
     bool opportunityToGenerate = true;
     if (gameData[0] < 4) {
         opportunityToGenerate = false;
         return;
     }
-    printf("%d", gameData[0]);
     while (gameData[1] != 4) {
         srand(time(NULL));
         int i = 1 + rand() % (n - 2);
