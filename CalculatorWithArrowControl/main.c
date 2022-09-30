@@ -8,7 +8,6 @@ int main() {
     SetConsoleOutputCP(CP_UTF8);
     long firstValue;
     long secondValue;
-    int power;
     short minPosition = 1, maxPosition = 10;
     short position = minPosition;
     int symbol;
@@ -81,34 +80,27 @@ int main() {
         if (permissionFlag) {
             switch (position) {
                 case 1:
-                    printf("Результат = %ld\n", add(firstValue, secondValue));
+                    add(firstValue, secondValue);
                     break;
                 case 2:
-                    printf("Результат = %ld\n", multiply(firstValue, secondValue));
+                    multiply(firstValue, secondValue);
                     break;
                 case 3:
-                    printf("Результат = %ld\n", subtraction(firstValue, secondValue));
+                    subtraction(firstValue, secondValue);
                     break;
                 case 4:
-                    if (secondValue == 0)
-                        printf("Деление на ноль!!! Измените число и попробуйте снова!");
-                    else
-                        printf("Результат = %ld\n", division(firstValue, secondValue));
+                    division(firstValue, secondValue);
                     break;
                 case 5:
-                    printf("Введите степень числа!\n");
-                    power = validation();
-                    exponentiation(firstValue, power);
+                    exponentiation(firstValue, secondValue);
                     break;
                 case 6:
                     if (validationForRoot(firstValue)) {
-                        printf("Введите степень корня!\n");
-                        power = validation();
-                        if (power <= 0) {
+                        if (secondValue <= 0) {
                             printf("Неверная степень! Степень меньше или равна нулю! Попробуйте снова!");
                             break;
                         }
-                        rooting(firstValue, power);
+                        rooting(firstValue, secondValue);
                     } else printf("Неверное число! Число меньше нуля! Поменяйте его и попробуйте снова!");
                     break;
                 case 7:

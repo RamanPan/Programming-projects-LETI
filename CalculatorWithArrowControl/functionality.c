@@ -4,48 +4,51 @@
 #include <math.h>
 #include <stdbool.h>
 
-long add(long firstValue, long secondValue) {
-    long result = firstValue + secondValue;
-    if (checkOverflow(result)) return result;
-    else {
-        printf("Результат вышел за границу допустимого значения! Попробуйте снова!");
-        return firstValue;
-    }
-}
-
-long multiply(long firstValue, long secondValue) {
-    long result = firstValue * secondValue;
-    if (checkOverflow(result)) return result;
-    else {
-        printf("Результат вышел за границу допустимого значения! Попробуйте снова!");
-        return firstValue;
-    }
-}
-
-long subtraction(long firstValue, long secondValue) {
-    long result = firstValue - secondValue;
-    if (checkOverflow(result)) return result;
-    else {
-        printf("Результат вышел за границу допустимого значения! Попробуйте снова!");
-        return firstValue;
-    }
-}
-
-long division(long firstValue, long secondValue) {
-    long result = firstValue / secondValue;
+void add(long firstValue, long secondValue) {
+    double result = (double) firstValue + (double) secondValue;
     if (checkOverflow(result)) {
-        return (long) result;
+        printf("%ld + %ld = %ld\n", firstValue, secondValue, (long) result);
     } else {
         printf("Результат вышел за границу допустимого значения! Попробуйте снова!");
-        return firstValue;
     }
 }
 
-double exponentiation(long value, int power) {
+void multiply(long firstValue, long secondValue) {
+    double result = (double) firstValue * (double) secondValue;
+    if (checkOverflow(result))
+        printf("%ld * %ld = %ld\n", firstValue, secondValue, (long) result);
+    else
+        printf("Результат вышел за границу допустимого значения! Попробуйте снова!");
+
+}
+
+void subtraction(long firstValue, long secondValue) {
+    double result = firstValue - secondValue;
+    if (checkOverflow(result))
+        printf("%ld - %ld = %ld\n", firstValue, secondValue, (long) result);
+    else
+        printf("Результат вышел за границу допустимого значения! Попробуйте снова!");
+
+}
+
+void division(long firstValue, long secondValue) {
+    if (secondValue == 0) {
+        printf("Деление на ноль!!! Измените число и попробуйте снова!");
+        return;
+    }
+    double result = (double) ((double) firstValue / secondValue);
+    if (checkOverflow(result))
+        printf("%ld / %ld = %ld\n", firstValue, secondValue, (long) result);
+    else
+        printf("Результат вышел за границу допустимого значения! Попробуйте снова!");
+
+}
+
+void exponentiation(long value, int power) {
     double result;
     if (value == 0 && power == 0) {
         printf("Значение нуль в степени нуля является неопределенностью!");
-        return 0;
+        return;
     }
     if (power == 0) result = 1;
     else {
@@ -61,31 +64,26 @@ double exponentiation(long value, int power) {
         if (positiveOrNegative) result = exponentiationValue;
         else result = 1 / exponentiationValue;
     }
-    if (checkOverflow(result)) {
-        printf("Результат = %ld\n", (long) result);
-        return (long) result;
-    } else {
+    if (checkOverflow(result))
+        printf("%ld в степени %d = %ld\n", value, power, (long) result);
+    else
         printf("Результат вышел за границу допустимого значения! Попробуйте снова!");
-        return value;
-    }
+
 }
 
-double rooting(long value, int power) {
+void rooting(long value, int power) {
     double rootValue = pow(value, (double) 1 / power);
-    if (checkOverflow(rootValue)) {
-        printf("Результат = %ld\n", (long) rootValue);
-        return (long) rootValue;
-    } else {
+    if (checkOverflow(rootValue))
+        printf("%ld в корне степени %d = %ld\n", value, power, (long) rootValue);
+    else
         printf("Результат вышел за границу допустимого значения! Попробуйте снова!");
-        return value;
-    }
 }
 
 
 void showMenu(int position, long firstValue, long secondValue) {
     system("cls");
     printf("Калькулятор 'Расчёт БИСТРО и ЧЁТКА'\n");
-    printf("Первое число = %ld, Второе число = %ld\n", firstValue, secondValue);
+    printf("Ч1 = %ld, Ч2 = %ld\n", firstValue, secondValue);
     printf("%s1) Сложение(+)\n", position == 1 ? "->" : " ");
     printf("%s2) Умножение(*)\n", position == 2 ? "->" : " ");
     printf("%s3) Вычитание(-)\n", position == 3 ? "->" : " ");
