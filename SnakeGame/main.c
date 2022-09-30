@@ -13,7 +13,7 @@ int main() {
         bool startAgain = false;
         printf("Введите размерность поля\n");
         const long n = validationGameArea() + 2;
-        int gameArea[n][n], positionSnakes[3];
+        int gameArea[n][n], positionSnakes[4];
         //0 - кол-во свободных клеток, 1 - кол-во еды, 2 - длина первой змейки, 3 - длина второй змейки
         int gameData[4] = {(n - 2) * (n - 2) - 2, 0, 1, 1};
         int symbol;

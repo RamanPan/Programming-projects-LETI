@@ -28,7 +28,7 @@ void showMenu(int n, int gameData[], int area[][n]) {
             printSymbol((short) area[i][j]);
             if (j == n - 1) printf("\n");
         }
-    printf("Счёт: %d %d", gameData[2], gameData[3]);
+    printf("Счёт: %d:%d\n", gameData[2], gameData[3]);
 }
 
 void fillingArea(int n, int area[][n]) {
@@ -143,6 +143,7 @@ void generatePositionSnakes(int n, int area[][n], int positionSnakes[]) {
 
 
 void showHelloMessage() {
+    system("cls");
     printf("Добро пожаловать в Змейку!!!\n");
     printf("Краткий гайд:\n");
     printf("Размер поля может быть от 3x3 до 10x10\n");
