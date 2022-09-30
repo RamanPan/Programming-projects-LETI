@@ -23,5 +23,5 @@ void printSymbol(short numberSymbol);
 
 bool checkOverflow(double d);
 
-
+bool checkLose(int n, int area[][n],int x, int y);
 #endif //SNAKEGAME_FUNCTIONALITY_H

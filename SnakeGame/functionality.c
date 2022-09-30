@@ -48,22 +48,26 @@ bool snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], sho
         switch (orientation) {
             case 3:
                 positionSnakes[1] = positionSnakes[1] + 1;
-                area[positionSnakes[0]][positionSnakes[1]] = 49;
+                if (checkLose(n, area, positionSnakes[1], positionSnakes[0])) return true;
+                else area[positionSnakes[0]][positionSnakes[1]] = 49;
                 area[positionSnakes[0]][positionSnakes[1] - 1] = 0;
                 break;
             case 2:
                 positionSnakes[1] = positionSnakes[1] - 1;
-                area[positionSnakes[0]][positionSnakes[1]] = 49;
+                if (checkLose(n, area, positionSnakes[1], positionSnakes[0])) return true;
+                else area[positionSnakes[0]][positionSnakes[1]] = 49;
                 area[positionSnakes[0]][positionSnakes[1] + 1] = 0;
                 break;
             case 0:
                 positionSnakes[0] = positionSnakes[0] - 1;
-                area[positionSnakes[0]][positionSnakes[1]] = 49;
+                if (checkLose(n, area, positionSnakes[1], positionSnakes[0])) return true;
+                else area[positionSnakes[0]][positionSnakes[1]] = 49;
                 area[positionSnakes[0] + 1][positionSnakes[1]] = 0;
                 break;
             case 1:
                 positionSnakes[0] = positionSnakes[0] + 1;
-                area[positionSnakes[0]][positionSnakes[1]] = 49;
+                if (checkLose(n, area, positionSnakes[1], positionSnakes[0])) return true;
+                else area[positionSnakes[0]][positionSnakes[1]] = 49;
                 area[positionSnakes[0] - 1][positionSnakes[1]] = 0;
                 break;
         }
@@ -71,26 +75,36 @@ bool snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], sho
         switch (orientation) {
             case 3:
                 positionSnakes[3] = positionSnakes[3] + 1;
-                area[positionSnakes[2]][positionSnakes[3]] = 50;
+                if (checkLose(n, area, positionSnakes[3], positionSnakes[2])) return true;
+                else area[positionSnakes[2]][positionSnakes[3]] = 50;
                 area[positionSnakes[2]][positionSnakes[3] - 1] = 0;
                 break;
             case 2:
                 positionSnakes[3] = positionSnakes[3] - 1;
-                area[positionSnakes[2]][positionSnakes[3]] = 50;
+                if (checkLose(n, area, positionSnakes[3], positionSnakes[2])) return true;
+                else area[positionSnakes[2]][positionSnakes[3]] = 50;
                 area[positionSnakes[2]][positionSnakes[3] + 1] = 0;
                 break;
             case 0:
                 positionSnakes[2] = positionSnakes[2] - 1;
-                area[positionSnakes[2]][positionSnakes[3]] = 50;
+                if (checkLose(n, area, positionSnakes[3], positionSnakes[2])) return true;
+                else area[positionSnakes[2]][positionSnakes[3]] = 50;
                 area[positionSnakes[2] + 1][positionSnakes[3]] = 0;
                 break;
             case 1:
                 positionSnakes[2] = positionSnakes[2] + 1;
-                area[positionSnakes[2]][positionSnakes[3]] = 50;
+                if (checkLose(n, area, positionSnakes[3], positionSnakes[2])) return true;
+                else area[positionSnakes[2]][positionSnakes[3]] = 50;
                 area[positionSnakes[2] - 1][positionSnakes[3]] = 0;
                 break;
         }
     }
+    return false;
+}
+
+bool checkLose(int n, int area[][n], int x, int y) {
+    int value = area[y][x];
+    return value == 36 || value == 38 || value == 35 || value == 49 || value == 50;
 }
 
 void generateFood(int n, int gameData[], int area[][n]) {
@@ -133,7 +147,7 @@ void showHelloMessage() {
     printf("Краткий гайд:\n");
     printf("Размер поля может быть от 3x3 до 10x10\n");
     printf("Голова первой змейки обозначается 1, второй 2\n");
-    printf("Хвост первой змейки обозначается $, второй @\n");
+    printf("Хвост первой змейки обозначается $, второй &\n");
     printf("Первая змейка ходит на стрелочки, вторая на WASD\n");
     printf("Еда выглядит - e\n");
     printf("Стенки - #\n");
