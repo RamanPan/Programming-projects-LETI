@@ -43,8 +43,11 @@ void fillingArea(int n, int area[][n]) {
 
 }
 
-bool snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[],int tailFirstSnake[],int tailSecondSnake[], short orientation, bool whichSnake) {
+bool
+snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], int endTailFirstSnake[], int endTailSecondSnake[],
+            short orientation, bool whichSnake) {
     bool isItFood = false;
+    int xEndTail, yEndTail;
     if (!whichSnake) {
         switch (orientation) {
             case 3:
@@ -52,59 +55,128 @@ bool snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[],int 
                 if (checkLose(n, area, positionSnakes[1], positionSnakes[0])) return true;
                 if (area[positionSnakes[0]][positionSnakes[1]] == 101) isItFood = true;
                 area[positionSnakes[0]][positionSnakes[1]] = 49;
-                area[positionSnakes[0]][positionSnakes[1] - 1] = 0;
+                if (area[positionSnakes[0]][positionSnakes[1] - 1] == 49)
+                    area[positionSnakes[0]][positionSnakes[1] - 1] = 0;
                 if (isItFood) {
                     gameData[1]--;
                     if (gameData[2] == 1) {
-
-                        area[positionSnakes[0]][positionSnakes[1] - 1] = 36;
+                        yEndTail = positionSnakes[0];
+                        xEndTail = positionSnakes[1] - 1;
+                        endTailFirstSnake[0] = yEndTail;
+                        endTailFirstSnake[1] = xEndTail;
+                    } else {
+                        yEndTail = endTailFirstSnake[0];
+                        xEndTail = endTailFirstSnake[1] - 1;
+                        if (checkLose(n, area, xEndTail, yEndTail)) {
+                            yEndTail--;
+                            xEndTail++;
+                        }
+                        endTailFirstSnake[0] = yEndTail;
+                        endTailFirstSnake[1] = xEndTail;
                     }
-                    //else
+                    area[yEndTail][xEndTail] = 36;
                     generateFood(n, gameData, area);
                     gameData[2] = gameData[2] + 1;
                 }
+                if (gameData[2] >= 3)
+                    tailMotion(n, area, gameData, positionSnakes, endTailFirstSnake, endTailSecondSnake,
+                               orientation, whichSnake);
                 break;
             case 2:
                 positionSnakes[1] = positionSnakes[1] - 1;
                 if (checkLose(n, area, positionSnakes[1], positionSnakes[0])) return true;
                 if (area[positionSnakes[0]][positionSnakes[1]] == 101) isItFood = true;
                 area[positionSnakes[0]][positionSnakes[1]] = 49;
-                area[positionSnakes[0]][positionSnakes[1] + 1] = 0;
+                if (area[positionSnakes[0]][positionSnakes[1] + 1] == 49)
+                    area[positionSnakes[0]][positionSnakes[1] + 1] = 0;
                 if (isItFood) {
                     gameData[1]--;
+                    if (gameData[2] == 1) {
+                        yEndTail = positionSnakes[0];
+                        xEndTail = positionSnakes[1] + 1;
+                        endTailFirstSnake[0] = yEndTail;
+                        endTailFirstSnake[1] = xEndTail;
+                    } else {
+                        yEndTail = endTailFirstSnake[0];
+                        xEndTail = endTailFirstSnake[1] + 1;
+                        if (checkLose(n, area, xEndTail, yEndTail)) {
+                            yEndTail++;
+                            xEndTail--;
+                        }
+                        endTailFirstSnake[0] = yEndTail;
+                        endTailFirstSnake[1] = xEndTail;
+                    }
+                    area[yEndTail][xEndTail] = 36;
                     generateFood(n, gameData, area);
-                    if (gameData[2] == 1) area[positionSnakes[0]][positionSnakes[1] + 1] = 36;
-                    //else
                     gameData[2] = gameData[2] + 1;
                 }
+                if (gameData[2] >= 3)
+                    tailMotion(n, area, gameData, positionSnakes, endTailFirstSnake, endTailSecondSnake,
+                               orientation, whichSnake);
                 break;
             case 0:
                 positionSnakes[0] = positionSnakes[0] - 1;
                 if (checkLose(n, area, positionSnakes[1], positionSnakes[0])) return true;
                 if (area[positionSnakes[0]][positionSnakes[1]] == 101) isItFood = true;
                 area[positionSnakes[0]][positionSnakes[1]] = 49;
-                area[positionSnakes[0] + 1][positionSnakes[1]] = 0;
+                if (area[positionSnakes[0] + 1][positionSnakes[1]] == 49)
+                    area[positionSnakes[0] + 1][positionSnakes[1]] = 0;
                 if (isItFood) {
                     gameData[1]--;
+                    if (gameData[2] == 1) {
+                        yEndTail = positionSnakes[0] + 1;
+                        xEndTail = positionSnakes[1];
+                        endTailFirstSnake[0] = yEndTail;
+                        endTailFirstSnake[1] = xEndTail;
+                    } else {
+                        yEndTail = endTailFirstSnake[0] + 1;
+                        xEndTail = endTailFirstSnake[1];
+                        if (checkLose(n, area, xEndTail, yEndTail)) {
+                            yEndTail--;
+                            xEndTail++;
+                        }
+                        endTailFirstSnake[0] = yEndTail;
+                        endTailFirstSnake[1] = xEndTail;
+                    }
+                    area[yEndTail][xEndTail] = 36;
                     generateFood(n, gameData, area);
-                    if (gameData[2] == 1) area[positionSnakes[0] + 1][positionSnakes[1]] = 36;
-                    //else
                     gameData[2] = gameData[2] + 1;
                 }
+                if (gameData[2] >= 3)
+                    tailMotion(n, area, gameData, positionSnakes, endTailFirstSnake, endTailSecondSnake,
+                               orientation, whichSnake);
                 break;
             case 1:
                 positionSnakes[0] = positionSnakes[0] + 1;
                 if (checkLose(n, area, positionSnakes[1], positionSnakes[0])) return true;
                 if (area[positionSnakes[0]][positionSnakes[1]] == 101) isItFood = true;
                 area[positionSnakes[0]][positionSnakes[1]] = 49;
-                area[positionSnakes[0] - 1][positionSnakes[1]] = 0;
+                if (area[positionSnakes[0] - 1][positionSnakes[1]] == 49)
+                    area[positionSnakes[0] - 1][positionSnakes[1]] = 0;
                 if (isItFood) {
                     gameData[1]--;
+                    if (gameData[2] == 1) {
+                        yEndTail = positionSnakes[0] - 1;
+                        xEndTail = positionSnakes[1];
+                        endTailFirstSnake[0] = yEndTail;
+                        endTailFirstSnake[1] = xEndTail;
+                    } else {
+                        yEndTail = endTailFirstSnake[0] - 1;
+                        xEndTail = endTailFirstSnake[1];
+                        if (checkLose(n, area, xEndTail, yEndTail)) {
+                            yEndTail++;
+                            xEndTail--;
+                        }
+                        endTailFirstSnake[0] = yEndTail;
+                        endTailFirstSnake[1] = xEndTail;
+                    }
+                    area[yEndTail][xEndTail] = 36;
                     generateFood(n, gameData, area);
-                    if (gameData[2] == 1) area[positionSnakes[0] - 1][positionSnakes[1]] = 36;
-                    //else
                     gameData[2] = gameData[2] + 1;
                 }
+                if (gameData[2] >= 3)
+                    tailMotion(n, area, gameData, positionSnakes, endTailFirstSnake, endTailSecondSnake,
+                               orientation, whichSnake);
                 break;
         }
     } else {
@@ -114,61 +186,140 @@ bool snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[],int 
                 if (checkLose(n, area, positionSnakes[3], positionSnakes[2])) return true;
                 if (area[positionSnakes[2]][positionSnakes[3]] == 101) isItFood = true;
                 area[positionSnakes[2]][positionSnakes[3]] = 50;
-                area[positionSnakes[2]][positionSnakes[3] - 1] = 0;
+                if (area[positionSnakes[2]][positionSnakes[3] - 1] == 50)
+                    area[positionSnakes[2]][positionSnakes[3] - 1] = 0;
                 if (isItFood) {
                     gameData[1]--;
+                    if (gameData[3] == 1) {
+                        yEndTail = positionSnakes[2];
+                        xEndTail = positionSnakes[3] - 1;
+                        endTailSecondSnake[0] = yEndTail;
+                        endTailSecondSnake[1] = xEndTail;
+                    } else {
+                        yEndTail = endTailSecondSnake[0];
+                        xEndTail = endTailSecondSnake[1] - 1;
+                        if (checkLose(n, area, xEndTail, yEndTail)) {
+                            yEndTail--;
+                            xEndTail++;
+                        }
+                        endTailSecondSnake[0] = yEndTail;
+                        endTailSecondSnake[1] = xEndTail;
+                    }
+                    area[yEndTail][xEndTail] = 38;
                     generateFood(n, gameData, area);
-                    if (gameData[3] == 1) area[positionSnakes[2]][positionSnakes[3] - 1] = 38;
-                    //else
                     gameData[3] = gameData[3] + 1;
                 }
+                if (gameData[3] >= 3)
+                    tailMotion(n, area, gameData, positionSnakes, endTailFirstSnake, endTailSecondSnake,
+                               orientation, whichSnake);
                 break;
             case 2:
                 positionSnakes[3] = positionSnakes[3] - 1;
                 if (checkLose(n, area, positionSnakes[3], positionSnakes[2])) return true;
                 if (area[positionSnakes[2]][positionSnakes[3]] == 101) isItFood = true;
                 area[positionSnakes[2]][positionSnakes[3]] = 50;
-                area[positionSnakes[2]][positionSnakes[3] + 1] = 0;
+                if (area[positionSnakes[2]][positionSnakes[3] + 1] == 50)
+                    area[positionSnakes[2]][positionSnakes[3] + 1] = 0;
                 if (isItFood) {
                     gameData[1]--;
+                    if (gameData[3] == 1) {
+                        yEndTail = positionSnakes[2];
+                        xEndTail = positionSnakes[3] + 1;
+                        endTailSecondSnake[0] = yEndTail;
+                        endTailSecondSnake[1] = xEndTail;
+                    } else {
+                        yEndTail = endTailSecondSnake[0];
+                        xEndTail = endTailSecondSnake[1] + 1;
+                        if (checkLose(n, area, xEndTail, yEndTail)) {
+                            yEndTail++;
+                            xEndTail--;
+                        }
+                        endTailSecondSnake[0] = yEndTail;
+                        endTailSecondSnake[1] = xEndTail;
+                    }
+                    area[yEndTail][xEndTail] = 38;
                     generateFood(n, gameData, area);
-                    if (gameData[3] == 1) area[positionSnakes[2]][positionSnakes[3] + 1] = 38;
-                    //else
                     gameData[3] = gameData[3] + 1;
                 }
+                if (gameData[3] >= 3)
+                    tailMotion(n, area, gameData, positionSnakes, endTailFirstSnake, endTailSecondSnake,
+                               orientation, whichSnake);
                 break;
             case 0:
                 positionSnakes[2] = positionSnakes[2] - 1;
                 if (checkLose(n, area, positionSnakes[3], positionSnakes[2])) return true;
                 if (area[positionSnakes[2]][positionSnakes[3]] == 101) isItFood = true;
                 area[positionSnakes[2]][positionSnakes[3]] = 50;
-                area[positionSnakes[2] + 1][positionSnakes[3]] = 0;
+                if (area[positionSnakes[2] + 1][positionSnakes[3]] == 50)
+                    area[positionSnakes[2] + 1][positionSnakes[3]] = 0;
                 if (isItFood) {
                     gameData[1]--;
+                    if (gameData[3] == 1) {
+                        yEndTail = positionSnakes[2] + 1;
+                        xEndTail = positionSnakes[3];
+                        endTailSecondSnake[0] = yEndTail;
+                        endTailSecondSnake[1] = xEndTail;
+                    } else {
+                        yEndTail = endTailSecondSnake[0] + 1;
+                        xEndTail = endTailSecondSnake[1];
+                        if (checkLose(n, area, xEndTail, yEndTail)) {
+                            yEndTail--;
+                            xEndTail++;
+                        }
+                        endTailSecondSnake[0] = yEndTail;
+                        endTailSecondSnake[1] = xEndTail;
+                    }
+                    area[yEndTail][xEndTail] = 38;
                     generateFood(n, gameData, area);
-                    if (gameData[3] == 1) area[positionSnakes[2] + 1][positionSnakes[3]] = 38;
-                    //else
                     gameData[3] = gameData[3] + 1;
+
                 }
+                if (gameData[3] >= 3)
+                    tailMotion(n, area, gameData, positionSnakes, endTailFirstSnake, endTailSecondSnake,
+                               orientation, whichSnake);
                 break;
             case 1:
                 positionSnakes[2] = positionSnakes[2] + 1;
                 if (checkLose(n, area, positionSnakes[3], positionSnakes[2])) return true;
                 if (area[positionSnakes[2]][positionSnakes[3]] == 101) isItFood = true;
                 area[positionSnakes[2]][positionSnakes[3]] = 50;
-                area[positionSnakes[2] - 1][positionSnakes[3]] = 0;
+                if (area[positionSnakes[2] - 1][positionSnakes[3]] == 50)
+                    area[positionSnakes[2] - 1][positionSnakes[3]] = 0;
                 if (isItFood) {
                     gameData[1]--;
+                    if (gameData[3] == 1) {
+                        yEndTail = positionSnakes[2] - 1;
+                        xEndTail = positionSnakes[3];
+                        endTailSecondSnake[0] = yEndTail;
+                        endTailSecondSnake[1] = xEndTail;
+                    } else {
+                        yEndTail = endTailSecondSnake[0] - 1;
+                        xEndTail = endTailSecondSnake[1];
+                        if (checkLose(n, area, xEndTail, yEndTail)) {
+                            yEndTail++;
+                            xEndTail--;
+                        }
+                        endTailSecondSnake[0] = yEndTail;
+                        endTailSecondSnake[1] = xEndTail;
+                    }
+                    area[yEndTail][xEndTail] = 38;
                     generateFood(n, gameData, area);
-                    if (gameData[3] == 1) area[positionSnakes[2] - 1][positionSnakes[3]] = 38;
-                    //else
                     gameData[3] = gameData[3] + 1;
                 }
+                if (gameData[3] >= 3)
+                    tailMotion(n, area, gameData, positionSnakes, endTailFirstSnake, endTailSecondSnake,
+                               orientation, whichSnake);
                 break;
         }
     }
     return false;
 }
+
+void tailMotion(int n, int area[][n], int gameData[], int positionSnakes[], int tailFirstSnake[], int tailSecondSnake[],
+                short orientation, bool whichSnake) {
+
+}
+
 
 bool checkLose(int n, int area[][n], int x, int y) {
     int value = area[y][x];

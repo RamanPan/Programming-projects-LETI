@@ -17,11 +17,17 @@ void generatePositionSnakes(int n, int area[][n], int positionSnakes[]);
 
 void showHelloMessage();
 
-bool snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[],int tailFirstSnake[],int tailSecondSnake[], short orientation, bool whichSnake);
+bool
+snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], int endTailFirstSnake[], int endTailSecondSnake[],
+            short orientation, bool whichSnake);
+
+void tailMotion(int n, int area[][n], int gameData[], int positionSnakes[], int tailFirstSnake[], int tailSecondSnake[],
+                short orientation, bool whichSnake);
 
 void printSymbol(short numberSymbol);
 
 bool checkOverflow(double d);
 
-bool checkLose(int n, int area[][n],int x, int y);
+bool checkLose(int n, int area[][n], int x, int y);
+
 #endif //SNAKEGAME_FUNCTIONALITY_H
