@@ -43,7 +43,7 @@ void fillingArea(int n, int area[][n]) {
 
 }
 
-bool snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], short orientation, bool whichSnake) {
+bool snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[],int tailFirstSnake[],int tailSecondSnake[], short orientation, bool whichSnake) {
     bool isItFood = false;
     if (!whichSnake) {
         switch (orientation) {
@@ -55,9 +55,12 @@ bool snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], sho
                 area[positionSnakes[0]][positionSnakes[1] - 1] = 0;
                 if (isItFood) {
                     gameData[1]--;
-                    generateFood(n,gameData,area);
-                    if (gameData[2] == 1) area[positionSnakes[0]][positionSnakes[1] - 1] = 36;
+                    if (gameData[2] == 1) {
+
+                        area[positionSnakes[0]][positionSnakes[1] - 1] = 36;
+                    }
                     //else
+                    generateFood(n, gameData, area);
                     gameData[2] = gameData[2] + 1;
                 }
                 break;
@@ -69,7 +72,7 @@ bool snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], sho
                 area[positionSnakes[0]][positionSnakes[1] + 1] = 0;
                 if (isItFood) {
                     gameData[1]--;
-                    generateFood(n,gameData,area);
+                    generateFood(n, gameData, area);
                     if (gameData[2] == 1) area[positionSnakes[0]][positionSnakes[1] + 1] = 36;
                     //else
                     gameData[2] = gameData[2] + 1;
@@ -83,7 +86,7 @@ bool snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], sho
                 area[positionSnakes[0] + 1][positionSnakes[1]] = 0;
                 if (isItFood) {
                     gameData[1]--;
-                    generateFood(n,gameData,area);
+                    generateFood(n, gameData, area);
                     if (gameData[2] == 1) area[positionSnakes[0] + 1][positionSnakes[1]] = 36;
                     //else
                     gameData[2] = gameData[2] + 1;
@@ -97,7 +100,7 @@ bool snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], sho
                 area[positionSnakes[0] - 1][positionSnakes[1]] = 0;
                 if (isItFood) {
                     gameData[1]--;
-                    generateFood(n,gameData,area);
+                    generateFood(n, gameData, area);
                     if (gameData[2] == 1) area[positionSnakes[0] - 1][positionSnakes[1]] = 36;
                     //else
                     gameData[2] = gameData[2] + 1;
@@ -114,7 +117,7 @@ bool snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], sho
                 area[positionSnakes[2]][positionSnakes[3] - 1] = 0;
                 if (isItFood) {
                     gameData[1]--;
-                    generateFood(n,gameData,area);
+                    generateFood(n, gameData, area);
                     if (gameData[3] == 1) area[positionSnakes[2]][positionSnakes[3] - 1] = 38;
                     //else
                     gameData[3] = gameData[3] + 1;
@@ -128,7 +131,7 @@ bool snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], sho
                 area[positionSnakes[2]][positionSnakes[3] + 1] = 0;
                 if (isItFood) {
                     gameData[1]--;
-                    generateFood(n,gameData,area);
+                    generateFood(n, gameData, area);
                     if (gameData[3] == 1) area[positionSnakes[2]][positionSnakes[3] + 1] = 38;
                     //else
                     gameData[3] = gameData[3] + 1;
@@ -142,7 +145,7 @@ bool snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], sho
                 area[positionSnakes[2] + 1][positionSnakes[3]] = 0;
                 if (isItFood) {
                     gameData[1]--;
-                    generateFood(n,gameData,area);
+                    generateFood(n, gameData, area);
                     if (gameData[3] == 1) area[positionSnakes[2] + 1][positionSnakes[3]] = 38;
                     //else
                     gameData[3] = gameData[3] + 1;
@@ -156,7 +159,7 @@ bool snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], sho
                 area[positionSnakes[2] - 1][positionSnakes[3]] = 0;
                 if (isItFood) {
                     gameData[1]--;
-                    generateFood(n,gameData,area);
+                    generateFood(n, gameData, area);
                     if (gameData[3] == 1) area[positionSnakes[2] - 1][positionSnakes[3]] = 38;
                     //else
                     gameData[3] = gameData[3] + 1;

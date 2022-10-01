@@ -17,7 +17,7 @@ void generatePositionSnakes(int n, int area[][n], int positionSnakes[]);
 
 void showHelloMessage();
 
-bool snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], short orientation, bool whichSnake);
+bool snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[],int tailFirstSnake[],int tailSecondSnake[], short orientation, bool whichSnake);
 
 void printSymbol(short numberSymbol);
 
