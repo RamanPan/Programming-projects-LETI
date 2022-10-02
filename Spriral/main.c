@@ -1,14 +1,16 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <conio.h>
-
+#include "functionality.h"
 int main() {
     bool exitFlag = false;
     int I, J;
     short symbol;
-    short minPosition = 1, maxPosition = 10;
+    short minPosition = 1, maxPosition = 7;
     short position = minPosition;
     char YN;
+    showHelloMessage();
+    showMenu(position);
     while (!exitFlag) {
         symbol = getch();
         if (symbol == 224) symbol = getch();
@@ -57,6 +59,7 @@ int main() {
                 break;
             default:;
         }
+        showMenu(position);
         switch (position) {
 
         }
