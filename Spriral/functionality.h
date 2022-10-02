@@ -1,0 +1,8 @@
+//
+// Created by vpana on 30.09.2022.
+//
+
+#ifndef SPRIRAL_FUNCTIONALITY_H
+#define SPRIRAL_FUNCTIONALITY_H
+
+#endif //SPRIRAL_FUNCTIONALITY_H
