@@ -50,7 +50,24 @@ void generateSpiral(short I, short J, int area[][J], short variation) {
             }
             break;
         case 1:
-
+            i = 0;
+            j = J - 1;
+            while (k <= I * J) {
+                area[i][j] = k;
+                if (i == I - bfI - 1 && j < J - bfJ - 1)
+                    ++j;
+                else if (j == bfJ && i < I - bfI - 1)
+                    ++i;
+                else if (i == bfI && j > bfJ)
+                    --j;
+                else
+                    --i;
+                if ((i == bfI + 1) && (j == J - bfJ - 1) && (bfJ != J - bfJ - 1)) {
+                    ++bfI;
+                    ++bfJ;
+                }
+                ++k;
+            }
             break;
         case 2:
 
