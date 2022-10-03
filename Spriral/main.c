@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <conio.h>
+#include <windows.h>
 #include "functionality.h"
+
 int main() {
+    SetConsoleOutputCP(CP_UTF8);
     bool exitFlag = false;
     int I, J;
     short symbol;
@@ -10,10 +13,15 @@ int main() {
     short position = minPosition;
     char YN;
     showHelloMessage();
+    printf("Введите длину\n");
+    I = validation();
+    printf("Введите ширину\n");
+    J = validation();
     showMenu(position);
     while (!exitFlag) {
-        symbol = getch();
-        if (symbol == 224) symbol = getch();
+        symbol = (short)getch();
+        if (symbol == 224) symbol = (short)getch();
+        int area[I][J];
         switch (symbol) {
             case 72:
                 if (0 != position - 1)
