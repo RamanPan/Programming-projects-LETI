@@ -84,15 +84,15 @@ bool checkOverflow(double d) {
 }
 
 void outputSpiral(int I, int J, int area[][J]) {
-    for(int i = 0; i < I; i++)
-        for(int j = 0; j < J; j++) {
+    for (int i = 0; i < I; i++)
+        for (int j = 0; j < J; j++) {
             printf("%d ", area[i][j]);
-            if(j == J - 1) printf("\n");
+            if (j == J - 1) printf("\n");
         }
 }
 
 
-void showMenu(int position) {
+void showMenu(int position, int I, int J) {
     system("cls");
     printf("Выберите действие:\n");
     printf("1) Изменить длину%s\n", position == 1 ? "<-" : " ");
@@ -102,4 +102,5 @@ void showMenu(int position) {
     printf("5) Спираль из центра по часовой%s\n", position == 5 ? "<-" : " ");
     printf("6) Спираль из центра против часовой%s\n", position == 6 ? "<-" : " ");
     printf("7) Выход%s\n", position == 7 ? "<-" : " ");
+    printf("Длина = %d, Ширина = %d\n", I, J);
 }

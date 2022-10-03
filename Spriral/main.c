@@ -10,14 +10,14 @@ int main() {
     short I, J;
     short symbol;
     short minPosition = 1, maxPosition = 7;
-    short position = minPosition;
+    short position = 0;
     char YN;
     showHelloMessage();
     printf("Введите длину\n");
     I = (short) validation();
     printf("Введите ширину\n");
     J = (short) validation();
-    showMenu(position);
+    showMenu(position, I, J);
     while (!exitFlag) {
         symbol = (short) getch();
         if (symbol == 224) symbol = (short) getch();
@@ -61,10 +61,17 @@ int main() {
                 break;
             default:;
         }
-        showMenu(position);
+        showMenu(position, I, J);
         switch (position) {
             case 1:
+                printf("Введите длину\n");
+                I = (short) validation();
+                printf("Длина успешно изменена\n");
+                break;
             case 2:
+                printf("Введите ширину\n");
+                J = (short) validation();
+                printf("Ширина успешно изменена\n");
                 break;
             case 3:
                 generateSpiral(I, J, area, 0);
