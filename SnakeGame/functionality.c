@@ -47,7 +47,7 @@ void fillingArea(int n, int area[][n]) {
 
 bool
 snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], int endTailFirstSnake[],
-            int endTailSecondSnake[],
+            int endTailSecondSnake[], int allTailFirstSnake[], int allTailSecondSnake[],
             short orientation, bool whichSnake) {
     bool isItFood = false;
     int xEndTail, yEndTail;
@@ -77,11 +77,12 @@ snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], int endT
                         endTailFirstSnake[0] = yEndTail;
                         endTailFirstSnake[1] = xEndTail;
                     }
+                    determineThePosition(gameData,endTailFirstSnake,endTailSecondSnake,allTailFirstSnake,allTailSecondSnake,whichSnake);
                     area[yEndTail][xEndTail] = 36;
                     generateFood(n, gameData, area);
                     gameData[2] = gameData[2] + 1;
                 }
-                if (gameData[2] >= 3)
+                if (gameData[2] >= 2)
                     tailMotion(n, area, gameData, positionSnakes, endTailFirstSnake, endTailSecondSnake,
                                orientation, whichSnake);
                 break;
@@ -109,11 +110,12 @@ snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], int endT
                         endTailFirstSnake[0] = yEndTail;
                         endTailFirstSnake[1] = xEndTail;
                     }
+                    determineThePosition(gameData,endTailFirstSnake,endTailSecondSnake,allTailFirstSnake,allTailSecondSnake,whichSnake);
                     area[yEndTail][xEndTail] = 36;
                     generateFood(n, gameData, area);
                     gameData[2] = gameData[2] + 1;
                 }
-                if (gameData[2] >= 3)
+                if (gameData[2] >= 2)
                     tailMotion(n, area, gameData, positionSnakes, endTailFirstSnake, endTailSecondSnake,
                                orientation, whichSnake);
                 break;
@@ -141,11 +143,12 @@ snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], int endT
                         endTailFirstSnake[0] = yEndTail;
                         endTailFirstSnake[1] = xEndTail;
                     }
+                    determineThePosition(gameData,endTailFirstSnake,endTailSecondSnake,allTailFirstSnake,allTailSecondSnake,whichSnake);
                     area[yEndTail][xEndTail] = 36;
                     generateFood(n, gameData, area);
                     gameData[2] = gameData[2] + 1;
                 }
-                if (gameData[2] >= 3)
+                if (gameData[2] >= 2)
                     tailMotion(n, area, gameData, positionSnakes, endTailFirstSnake, endTailSecondSnake,
                                orientation, whichSnake);
                 break;
@@ -173,11 +176,12 @@ snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], int endT
                         endTailFirstSnake[0] = yEndTail;
                         endTailFirstSnake[1] = xEndTail;
                     }
+                    determineThePosition(gameData,endTailFirstSnake,endTailSecondSnake,allTailFirstSnake,allTailSecondSnake,whichSnake);
                     area[yEndTail][xEndTail] = 36;
                     generateFood(n, gameData, area);
                     gameData[2] = gameData[2] + 1;
                 }
-                if (gameData[2] >= 3)
+                if (gameData[2] >= 2)
                     tailMotion(n, area, gameData, positionSnakes, endTailFirstSnake, endTailSecondSnake,
                                orientation, whichSnake);
                 break;
@@ -208,11 +212,12 @@ snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], int endT
                         endTailSecondSnake[0] = yEndTail;
                         endTailSecondSnake[1] = xEndTail;
                     }
+                    determineThePosition(gameData,endTailFirstSnake,endTailSecondSnake,allTailFirstSnake,allTailSecondSnake,whichSnake);
                     area[yEndTail][xEndTail] = 38;
                     generateFood(n, gameData, area);
                     gameData[3] = gameData[3] + 1;
                 }
-                if (gameData[3] >= 3)
+                if (gameData[3] >= 2)
                     tailMotion(n, area, gameData, positionSnakes, endTailFirstSnake, endTailSecondSnake,
                                orientation, whichSnake);
                 break;
@@ -240,11 +245,12 @@ snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], int endT
                         endTailSecondSnake[0] = yEndTail;
                         endTailSecondSnake[1] = xEndTail;
                     }
+                    determineThePosition(gameData,endTailFirstSnake,endTailSecondSnake,allTailFirstSnake,allTailSecondSnake,whichSnake);
                     area[yEndTail][xEndTail] = 38;
                     generateFood(n, gameData, area);
                     gameData[3] = gameData[3] + 1;
                 }
-                if (gameData[3] >= 3)
+                if (gameData[3] >= 2)
                     tailMotion(n, area, gameData, positionSnakes, endTailFirstSnake, endTailSecondSnake,
                                orientation, whichSnake);
                 break;
@@ -272,12 +278,12 @@ snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], int endT
                         endTailSecondSnake[0] = yEndTail;
                         endTailSecondSnake[1] = xEndTail;
                     }
+                    determineThePosition(gameData,endTailFirstSnake,endTailSecondSnake,allTailFirstSnake,allTailSecondSnake,whichSnake);
                     area[yEndTail][xEndTail] = 38;
                     generateFood(n, gameData, area);
                     gameData[3] = gameData[3] + 1;
-
                 }
-                if (gameData[3] >= 3)
+                if (gameData[3] >= 2)
                     tailMotion(n, area, gameData, positionSnakes, endTailFirstSnake, endTailSecondSnake,
                                orientation, whichSnake);
                 break;
@@ -305,11 +311,12 @@ snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], int endT
                         endTailSecondSnake[0] = yEndTail;
                         endTailSecondSnake[1] = xEndTail;
                     }
+                    determineThePosition(gameData,endTailFirstSnake,endTailSecondSnake,allTailFirstSnake,allTailSecondSnake,whichSnake);
                     area[yEndTail][xEndTail] = 38;
                     generateFood(n, gameData, area);
                     gameData[3] = gameData[3] + 1;
                 }
-                if (gameData[3] >= 3)
+                if (gameData[3] >= 2)
                     tailMotion(n, area, gameData, positionSnakes, endTailFirstSnake, endTailSecondSnake,
                                orientation, whichSnake);
                 break;
@@ -416,4 +423,95 @@ long validationGameArea() {
 
 bool checkOverflow(double d) {
     return d >= -2147483648 && d <= 2147483647;
+}
+
+void determineThePosition(int gameData[], int endTailFirstSnake[], int endTailSecondSnake[], int allTailFirstSnake[],
+                          int allTailSecondSnake[], bool whichSnake) {
+    if(!whichSnake) {
+        switch (gameData[2]) {
+            case 1:
+                allTailFirstSnake[0] = endTailFirstSnake[0];
+                allTailFirstSnake[1] = endTailFirstSnake[1];
+                break;
+            case 2:
+                allTailFirstSnake[2] = endTailFirstSnake[0];
+                allTailFirstSnake[3] = endTailFirstSnake[1];
+                break;
+            case 3:
+                allTailFirstSnake[4] = endTailFirstSnake[0];
+                allTailFirstSnake[5] = endTailFirstSnake[1];
+                break;
+            case 4:
+                allTailFirstSnake[6] = endTailFirstSnake[0];
+                allTailFirstSnake[7] = endTailFirstSnake[1];
+                break;
+            case 5:
+                allTailFirstSnake[8] = endTailFirstSnake[0];
+                allTailFirstSnake[9] = endTailFirstSnake[1];
+                break;
+            case 6:
+                allTailFirstSnake[10] = endTailFirstSnake[0];
+                allTailFirstSnake[11] = endTailFirstSnake[1];
+                break;
+            case 7:
+                allTailFirstSnake[12] = endTailFirstSnake[0];
+                allTailFirstSnake[13] = endTailFirstSnake[1];
+                break;
+            case 8:
+                allTailFirstSnake[14] = endTailFirstSnake[0];
+                allTailFirstSnake[15] = endTailFirstSnake[1];
+                break;
+            case 9:
+                allTailFirstSnake[16] = endTailFirstSnake[0];
+                allTailFirstSnake[17] = endTailFirstSnake[1];
+                break;
+            case 10:
+                allTailFirstSnake[18] = endTailFirstSnake[0];
+                allTailFirstSnake[19] = endTailFirstSnake[1];
+                break;
+        }
+    } else {
+        switch (gameData[3]) {
+            case 1:
+                allTailSecondSnake[0] = endTailSecondSnake[0];
+                allTailSecondSnake[1] = endTailSecondSnake[1];
+                break;
+            case 2:
+                allTailSecondSnake[2] = endTailSecondSnake[0];
+                allTailSecondSnake[3] = endTailSecondSnake[1];
+                break;
+            case 3:
+                allTailSecondSnake[4] = endTailSecondSnake[0];
+                allTailSecondSnake[5] = endTailSecondSnake[1];
+                break;
+            case 4:
+                allTailSecondSnake[6] = endTailSecondSnake[0];
+                allTailSecondSnake[7] = endTailSecondSnake[1];
+                break;
+            case 5:
+                allTailSecondSnake[8] = endTailSecondSnake[0];
+                allTailSecondSnake[9] = endTailSecondSnake[1];
+                break;
+            case 6:
+                allTailSecondSnake[10] = endTailSecondSnake[0];
+                allTailSecondSnake[11] = endTailSecondSnake[1];
+                break;
+            case 7:
+                allTailSecondSnake[12] = endTailSecondSnake[0];
+                allTailSecondSnake[13] = endTailSecondSnake[1];
+                break;
+            case 8:
+                allTailSecondSnake[14] = endTailSecondSnake[0];
+                allTailSecondSnake[15] = endTailSecondSnake[1];
+                break;
+            case 9:
+                allTailSecondSnake[16] = endTailSecondSnake[0];
+                allTailSecondSnake[17] = endTailSecondSnake[1];
+                break;
+            case 10:
+                allTailSecondSnake[18] = endTailSecondSnake[0];
+                allTailSecondSnake[19] = endTailSecondSnake[1];
+                break;
+        }
+    }
 }
