@@ -40,11 +40,14 @@ void fillingArea(int n, int area[][n]) {
         area[0][j] = '#';
         area[n - 1][j] = '#';
     }
-
+    for (int i = 1; i < n - 1; i++)
+        for (int j = 1; j < n - 1; j++)
+            area[i][j] = 0;
 }
 
 bool
-snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], int endTailFirstSnake[], int endTailSecondSnake[],
+snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], int endTailFirstSnake[],
+            int endTailSecondSnake[],
             short orientation, bool whichSnake) {
     bool isItFood = false;
     int xEndTail, yEndTail;
@@ -347,7 +350,7 @@ void generateFood(int n, int gameData[], int area[][n]) {
 void generatePositionSnakes(int n, int area[][n], int positionSnakes[]) {
     int i1 = 1 + rand() % (n - 2), j1 = 1 + rand() % (n - 2);
     int i2 = 1 + rand() % (n - 2), j2 = 1 + rand() % (n - 2);
-    area[i1][j2] = 49;
+    area[i1][j1] = 49;
     if (i1 != i2 || j1 != j2) area[i2][j2] = 50;
     else {
         i2 = 1 + rand() % (n - 2);
