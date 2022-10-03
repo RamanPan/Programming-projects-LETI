@@ -7,20 +7,20 @@
 int main() {
     SetConsoleOutputCP(CP_UTF8);
     bool exitFlag = false;
-    int I, J;
+    short I, J;
     short symbol;
     short minPosition = 1, maxPosition = 7;
     short position = minPosition;
     char YN;
     showHelloMessage();
     printf("Введите длину\n");
-    I = validation();
+    I = (short) validation();
     printf("Введите ширину\n");
-    J = validation();
+    J = (short) validation();
     showMenu(position);
     while (!exitFlag) {
-        symbol = (short)getch();
-        if (symbol == 224) symbol = (short)getch();
+        symbol = (short) getch();
+        if (symbol == 224) symbol = (short) getch();
         int area[I][J];
         switch (symbol) {
             case 72:
@@ -59,17 +59,36 @@ int main() {
             case 55:
                 position = 7;
                 break;
-            case 56:
-                position = 8;
-                break;
-            case 57:
-                position = 9;
-                break;
             default:;
         }
         showMenu(position);
         switch (position) {
-
+            case 1:
+            case 2:
+                break;
+            case 3:
+                generateSpiral(I, J, area, 0);
+                outputSpiral(I, J, area);
+                break;
+            case 4:
+                generateSpiral(I, J, area, 1);
+                outputSpiral(I, J, area);
+                break;
+            case 5:
+                generateSpiral(I, J, area, 2);
+                outputSpiral(I, J, area);
+                break;
+            case 6:
+                generateSpiral(I, J, area, 3);
+                outputSpiral(I, J, area);
+                break;
+            case 7:
+                printf("Вы уверены что хотите выйти?(Y/N)\n");
+                scanf("%s", &YN);
+                if (YN == 'Y') exitFlag = true;
+                break;
+            default:;
         }
     }
+    return 0;
 }

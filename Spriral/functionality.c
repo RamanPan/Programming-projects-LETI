@@ -24,9 +24,57 @@ long validation() {
     return (long) result;
 }
 
+void generateSpiral(short I, short J, int area[][J], short variation) {
+    int k = 1;
+    int bfI = 0, bfJ = 0;
+    int i, j;
+    switch (variation) {
+        case 0:
+            i = 0;
+            j = 0;
+            while (k <= I * J) {
+                area[i][j] = k;
+                if (i == bfI && j < J - bfJ - 1)
+                    ++j;
+                else if (j == J - bfJ - 1 && i < I - bfI - 1)
+                    ++i;
+                else if (i == I - bfI - 1 && j > bfJ)
+                    --j;
+                else
+                    --i;
+                if ((i == bfI + 1) && (j == bfJ) && (bfJ != J - bfJ - 1)) {
+                    ++bfI;
+                    ++bfJ;
+                }
+                ++k;
+            }
+            break;
+        case 1:
+
+            break;
+        case 2:
+
+            break;
+        case 3:
+
+            break;
+        default:;
+    }
+}
+
 bool checkOverflow(double d) {
     return d >= 1 && d <= 12;
 }
+
+void outputSpiral(int I, int J, int area[][J]) {
+    for(int i = 0; i < I; i++)
+        for(int j = 0; j < J; j++) {
+            printf("%d ", area[i][j]);
+            if(j == J - 1) printf("\n");
+        }
+}
+
+
 void showMenu(int position) {
     system("cls");
     printf("Выберите действие:\n");
