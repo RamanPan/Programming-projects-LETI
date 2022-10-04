@@ -73,6 +73,7 @@ int main() {
                     scanf("%s", &YN);
                     if (YN == 'Y') return 0;
                     break;
+                default:;
             }
             showMenu(n, gameData, gameArea);
             if (winFirst || gameData[2] == pointsForWin[n - 5]) {

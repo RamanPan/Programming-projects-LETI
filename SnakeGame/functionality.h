@@ -17,14 +17,17 @@ void generatePositionSnakes(int n, int area[][n], int positionSnakes[]);
 
 void showHelloMessage();
 
-void determineThePosition(const int gameData[],const int endTailFirstSnake[], const int endTailSecondSnake[],int allTailFirstSnake[], int allTailSecondSnake[],bool whichSnake);
+void determineThePosition(const int gameData[], const int endTailFirstSnake[], const int endTailSecondSnake[],
+                          int allTailFirstSnake[], int allTailSecondSnake[], bool whichSnake);
 
 bool
-snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], int endTailFirstSnake[], int endTailSecondSnake[],int allTailFirstSnake[], int allTailSecondSnake[],
+snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], int endTailFirstSnake[],
+            int endTailSecondSnake[], int allTailFirstSnake[], int allTailSecondSnake[],
             short orientation, bool whichSnake);
 
-void tailMotion(int n, int area[][n], int gameData[], int positionSnakes[], int tailFirstSnake[], int tailSecondSnake[],
-                short orientation, bool whichSnake,bool isItFood);
+void tailMotion(int n, int area[][n], const int gameData[], const int positionSnakes[], int tailFirstSnake[],
+                int tailSecondSnake[],
+                short orientation, bool whichSnake);
 
 void printSymbol(short numberSymbol);
 
