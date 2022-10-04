@@ -66,12 +66,14 @@ int main() {
             case 1:
                 printf("Введите длину\n");
                 I = (short) validation();
-                printf("Длина успешно изменена\n");
+                showMenu(position, I, J);
+                printf("Длина успешно изменена!\n");
                 break;
             case 2:
                 printf("Введите ширину\n");
                 J = (short) validation();
-                printf("Ширина успешно изменена\n");
+                showMenu(position, I, J);
+                printf("Ширина успешно изменена!\n");
                 break;
             case 3:
                 generateSpiral(I, J, area, 0);
