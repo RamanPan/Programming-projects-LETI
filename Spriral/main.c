@@ -75,19 +75,15 @@ int main() {
                 break;
             case 3:
                 generateSpiral(I, J, area, 0);
-                outputSpiral(I, J, area);
                 break;
             case 4:
                 generateSpiral(I, J, area, 1);
-                outputSpiral(I, J, area);
                 break;
             case 5:
                 generateSpiral(I, J, area, 2);
-                outputSpiral(I, J, area);
                 break;
             case 6:
                 generateSpiral(I, J, area, 3);
-                outputSpiral(I, J, area);
                 break;
             case 7:
                 printf("Вы уверены что хотите выйти?(Y/N)\n");

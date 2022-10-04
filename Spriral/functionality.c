@@ -5,6 +5,9 @@
 
 void showHelloMessage() {
     printf("Добро пожаловать!!!\n");
+    printf("В данной программе вы можете наблюдать различные спирали\n");
+    printf("Длина и ширина могут принимать значения от 1 до 12 включительно \n");
+
 }
 
 long validation() {
@@ -26,7 +29,7 @@ long validation() {
 
 void generateSpiral(short I, short J, int area[][J], short variation) {
     int k = 1;
-    int bfI = 0, bfJ = 0;
+    int shift = 0;
     int i, j;
     switch (variation) {
         case 0:
@@ -34,18 +37,16 @@ void generateSpiral(short I, short J, int area[][J], short variation) {
             j = 0;
             while (k <= I * J) {
                 area[i][j] = k;
-                if (i == bfI && j < J - bfJ - 1)
+                if (i == shift && j < J - shift - 1)
                     ++j;
-                else if (j == J - bfJ - 1 && i < I - bfI - 1)
+                else if (j == J - shift - 1 && i < I - shift - 1)
                     ++i;
-                else if (i == I - bfI - 1 && j > bfJ)
+                else if (i == I - shift - 1 && j > shift)
                     --j;
                 else
                     --i;
-                if ((i == bfI + 1) && (j == bfJ) && (bfJ != J - bfJ - 1)) {
-                    ++bfI;
-                    ++bfJ;
-                }
+                if ((i == shift + 1) && (j == shift) && (shift != J - shift - 1))
+                    ++shift;
                 ++k;
             }
             break;
@@ -54,18 +55,16 @@ void generateSpiral(short I, short J, int area[][J], short variation) {
             j = J - 1;
             while (k <= I * J) {
                 area[i][j] = k;
-                if (i == I - bfI - 1 && j < J - bfJ - 1)
+                if (i == I - shift - 1 && j < J - shift - 1)
                     ++j;
-                else if (j == bfJ && i < I - bfI - 1)
+                else if (j == shift && i < I - shift - 1)
                     ++i;
-                else if (i == bfI && j > bfJ)
+                else if (i == shift && j > shift)
                     --j;
                 else
                     --i;
-                if ((i == bfI + 1) && (j == J - bfJ - 1) && (bfJ != J - bfJ - 1)) {
-                    ++bfI;
-                    ++bfJ;
-                }
+                if ((i == shift + 1) && (j == J - shift - 1) && (shift != J - shift - 1))
+                    ++shift;
                 ++k;
             }
             break;
@@ -74,9 +73,9 @@ void generateSpiral(short I, short J, int area[][J], short variation) {
             break;
         case 3:
 
-            break;
         default:;
     }
+    outputSpiral(I, J, area);
 }
 
 bool checkOverflow(double d) {
@@ -86,7 +85,9 @@ bool checkOverflow(double d) {
 void outputSpiral(int I, int J, int area[][J]) {
     for (int i = 0; i < I; i++)
         for (int j = 0; j < J; j++) {
-            printf("%d ", area[i][j]);
+            if (area[i][j] <= 9) printf("%d   ", area[i][j]);
+            else if (area[i][j] < 100) printf("%d  ", area[i][j]);
+            else printf("%d ", area[i][j]);
             if (j == J - 1) printf("\n");
         }
 }
