@@ -1,7 +1,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include "functionality.h"
 
 long validation() {
@@ -11,12 +10,9 @@ long validation() {
         if (scanf("%lf", &result)) {
             if (!checkOverflow(result)) {
                 printf("Неправильный ввод! Число вышло за границу дозволенного! Попробуйте снова!\n");
-                fflush(stdin);
             } else validationFlag = true;
-        } else {
-            printf("Неправильный ввод! Попробуйте снова!\n");
-            fflush(stdin);
-        }
+        } else printf("Неправильный ввод! Попробуйте снова!\n");
+        fflush(stdin);
     }
     return (long) result;
 }
@@ -489,13 +485,10 @@ bool checkLose(int n, int area[][n], int x, int y) {
 }
 
 void generateFood(int n, int gameData[], int area[][n]) {
-    bool opportunityToGenerate = true;
     if (gameData[0] < 4) {
-        opportunityToGenerate = false;
         return;
     }
     while (gameData[1] != 4) {
-        srand(time(NULL));
         int i = 1 + rand() % (n - 2);
         int j = 1 + rand() % (n - 2);
         if (area[i][j] != 36 && area[i][j] != 38 && area[i][j] != 49 && area[i][j] != 50 && area[i][j] != 101) {
