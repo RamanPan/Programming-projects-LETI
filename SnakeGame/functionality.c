@@ -499,7 +499,8 @@ void generateFood(int n, int gameData[], int area[][n]) {
     }
 }
 
-void generatePositionSnakes(int n, int area[][n], int positionSnakes[]) {
+
+void generatePositionSnakes(int n, int area[][n], int positionSnakes[], int gameData[]) {
     int i1 = 1 + rand() % (n - 2), j1 = 1 + rand() % (n - 2);
     int i2 = 1 + rand() % (n - 2), j2 = 1 + rand() % (n - 2);
     area[i1][j1] = 49;
@@ -513,6 +514,61 @@ void generatePositionSnakes(int n, int area[][n], int positionSnakes[]) {
     positionSnakes[1] = j1;
     positionSnakes[2] = i2;
     positionSnakes[3] = j2;
+    preparationForGenerateWalls(n, area, gameData);
+}
+
+void preparationForGenerateWalls(int n, int area[][n], int gameData[]) {
+    int N = n - 2;
+    if (N < 5) return;
+    else if (N < 8) generateWalls(n, area, gameData);
+    else {
+        generateWalls(n, area, gameData);
+        generateWalls(n, area, gameData);
+    }
+}
+
+void generateWalls(int n, int area[][n], int gameData[]) {
+    int orientation;
+    int sizeWall = 1 + rand() % 3;
+    int i = 1 + rand() % (n - 2), j = 1 + rand() % (n - 2);
+    if (area[i][j] != 49 && area[i][j] != 50) {
+        area[i][j] = '#';
+        --gameData[0];
+    }
+    for (int k = 0; k < sizeWall - 1; ++k) {
+        orientation = rand() % 3;
+        switch (orientation) {
+            case 0:
+                i++;
+                if (area[i][j] != 49 && area[i][j] != 50) {
+                    area[i][j] = '#';
+                    --gameData[0];
+                }
+                break;
+            case 1:
+                i--;
+                if (area[i][j] != 49 && area[i][j] != 50) {
+                    area[i][j] = '#';
+                    --gameData[0];
+                }
+                break;
+            case 2:
+                j++;
+                if (area[i][j] != 49 && area[i][j] != 50) {
+                    area[i][j] = '#';
+                    --gameData[0];
+                }
+                break;
+            case 3:
+                j--;
+                if (area[i][j] != 49 && area[i][j] != 50) {
+                    area[i][j] = '#';
+                    --gameData[0];
+                }
+                break;
+            default:;
+        }
+    }
 }
 
 

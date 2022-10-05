@@ -13,7 +13,11 @@ void fillingArea(int n, int area[][n]);
 
 void generateFood(int n, int gameData[], int area[][n]);
 
-void generatePositionSnakes(int n, int area[][n], int positionSnakes[]);
+void preparationForGenerateWalls(int n, int area[][n],int gameData[]);
+
+void generateWalls(int n, int area[][n],int gameData[]);
+
+void generatePositionSnakes(int n, int area[][n], int positionSnakes[],int gameData[]);
 
 void showHelloMessage();
 

@@ -16,13 +16,13 @@ int main() {
         int gameArea[n][n], positionSnakes[4], endTailFirstSnake[2], endTailSecondSnake[2], allTailFirstSnake[20], allTailSecondSnake[20];
         //0 - кол-во свободных клеток, 1 - кол-во еды, 2 - длина первой змейки, 3 - длина второй змейки
         int gameData[4] = {(n - 2) * (n - 2) - 2, 0, 1, 1};
-        int pointsForWin[8] = {3, 4, 5, 6, 7, 8, 9, 10};
+        int pointsForWin[8] = {4, 5, 6, 7, 8, 9, 10, 11};
         int symbol;
         short orientationFirstSnake, orientationSecondSnake;
         char YN;
         bool winFirst = false, winSecond = false;
         fillingArea(n, gameArea);
-        generatePositionSnakes(n, gameArea, positionSnakes);
+        generatePositionSnakes(n, gameArea, positionSnakes,gameData);
         generateFood(n, gameData, gameArea);
         showMenu(n, gameData, gameArea);
         while (!startAgain) {
