@@ -22,6 +22,7 @@ int main() {
         char YN;
         bool winFirst = false, winSecond = false;
         fillingArea(n, gameArea);
+        cleanArea(n,gameArea);
         generatePositionSnakes(n, gameArea, positionSnakes,gameData);
         generateFood(n, gameData, gameArea);
         showMenu(n, gameData, gameArea);

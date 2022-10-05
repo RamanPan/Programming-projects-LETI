@@ -36,9 +36,6 @@ void fillingArea(int n, int area[][n]) {
         area[0][j] = '#';
         area[n - 1][j] = '#';
     }
-    for (int i = 1; i < n - 1; i++)
-        for (int j = 1; j < n - 1; j++)
-            area[i][j] = 0;
 }
 
 bool
@@ -477,6 +474,7 @@ void tailMotion(int n, int area[][n], const int gameData[], const int positionSn
             default:;
         }
     }
+    fillingArea(n, area);
 }
 
 bool checkLose(int n, int area[][n], int x, int y) {
@@ -485,10 +483,11 @@ bool checkLose(int n, int area[][n], int x, int y) {
 }
 
 void generateFood(int n, int gameData[], int area[][n]) {
-    if (gameData[0] < 4) {
+    short conditionToStop = 4;
+    if (gameData[0] < 4 && gameData[1] == 4) {
         return;
-    }
-    while (gameData[1] != 4) {
+    } else if (gameData[0] < 4) conditionToStop = 1;
+    while (gameData[1] < conditionToStop) {
         int i = 1 + rand() % (n - 2);
         int j = 1 + rand() % (n - 2);
         if (area[i][j] != 36 && area[i][j] != 38 && area[i][j] != 49 && area[i][j] != 50 && area[i][j] != 101) {
@@ -499,6 +498,11 @@ void generateFood(int n, int gameData[], int area[][n]) {
     }
 }
 
+void cleanArea(int n, int area[][n]) {
+    for (int i = 1; i < n - 1; i++)
+        for (int j = 1; j < n - 1; j++)
+            area[i][j] = 0;
+}
 
 void generatePositionSnakes(int n, int area[][n], int positionSnakes[], int gameData[]) {
     int i1 = 1 + rand() % (n - 2), j1 = 1 + rand() % (n - 2);
@@ -671,6 +675,14 @@ void determineThePosition(const int gameData[], const int endTailFirstSnake[], c
                 allTailFirstSnake[18] = endTailFirstSnake[0];
                 allTailFirstSnake[19] = endTailFirstSnake[1];
                 break;
+            case 11:
+                allTailFirstSnake[20] = endTailFirstSnake[0];
+                allTailFirstSnake[21] = endTailFirstSnake[1];
+                break;
+            case 12:
+                allTailFirstSnake[22] = endTailFirstSnake[0];
+                allTailFirstSnake[23] = endTailFirstSnake[1];
+                break;
         }
     } else {
         switch (gameData[3]) {
@@ -713,6 +725,14 @@ void determineThePosition(const int gameData[], const int endTailFirstSnake[], c
             case 10:
                 allTailSecondSnake[18] = endTailSecondSnake[0];
                 allTailSecondSnake[19] = endTailSecondSnake[1];
+                break;
+            case 11:
+                allTailSecondSnake[20] = endTailSecondSnake[0];
+                allTailSecondSnake[21] = endTailSecondSnake[1];
+                break;
+            case 12:
+                allTailSecondSnake[22] = endTailSecondSnake[0];
+                allTailSecondSnake[23] = endTailSecondSnake[1];
                 break;
         }
     }
