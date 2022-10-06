@@ -37,6 +37,11 @@ void tailMotion(int n, int area[][n], const int gameData[], const int positionSn
 
 void printSymbol(short numberSymbol);
 
+void choosePointForNewPieceOfTail(int n, int area[][n], int endTailFirstSnake[],
+                                  int endTailSecondSnake[],short orientation,bool whichSnake);
+
+bool checkForMove(int n, int area[][n], int x, int y);
+
 bool checkOverflow(double d);
 
 bool checkLose(int n, int area[][n], int x, int y);

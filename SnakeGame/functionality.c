@@ -64,11 +64,14 @@ snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], int endT
                         yEndTail = endTailFirstSnake[0];
                         xEndTail = endTailFirstSnake[1] - 1;
                         if (checkLose(n, area, xEndTail, yEndTail)) {
-                            yEndTail--;
-                            xEndTail++;
+                            choosePointForNewPieceOfTail(n, area, endTailFirstSnake, endTailSecondSnake, orientation,
+                                                         whichSnake);
+                            yEndTail = endTailFirstSnake[0];
+                            xEndTail = endTailFirstSnake[1];
+                        } else {
+                            endTailFirstSnake[0] = yEndTail;
+                            endTailFirstSnake[1] = xEndTail;
                         }
-                        endTailFirstSnake[0] = yEndTail;
-                        endTailFirstSnake[1] = xEndTail;
                     }
                     determineThePosition(gameData, endTailFirstSnake, endTailSecondSnake, allTailFirstSnake,
                                          allTailSecondSnake, whichSnake);
@@ -98,11 +101,14 @@ snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], int endT
                         yEndTail = endTailFirstSnake[0];
                         xEndTail = endTailFirstSnake[1] + 1;
                         if (checkLose(n, area, xEndTail, yEndTail)) {
-                            yEndTail++;
-                            xEndTail--;
+                            choosePointForNewPieceOfTail(n, area, endTailFirstSnake, endTailSecondSnake, orientation,
+                                                         whichSnake);
+                            yEndTail = endTailFirstSnake[0];
+                            xEndTail = endTailFirstSnake[1];
+                        } else {
+                            endTailFirstSnake[0] = yEndTail;
+                            endTailFirstSnake[1] = xEndTail;
                         }
-                        endTailFirstSnake[0] = yEndTail;
-                        endTailFirstSnake[1] = xEndTail;
                     }
                     determineThePosition(gameData, endTailFirstSnake, endTailSecondSnake, allTailFirstSnake,
                                          allTailSecondSnake, whichSnake);
@@ -132,11 +138,14 @@ snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], int endT
                         yEndTail = endTailFirstSnake[0] + 1;
                         xEndTail = endTailFirstSnake[1];
                         if (checkLose(n, area, xEndTail, yEndTail)) {
-                            yEndTail--;
-                            xEndTail++;
+                            choosePointForNewPieceOfTail(n, area, endTailFirstSnake, endTailSecondSnake, orientation,
+                                                         whichSnake);
+                            yEndTail = endTailFirstSnake[0];
+                            xEndTail = endTailFirstSnake[1];
+                        } else {
+                            endTailFirstSnake[0] = yEndTail;
+                            endTailFirstSnake[1] = xEndTail;
                         }
-                        endTailFirstSnake[0] = yEndTail;
-                        endTailFirstSnake[1] = xEndTail;
                     }
                     determineThePosition(gameData, endTailFirstSnake, endTailSecondSnake, allTailFirstSnake,
                                          allTailSecondSnake, whichSnake);
@@ -166,11 +175,14 @@ snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], int endT
                         yEndTail = endTailFirstSnake[0] - 1;
                         xEndTail = endTailFirstSnake[1];
                         if (checkLose(n, area, xEndTail, yEndTail)) {
-                            yEndTail++;
-                            xEndTail--;
+                            choosePointForNewPieceOfTail(n, area, endTailFirstSnake, endTailSecondSnake, orientation,
+                                                         whichSnake);
+                            yEndTail = endTailFirstSnake[0];
+                            xEndTail = endTailFirstSnake[1];
+                        } else {
+                            endTailFirstSnake[0] = yEndTail;
+                            endTailFirstSnake[1] = xEndTail;
                         }
-                        endTailFirstSnake[0] = yEndTail;
-                        endTailFirstSnake[1] = xEndTail;
                     }
                     determineThePosition(gameData, endTailFirstSnake, endTailSecondSnake, allTailFirstSnake,
                                          allTailSecondSnake, whichSnake);
@@ -204,11 +216,14 @@ snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], int endT
                         yEndTail = endTailSecondSnake[0];
                         xEndTail = endTailSecondSnake[1] - 1;
                         if (checkLose(n, area, xEndTail, yEndTail)) {
-                            yEndTail--;
-                            xEndTail++;
+                            choosePointForNewPieceOfTail(n, area, endTailFirstSnake, endTailSecondSnake, orientation,
+                                                         whichSnake);
+                            yEndTail = endTailSecondSnake[0];
+                            xEndTail = endTailSecondSnake[1];
+                        } else {
+                            endTailSecondSnake[0] = yEndTail;
+                            endTailSecondSnake[1] = xEndTail;
                         }
-                        endTailSecondSnake[0] = yEndTail;
-                        endTailSecondSnake[1] = xEndTail;
                     }
                     determineThePosition(gameData, endTailFirstSnake, endTailSecondSnake, allTailFirstSnake,
                                          allTailSecondSnake, whichSnake);
@@ -238,11 +253,14 @@ snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], int endT
                         yEndTail = endTailSecondSnake[0];
                         xEndTail = endTailSecondSnake[1] + 1;
                         if (checkLose(n, area, xEndTail, yEndTail)) {
-                            yEndTail++;
-                            xEndTail--;
+                            choosePointForNewPieceOfTail(n, area, endTailFirstSnake, endTailSecondSnake, orientation,
+                                                         whichSnake);
+                            yEndTail = endTailSecondSnake[0];
+                            xEndTail = endTailSecondSnake[1];
+                        } else {
+                            endTailSecondSnake[0] = yEndTail;
+                            endTailSecondSnake[1] = xEndTail;
                         }
-                        endTailSecondSnake[0] = yEndTail;
-                        endTailSecondSnake[1] = xEndTail;
                     }
                     determineThePosition(gameData, endTailFirstSnake, endTailSecondSnake, allTailFirstSnake,
                                          allTailSecondSnake, whichSnake);
@@ -272,11 +290,14 @@ snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], int endT
                         yEndTail = endTailSecondSnake[0] + 1;
                         xEndTail = endTailSecondSnake[1];
                         if (checkLose(n, area, xEndTail, yEndTail)) {
-                            yEndTail--;
-                            xEndTail++;
+                            choosePointForNewPieceOfTail(n, area, endTailFirstSnake, endTailSecondSnake, orientation,
+                                                         whichSnake);
+                            yEndTail = endTailSecondSnake[0];
+                            xEndTail = endTailSecondSnake[1];
+                        } else {
+                            endTailSecondSnake[0] = yEndTail;
+                            endTailSecondSnake[1] = xEndTail;
                         }
-                        endTailSecondSnake[0] = yEndTail;
-                        endTailSecondSnake[1] = xEndTail;
                     }
                     determineThePosition(gameData, endTailFirstSnake, endTailSecondSnake, allTailFirstSnake,
                                          allTailSecondSnake, whichSnake);
@@ -306,11 +327,14 @@ snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], int endT
                         yEndTail = endTailSecondSnake[0] - 1;
                         xEndTail = endTailSecondSnake[1];
                         if (checkLose(n, area, xEndTail, yEndTail)) {
-                            yEndTail++;
-                            xEndTail--;
+                            choosePointForNewPieceOfTail(n, area, endTailFirstSnake, endTailSecondSnake, orientation,
+                                                         whichSnake);
+                            yEndTail = endTailSecondSnake[0];
+                            xEndTail = endTailSecondSnake[1];
+                        } else {
+                            endTailSecondSnake[0] = yEndTail;
+                            endTailSecondSnake[1] = xEndTail;
                         }
-                        endTailSecondSnake[0] = yEndTail;
-                        endTailSecondSnake[1] = xEndTail;
                     }
                     determineThePosition(gameData, endTailFirstSnake, endTailSecondSnake, allTailFirstSnake,
                                          allTailSecondSnake, whichSnake);
@@ -341,7 +365,8 @@ void tailMotion(int n, int area[][n], const int gameData[], const int positionSn
                 tempI = positionSnakes[0] + 1;
                 tempJ = positionSnakes[1];
                 area[tempI][tempJ] = 36;
-                area[tailFirstSnake[N - 2]][tailFirstSnake[N - 1]] = 0;
+                if (!checkForMove(n, area, tailFirstSnake[N - 1], tailFirstSnake[N - 2]))
+                    area[tailFirstSnake[N - 2]][tailFirstSnake[N - 1]] = 0;
                 for (int i = 0; i < N; i = i + 2) {
                     if (i != N - 1) {
                         tempI1 = tailFirstSnake[i];
@@ -357,7 +382,8 @@ void tailMotion(int n, int area[][n], const int gameData[], const int positionSn
                 tempI = positionSnakes[0] - 1;
                 tempJ = positionSnakes[1];
                 area[tempI][tempJ] = 36;
-                area[tailFirstSnake[N - 2]][tailFirstSnake[N - 1]] = 0;
+                if (!checkForMove(n, area, tailFirstSnake[N - 1], tailFirstSnake[N - 2]))
+                    area[tailFirstSnake[N - 2]][tailFirstSnake[N - 1]] = 0;
                 for (int i = 0; i < N; i = i + 2) {
                     if (i != N - 1) {
                         tempI1 = tailFirstSnake[i];
@@ -373,7 +399,8 @@ void tailMotion(int n, int area[][n], const int gameData[], const int positionSn
                 tempI = positionSnakes[0];
                 tempJ = positionSnakes[1] + 1;
                 area[tempI][tempJ] = 36;
-                area[tailFirstSnake[N - 2]][tailFirstSnake[N - 1]] = 0;
+                if (!checkForMove(n, area, tailFirstSnake[N - 1], tailFirstSnake[N - 2]))
+                    area[tailFirstSnake[N - 2]][tailFirstSnake[N - 1]] = 0;
                 for (int i = 0; i < N; i = i + 2) {
                     if (i != N - 1) {
                         tempI1 = tailFirstSnake[i];
@@ -389,7 +416,8 @@ void tailMotion(int n, int area[][n], const int gameData[], const int positionSn
                 tempI = positionSnakes[0];
                 tempJ = positionSnakes[1] - 1;
                 area[tempI][tempJ] = 36;
-                area[tailFirstSnake[N - 2]][tailFirstSnake[N - 1]] = 0;
+                if (!checkForMove(n, area, tailFirstSnake[N - 1], tailFirstSnake[N - 2]))
+                    area[tailFirstSnake[N - 2]][tailFirstSnake[N - 1]] = 0;
                 for (int i = 0; i < N; i = i + 2) {
                     if (i != N - 1) {
                         tempI1 = tailFirstSnake[i];
@@ -411,7 +439,8 @@ void tailMotion(int n, int area[][n], const int gameData[], const int positionSn
                 tempI = positionSnakes[2] + 1;
                 tempJ = positionSnakes[3];
                 area[tempI][tempJ] = 38;
-                area[tailSecondSnake[N - 2]][tailSecondSnake[N - 1]] = 0;
+                if (!checkForMove(n, area, tailSecondSnake[N - 1], tailSecondSnake[N - 2]))
+                    area[tailSecondSnake[N - 2]][tailSecondSnake[N - 1]] = 0;
                 for (int i = 0; i < N; i = i + 2) {
                     if (i != N - 1) {
                         tempI1 = tailSecondSnake[i];
@@ -427,7 +456,8 @@ void tailMotion(int n, int area[][n], const int gameData[], const int positionSn
                 tempI = positionSnakes[2] - 1;
                 tempJ = positionSnakes[3];
                 area[tempI][tempJ] = 38;
-                area[tailSecondSnake[N - 2]][tailSecondSnake[N - 1]] = 0;
+                if (!checkForMove(n, area, tailSecondSnake[N - 1], tailSecondSnake[N - 2]))
+                    area[tailSecondSnake[N - 2]][tailSecondSnake[N - 1]] = 0;
                 for (int i = 0; i < N; i = i + 2) {
                     if (i != N - 1) {
                         tempI1 = tailSecondSnake[i];
@@ -443,7 +473,8 @@ void tailMotion(int n, int area[][n], const int gameData[], const int positionSn
                 tempI = positionSnakes[2];
                 tempJ = positionSnakes[3] + 1;
                 area[tempI][tempJ] = 38;
-                area[tailSecondSnake[N - 2]][tailSecondSnake[N - 1]] = 0;
+                if (!checkForMove(n, area, tailSecondSnake[N - 1], tailSecondSnake[N - 2]))
+                    area[tailSecondSnake[N - 2]][tailSecondSnake[N - 1]] = 0;
                 for (int i = 0; i < N; i = i + 2) {
                     if (i != N - 1) {
                         tempI1 = tailSecondSnake[i];
@@ -459,7 +490,8 @@ void tailMotion(int n, int area[][n], const int gameData[], const int positionSn
                 tempI = positionSnakes[2];
                 tempJ = positionSnakes[3] - 1;
                 area[tempI][tempJ] = 38;
-                area[tailSecondSnake[N - 2]][tailSecondSnake[N - 1]] = 0;
+                if (!checkForMove(n, area, tailSecondSnake[N - 1], tailSecondSnake[N - 2]))
+                    area[tailSecondSnake[N - 2]][tailSecondSnake[N - 1]] = 0;
                 for (int i = 0; i < N; i = i + 2) {
                     if (i != N - 1) {
                         tempI1 = tailSecondSnake[i];
@@ -482,6 +514,11 @@ bool checkLose(int n, int area[][n], int x, int y) {
     return value == 36 || value == 38 || value == 35 || value == 49 || value == 50;
 }
 
+bool checkForMove(int n, int area[][n], int x, int y) {
+    int value = area[y][x];
+    return value == 35 || value == 101 || value == 49 || value == 50;
+}
+
 void generateFood(int n, int gameData[], int area[][n]) {
     short conditionToStop = 4;
     if (gameData[0] < 4 && gameData[1] == 4) {
@@ -502,6 +539,72 @@ void cleanArea(int n, int area[][n]) {
     for (int i = 1; i < n - 1; i++)
         for (int j = 1; j < n - 1; j++)
             area[i][j] = 0;
+}
+
+void choosePointForNewPieceOfTail(int n, int area[][n], int endTailFirstSnake[],
+                                  int endTailSecondSnake[], short orientation, bool whichSnake) {
+    int i, j;
+    if (!whichSnake) {
+        i = endTailFirstSnake[0];
+        j = endTailFirstSnake[1];
+        if (orientation == 0 || orientation == 1) {
+            j++;
+            if (!checkLose(n, area, j, i)) {
+                endTailFirstSnake[0] = i;
+                endTailFirstSnake[1] = j;
+                return;
+            }
+            j -= 2;
+            if (!checkLose(n, area, j, i)) {
+                endTailFirstSnake[0] = i;
+                endTailFirstSnake[1] = j;
+                return;
+            }
+        } else {
+            i++;
+            if (!checkLose(n, area, j, i)) {
+                endTailFirstSnake[0] = i;
+                endTailFirstSnake[1] = j;
+                return;
+            }
+            i -= 2;
+            if (!checkLose(n, area, j, i)) {
+                endTailFirstSnake[0] = i;
+                endTailFirstSnake[1] = j;
+                return;
+            }
+        }
+    } else {
+        i = endTailSecondSnake[0];
+        j = endTailSecondSnake[1];
+        if (orientation == 0 || orientation == 1) {
+            j++;
+            if (!checkLose(n, area, j, i)) {
+                endTailSecondSnake[0] = i;
+                endTailSecondSnake[1] = j;
+                return;
+            }
+            j -= 2;
+            if (!checkLose(n, area, j, i)) {
+                endTailSecondSnake[0] = i;
+                endTailSecondSnake[1] = j;
+                return;
+            }
+        } else {
+            i++;
+            if (!checkLose(n, area, j, i)) {
+                endTailSecondSnake[0] = i;
+                endTailSecondSnake[1] = j;
+                return;
+            }
+            i -= 2;
+            if (!checkLose(n, area, j, i)) {
+                endTailSecondSnake[0] = i;
+                endTailSecondSnake[1] = j;
+                return;
+            }
+        }
+    }
 }
 
 void generatePositionSnakes(int n, int area[][n], int positionSnakes[], int gameData[]) {
