@@ -6,7 +6,7 @@
 
 int main() {
     SetConsoleOutputCP(CP_UTF8);
-    bool exitFlag = false;
+    bool exitFlag = false, permissionFlag = false;
     short I, J;
     short symbol;
     short minPosition = 1, maxPosition = 7;
@@ -38,6 +38,9 @@ int main() {
                 scanf("%s", &YN);
                 if (YN == 'Y') exitFlag = true;
                 break;
+            case 13:
+                permissionFlag = true;
+                break;
             case 49:
                 position = 1;
                 break;
@@ -64,16 +67,22 @@ int main() {
         showMenu(position, I, J);
         switch (position) {
             case 1:
-                printf("Введите длину\n");
-                I = (short) validation();
-                showMenu(position, I, J);
-                printf("Длина успешно изменена!\n");
+                if (permissionFlag) {
+                    printf("Введите длину\n");
+                    I = (short) validation();
+                    showMenu(position, I, J);
+                    printf("Длина успешно изменена!\n");
+                    permissionFlag = false;
+                }
                 break;
             case 2:
-                printf("Введите ширину\n");
-                J = (short) validation();
-                showMenu(position, I, J);
-                printf("Ширина успешно изменена!\n");
+                if (permissionFlag) {
+                    printf("Введите ширину\n");
+                    J = (short) validation();
+                    showMenu(position, I, J);
+                    printf("Ширина успешно изменена!\n");
+                    permissionFlag = false;
+                }
                 break;
             case 3:
                 generateSpiral(I, J, area, 0);
@@ -88,9 +97,12 @@ int main() {
                 generateSpiral(I, J, area, 3);
                 break;
             case 7:
-                printf("Вы уверены что хотите выйти?(Y/N)\n");
-                scanf("%s", &YN);
-                if (YN == 'Y') exitFlag = true;
+                if (permissionFlag) {
+                    printf("Вы уверены что хотите выйти?(Y/N)\n");
+                    scanf("%s", &YN);
+                    if (YN == 'Y') exitFlag = true;
+                    permissionFlag = false;
+                }
                 break;
             default:;
         }
