@@ -52,20 +52,10 @@ void exponentiation(long value, int power) {
     }
     if (power == 0) result = 1;
     else {
-        bool positiveOrNegative;
-        if (power < 0) positiveOrNegative = 0;
-        else positiveOrNegative = 1;
-        double exponentiationValue = value;
-        while (abs(power) != 1) {
-            exponentiationValue *= value;
-            if (positiveOrNegative) power--;
-            else power++;
-        }
-        if (positiveOrNegative) result = exponentiationValue;
-        else result = 1 / exponentiationValue;
+        result = pow(value, power);
     }
     if (checkOverflow(result))
-        printf("%ld в степени %d = %ld\n", value, power, (long) result);
+        printf("Результат = %ld\n", (long) result);
     else
         printf("Результат вышел за границу допустимого значения! Попробуйте снова!");
 
@@ -74,7 +64,7 @@ void exponentiation(long value, int power) {
 void rooting(long value, int power) {
     double rootValue = pow(value, (double) 1 / power);
     if (checkOverflow(rootValue))
-        printf("%ld в корне степени %d = %ld\n", value, power, (long) rootValue);
+        printf("Результат = %ld\n", (long) rootValue);
     else
         printf("Результат вышел за границу допустимого значения! Попробуйте снова!");
 }
