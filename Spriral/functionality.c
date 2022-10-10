@@ -55,12 +55,12 @@ void generateSpiral(short I, short J, int area[][J], short variation) {
             j = J - 1;
             while (k <= I * J) {
                 area[i][j] = k;
-                if (i == I - shift - 1 && j < J - shift - 1)
-                    ++j;
+                if (i == shift && j > shift)
+                    --j;
                 else if (j == shift && i < I - shift - 1)
                     ++i;
-                else if (i == shift && j > shift)
-                    --j;
+                else if (i == I - shift - 1 && j < J - shift - 1)
+                    ++j;
                 else
                     --i;
                 if ((i == shift + 1) && (j == J - shift - 1) && (shift != J - shift - 1))
