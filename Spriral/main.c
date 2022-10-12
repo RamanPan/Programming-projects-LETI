@@ -13,9 +13,9 @@ int main() {
     short position = 0;
     char YN;
     showHelloMessage();
-    printf("Введите длину\n");
+    printf("Введите высоту(I)!\n");
     I = (short) validation();
-    printf("Введите ширину\n");
+    printf("Введите ширину(J)!\n");
     J = (short) validation();
     showMenu(position, I, J);
     while (!exitFlag) {
@@ -68,10 +68,10 @@ int main() {
         switch (position) {
             case 1:
                 if (permissionFlag) {
-                    printf("Введите длину\n");
+                    printf("Введите высоту\n");
                     I = (short) validation();
                     showMenu(position, I, J);
-                    printf("Длина успешно изменена!\n");
+                    printf("Высота успешно изменена!\n");
                     permissionFlag = false;
                 }
                 break;
