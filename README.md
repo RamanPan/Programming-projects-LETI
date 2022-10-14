@@ -2,4 +2,5 @@
  Все учебные проекты по дисциплине "Прогрaммирование":
 ## 1 - Calculator with Аrrow and Number Control(Калькулятор с стрелочным и цифровым управлением)
 ## 2 - Spiral Output with Аrrow and Number Control(Вывод спирали с стрелочным и цифровым управлением)
+## 3 - Tic-tac-toe with a field of arbitrary order()
 ## * - Snake Game (Игра "Змейка")
