@@ -51,6 +51,24 @@ void showHelloMessage() {
     printf("Если на поле не осталось места - игра завершается ничьей\n");
 }
 
+void fillingArea(int n, int m, int area[][m]) {
+    for (int i = 0; i < n; ++i) {
+        area[i][0] = '#';
+        area[i][m - 1] = '#';
+    }
+    for (int j = 0; j < m; ++j) {
+        area[0][j] = '#';
+        area[n - 1][j] = '#';
+    }
+}
+
+void cleanArea(int n, int m, int area[][m]) {
+    for (int i = 1; i < n - 1; i++)
+        for (int j = 1; j < m - 1; j++)
+            area[i][j] = 0;
+    area[1][1] = 149;
+}
+
 bool checkOverflow(double d) {
     return d >= -2147483648 && d <= 2147483647;
 }
