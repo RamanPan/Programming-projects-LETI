@@ -113,6 +113,27 @@ void moveCursor(int m, int area[][m], int positionCursor[], short orientation) {
     }
 }
 
+bool setXorO(int m, int area[][m], int gameData[], int positionCursor[], int positionX[], int positionO[],
+             bool whoseStep) {
+    if (!checkForMove(m, area, positionCursor[1], positionCursor[0])) {
+        if (!whoseStep) {
+            area[positionCursor[0]][positionCursor[1]] = 881;
+            positionX[gameData[1] + gameData[1]] = positionCursor[0];
+            positionX[gameData[1] + gameData[1] + 1] = positionCursor[1];
+            gameData[1]++;
+            gameData[0]--;
+        } else {
+            area[positionCursor[0]][positionCursor[1]] = 791;
+            positionO[gameData[2] + gameData[2]] = positionCursor[0];
+            positionO[gameData[2] + gameData[2] + 1] = positionCursor[1];
+            gameData[2]++;
+            gameData[0]--;
+        }
+        return !whoseStep;
+    }
+    return whoseStep;
+}
+
 void showHelloMessage() {
     printf("Приветствую!\n");
     printf("Это игра 'Крестики и нолики'\n");

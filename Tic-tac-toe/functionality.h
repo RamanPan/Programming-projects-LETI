@@ -15,7 +15,7 @@ void cleanArea(int n, int m, int area[][m]);
 
 void moveCursor(int m, int area[][m], int positionCursor[], short orientation);
 
-void setXorO(int m, int area[][m], int gameData[], int positionCursor[], int positionX[], int positionO[],
+bool setXorO(int m, int area[][m], int gameData[], int positionCursor[], int positionX[], int positionO[],
              bool whoseStep);
 
 void fillingArea(int n, int m, int area[n][m]);
