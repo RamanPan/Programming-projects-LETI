@@ -42,6 +42,77 @@ long validationWithArgument(short max) {
     return result;
 }
 
+void moveCursor(int m, int area[][m], int positionCursor[], short orientation) {
+    bool checkForMoves = checkForMove(m, area, positionCursor[1], positionCursor[0]);
+    switch (orientation) {
+        case 0:
+            if (area[positionCursor[0] - 1][positionCursor[1]] == 35) break;
+            if (!checkForMoves) area[positionCursor[0]][positionCursor[1]] = 0;
+            else if (area[positionCursor[0]][positionCursor[1]] == 881) area[positionCursor[0]][positionCursor[1]] = 88;
+            else if (area[positionCursor[0]][positionCursor[1]] == 791) area[positionCursor[0]][positionCursor[1]] = 79;
+            if (!checkForMove(m, area, positionCursor[1], positionCursor[0] - 1)) {
+                positionCursor[0]--;
+                area[positionCursor[0]][positionCursor[1]] = 149;
+            } else if (area[positionCursor[0] - 1][positionCursor[1]] == 88) {
+                positionCursor[0]--;
+                area[positionCursor[0]][positionCursor[1]] = 881;
+            } else if (area[positionCursor[0] - 1][positionCursor[1]] == 79) {
+                positionCursor[0]--;
+                area[positionCursor[0]][positionCursor[1]] = 791;
+            } else if (checkForMoves) area[positionCursor[0]][positionCursor[1]] = 149;
+            break;
+        case 1:
+            if (area[positionCursor[0] + 1][positionCursor[1]] == 35) break;
+            if (!checkForMoves) area[positionCursor[0]][positionCursor[1]] = 0;
+            else if (area[positionCursor[0]][positionCursor[1]] == 881) area[positionCursor[0]][positionCursor[1]] = 88;
+            else if (area[positionCursor[0]][positionCursor[1]] == 791) area[positionCursor[0]][positionCursor[1]] = 79;
+            if (!checkForMove(m, area, positionCursor[1], positionCursor[0] + 1)) {
+                positionCursor[0]++;
+                area[positionCursor[0]][positionCursor[1]] = 149;
+            } else if (area[positionCursor[0] + 1][positionCursor[1]] == 88) {
+                positionCursor[0]++;
+                area[positionCursor[0]][positionCursor[1]] = 881;
+            } else if (area[positionCursor[0] + 1][positionCursor[1]] == 79) {
+                positionCursor[0]++;
+                area[positionCursor[0]][positionCursor[1]] = 791;
+            } else if (checkForMoves) area[positionCursor[0]][positionCursor[1]] = 149;
+            break;
+        case 2:
+            if (area[positionCursor[0]][positionCursor[1] - 1] == 35) break;
+            if (!checkForMoves) area[positionCursor[0]][positionCursor[1]] = 0;
+            else if (area[positionCursor[0]][positionCursor[1]] == 881) area[positionCursor[0]][positionCursor[1]] = 88;
+            else if (area[positionCursor[0]][positionCursor[1]] == 791) area[positionCursor[0]][positionCursor[1]] = 79;
+            if (!checkForMove(m, area, positionCursor[1] - 1, positionCursor[0])) {
+                positionCursor[1]--;
+                area[positionCursor[0]][positionCursor[1]] = 149;
+            } else if (area[positionCursor[0]][positionCursor[1] - 1] == 88) {
+                positionCursor[1]--;
+                area[positionCursor[0]][positionCursor[1]] = 881;
+            } else if (area[positionCursor[0]][positionCursor[1] - 1] == 79) {
+                positionCursor[1]--;
+                area[positionCursor[0]][positionCursor[1]] = 791;
+            } else if (checkForMoves) area[positionCursor[0]][positionCursor[1]] = 149;
+            break;
+        case 3:
+            if (area[positionCursor[0]][positionCursor[1] + 1] == 35) break;
+            if (!checkForMoves) area[positionCursor[0]][positionCursor[1]] = 0;
+            else if (area[positionCursor[0]][positionCursor[1]] == 881) area[positionCursor[0]][positionCursor[1]] = 88;
+            else if (area[positionCursor[0]][positionCursor[1]] == 791) area[positionCursor[0]][positionCursor[1]] = 79;
+            if (!checkForMove(m, area, positionCursor[1] + 1, positionCursor[0])) {
+                positionCursor[1]++;
+                area[positionCursor[0]][positionCursor[1]] = 149;
+            } else if (area[positionCursor[0]][positionCursor[1] + 1] == 88) {
+                positionCursor[1]++;
+                area[positionCursor[0]][positionCursor[1]] = 881;
+            } else if (area[positionCursor[0]][positionCursor[1] + 1] == 79) {
+                positionCursor[1]++;
+                area[positionCursor[0]][positionCursor[1]] = 791;
+            } else if (checkForMoves) area[positionCursor[0]][positionCursor[1]] = 149;
+            break;
+        default:;
+    }
+}
+
 void showHelloMessage() {
     printf("Приветствую!\n");
     printf("Это игра 'Крестики и нолики'\n");
