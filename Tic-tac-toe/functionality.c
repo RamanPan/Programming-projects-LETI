@@ -1,7 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "functionality.h"
+#include <windows.h>
 #include "functionality.h"
 
 long validation() {
@@ -202,7 +202,51 @@ void fillingArea(int n, int m, int area[][m]) {
         area[n - 1][j] = '#';
     }
 }
+void printSymbol(short numberSymbol) {
+    switch (numberSymbol) {
+        case 35:
+            printf("#");
+            break;
+        case 88:
+            printf("X");
+            break;
+        case 881:
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
+            printf("X");
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY);
+            break;
+        case 79:
+            printf("O");
+            break;
+        case 791:
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
+            printf("O");
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY);
+            break;
+        case 149:
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
+            printf("•");
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY);
+            break;
+        default:
+            printf(" ");
+    }
+}
 
+void showMenu(int n, int m, int gameData[], int area[][m], int pointsForWinX, int pointsForWinO, bool XorO) {
+    system("cls");
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < m; ++j) {
+            printSymbol((short) area[i][j]);
+            if (j == m - 1) printf("\n");
+        }
+    if (XorO) printf("ХОД НОЛИКОВ\n");
+    else printf("ХОД КРЕСТИКОВ\n");
+    printf("Размер поля: %dx%d\n", n - 2, m - 2);
+    printf("Кол-во очков для победы X: %d\n", pointsForWinX);
+    printf("Кол-во очков для победы 0: %d\n", pointsForWinO);
+    printf("Кол-во свободных клеток: %d\n", gameData[0]);
+}
 void cleanArea(int n, int m, int area[][m]) {
     for (int i = 1; i < n - 1; i++)
         for (int j = 1; j < m - 1; j++)
@@ -212,4 +256,9 @@ void cleanArea(int n, int m, int area[][m]) {
 
 bool checkOverflow(double d) {
     return d >= -2147483648 && d <= 2147483647;
+}
+
+bool checkForMove(int m, int area[][m], int x, int y) {
+    int value = area[y][x];
+    return value == 35 || value == 88 || value == 79 || value == 881 || value == 791;
 }
