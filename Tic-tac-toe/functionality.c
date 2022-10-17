@@ -42,6 +42,55 @@ long validationWithArgument(short max) {
     return result;
 }
 
+bool checkWin(int m, int area[][m], int positionCursor[], int statementForWin, bool XorO) {
+    short symbol = XorO ? 79 : 88;
+    int i = positionCursor[0], j = positionCursor[1];
+    if (area[i][j] == 791) if (symbol != 79) return false;
+    if (area[i][j] == 881) if (symbol != 88) return false;
+    short shift = 1;
+    bool win = false, exitFlag = false;
+    int counterDiagonal = 1, counterReverseDiagonal = 1, counterHorizontal = 1, counterVertical = 1;
+    bool diagonalUp = true, diagonalDown = true, reverseDiagonalUp = true, reverseDiagonalDown = true,
+            horizontalUp = true, horizontalDown = true, verticalUp = true, verticalDown = true;
+    while (!exitFlag) {
+        if (diagonalUp && area[i - shift][j - shift] == symbol) {
+            counterDiagonal++;
+        } else diagonalUp = false;
+        if (diagonalDown && area[i + shift][j + shift] == symbol) {
+            counterDiagonal++;
+        } else diagonalDown = false;
+        if (reverseDiagonalUp && area[i - shift][j + shift] == symbol) {
+            counterReverseDiagonal++;
+        } else reverseDiagonalUp = false;
+        if (reverseDiagonalDown && area[i + shift][j - shift] == symbol) {
+            counterReverseDiagonal++;
+        } else reverseDiagonalDown = false;
+        if (horizontalUp && area[i][j - shift] == symbol) {
+            counterHorizontal++;
+        } else horizontalUp = false;
+        if (horizontalDown && area[i][j + shift] == symbol) {
+            counterHorizontal++;
+        } else horizontalDown = false;
+        if (verticalUp && area[i - shift][j] == symbol) {
+            counterVertical++;
+        } else verticalUp = false;
+        if (verticalDown && area[i + shift][j] == symbol) {
+            counterVertical++;
+        } else verticalDown = false;
+        if (!diagonalUp && !diagonalDown && !reverseDiagonalUp && !reverseDiagonalDown
+            && !horizontalUp && !horizontalDown && !verticalUp && !verticalDown)
+            exitFlag = true;
+        if (counterDiagonal == statementForWin || counterReverseDiagonal == statementForWin ||
+            counterHorizontal == statementForWin || counterVertical == statementForWin) {
+            exitFlag = true;
+            win = true;
+        }
+        ++shift;
+    }
+    return win;
+}
+
+
 void moveCursor(int m, int area[][m], int positionCursor[], short orientation) {
     bool checkForMoves = checkForMove(m, area, positionCursor[1], positionCursor[0]);
     switch (orientation) {

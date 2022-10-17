@@ -80,8 +80,8 @@ int main() {
                     break;
                 case 13:
                     setXorO(m, gameArea, gameData, positionCursor, positionX, positionO, XorO);
-                    if (!XorO) winFirst = checkWin(m, gameArea, pointsForWinX, false);
-                    else winSecond = checkWin(m, gameArea, pointsForWinX, true);
+                    if (!XorO) winFirst = checkWin(m, gameArea, positionCursor, pointsForWinX, false);
+                    else winSecond = checkWin(m, gameArea, positionCursor, pointsForWinX, true);
                     XorO = !XorO;
                     break;
                 default:;

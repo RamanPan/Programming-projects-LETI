@@ -24,7 +24,7 @@ void printSymbol(short numberSymbol);
 
 void showMenu(int n, int m, int gameData[], int area[][m], int pointsForWinX, int pointsForWin0, bool XorO);
 
-bool checkWin(int m, int area[][m], int statementForWin, bool XorO);
+bool checkWin(int m, int area[][m], int positionCursor[], int statementForWin, bool XorO);
 
 bool checkForMove(int n, int area[][n], int x, int y);
 
