@@ -11,6 +11,8 @@ long validationWithArgument(short max);
 
 bool checkOverflow(double d);
 
+void drawWinLine(int m, int area[][m], int size, int positionWinPoints[], short symbol);
+
 void cleanArea(int n, int m, int area[][m]);
 
 void moveCursor(int m, int area[][m], int positionCursor[], short orientation);

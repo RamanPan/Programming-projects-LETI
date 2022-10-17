@@ -48,46 +48,83 @@ bool checkWin(int m, int area[][m], int positionCursor[], int statementForWin, b
     if (area[i][j] == 791) if (symbol != 79) return false;
     if (area[i][j] == 881) if (symbol != 88) return false;
     short shift = 1;
+    short quantityElements = (short) ((statementForWin - 1) * 2);
+    int diagWin[quantityElements], reverseDiagWin[quantityElements], horizontalWin[quantityElements], verticalWin[quantityElements];
     bool win = false, exitFlag = false;
     int counterDiagonal = 1, counterReverseDiagonal = 1, counterHorizontal = 1, counterVertical = 1;
     bool diagonalUp = true, diagonalDown = true, reverseDiagonalUp = true, reverseDiagonalDown = true,
             horizontalUp = true, horizontalDown = true, verticalUp = true, verticalDown = true;
     while (!exitFlag) {
         if (diagonalUp && area[i - shift][j - shift] == symbol) {
+            diagWin[(counterDiagonal - 1) + (counterDiagonal - 1)] = i - shift;
+            diagWin[(counterDiagonal - 1) + (counterDiagonal - 1) + 1] = j - shift;
             counterDiagonal++;
         } else diagonalUp = false;
         if (diagonalDown && area[i + shift][j + shift] == symbol) {
+            diagWin[(counterDiagonal - 1) + (counterDiagonal - 1)] = i + shift;
+            diagWin[(counterDiagonal - 1) + (counterDiagonal - 1) + 1] = j + shift;
             counterDiagonal++;
         } else diagonalDown = false;
         if (reverseDiagonalUp && area[i - shift][j + shift] == symbol) {
+            reverseDiagWin[(counterReverseDiagonal - 1) + (counterReverseDiagonal - 1)] = i - shift;
+            reverseDiagWin[(counterReverseDiagonal - 1) + (counterReverseDiagonal - 1) + 1] = j + shift;
             counterReverseDiagonal++;
         } else reverseDiagonalUp = false;
         if (reverseDiagonalDown && area[i + shift][j - shift] == symbol) {
+            reverseDiagWin[(counterReverseDiagonal - 1) + (counterReverseDiagonal - 1)] = i + shift;
+            reverseDiagWin[(counterReverseDiagonal - 1) + (counterReverseDiagonal - 1) + 1] = j - shift;
             counterReverseDiagonal++;
         } else reverseDiagonalDown = false;
         if (horizontalUp && area[i][j - shift] == symbol) {
+            horizontalWin[(counterHorizontal - 1) + (counterHorizontal - 1)] = i;
+            horizontalWin[(counterHorizontal - 1) + (counterHorizontal - 1) + 1] = j - shift;
             counterHorizontal++;
         } else horizontalUp = false;
         if (horizontalDown && area[i][j + shift] == symbol) {
+            horizontalWin[(counterHorizontal - 1) + (counterHorizontal - 1)] = i;
+            horizontalWin[(counterHorizontal - 1) + (counterHorizontal - 1) + 1] = j + shift;
             counterHorizontal++;
         } else horizontalDown = false;
         if (verticalUp && area[i - shift][j] == symbol) {
+            verticalWin[(counterVertical - 1) + (counterVertical - 1)] = i - shift;
+            verticalWin[(counterVertical - 1) + (counterVertical - 1) + 1] = j;
             counterVertical++;
         } else verticalUp = false;
         if (verticalDown && area[i + shift][j] == symbol) {
+            verticalWin[(counterVertical - 1) + (counterVertical - 1)] = i + shift;
+            verticalWin[(counterVertical - 1) + (counterVertical - 1) + 1] = j;
             counterVertical++;
         } else verticalDown = false;
         if (!diagonalUp && !diagonalDown && !reverseDiagonalUp && !reverseDiagonalDown
             && !horizontalUp && !horizontalDown && !verticalUp && !verticalDown)
             exitFlag = true;
-        if (counterDiagonal == statementForWin || counterReverseDiagonal == statementForWin ||
-            counterHorizontal == statementForWin || counterVertical == statementForWin) {
+        if (counterDiagonal == statementForWin) {
             exitFlag = true;
             win = true;
+            drawWinLine(m, area, quantityElements, diagWin, symbol);
+        } else if (counterReverseDiagonal == statementForWin) {
+            exitFlag = true;
+            win = true;
+            drawWinLine(m, area, quantityElements, reverseDiagWin, symbol);
+        } else if (counterHorizontal == statementForWin) {
+            exitFlag = true;
+            win = true;
+            drawWinLine(m, area, quantityElements, horizontalWin, symbol);
+        } else if (counterVertical == statementForWin) {
+            exitFlag = true;
+            win = true;
+            drawWinLine(m, area, quantityElements, verticalWin, symbol);
         }
         ++shift;
     }
     return win;
+}
+
+void drawWinLine(int m, int area[][m], int size, int positionWinPoints[], short symbol) {
+    short s = (symbol == 79) ? 791 : 881;
+    for (int i = 0; i < size; i += 2)
+        area[positionWinPoints[i]][positionWinPoints[i + 1]] = s;
+
 }
 
 
@@ -202,6 +239,7 @@ void fillingArea(int n, int m, int area[][m]) {
         area[n - 1][j] = '#';
     }
 }
+
 void printSymbol(short numberSymbol) {
     switch (numberSymbol) {
         case 35:
@@ -247,6 +285,7 @@ void showMenu(int n, int m, int gameData[], int area[][m], int pointsForWinX, in
     printf("Кол-во очков для победы 0: %d\n", pointsForWinO);
     printf("Кол-во свободных клеток: %d\n", gameData[0]);
 }
+
 void cleanArea(int n, int m, int area[][m]) {
     for (int i = 1; i < n - 1; i++)
         for (int j = 1; j < m - 1; j++)
