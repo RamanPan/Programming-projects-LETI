@@ -11,18 +11,17 @@ long validationWithArgument(short max);
 
 bool checkOverflow(double d);
 
-void drawWinLine(int m, int area[][m], int size, int positionWinPoints[], short symbol);
-
 void cleanArea(int n, int m, int area[][m]);
 
 void moveCursor(int m, int area[][m], int positionCursor[], short orientation);
 
-bool setXorO(int m, int area[][m], int gameData[], int positionCursor[], int positionX[], int positionO[],
-             bool whoseStep);
+bool setXorO(int m, int area[][m], int gameData[], int positionCursor[],bool whoseStep);
 
 void fillingArea(int n, int m, int area[n][m]);
 
 void printSymbol(short numberSymbol);
+
+void drawWinLine(int m, int area[][m], int size, int positionWinPoints[], short symbol);
 
 void showMenu(int n, int m, int gameData[], int area[][m], int pointsForWinX, int pointsForWin0, bool XorO);
 

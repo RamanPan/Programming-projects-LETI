@@ -1,8 +1,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <windows.h>
 #include "functionality.h"
+#include "windows.h"
 
 long validation() {
     bool validationFlag = false;
@@ -10,9 +10,15 @@ long validation() {
     while (!validationFlag) {
         if (scanf("%lf", &result)) {
             if (!checkOverflow(result)) {
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
                 printf("Неправильный ввод! Число вышло за границу дозволенного! Попробуйте снова!\n");
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
             } else validationFlag = true;
-        } else printf("Неправильный ввод! Попробуйте снова!\n");
+        } else {
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+            printf("Неправильный ввод! Попробуйте снова!\n");
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+        }
         fflush(stdin);
     }
     return (long) result;
@@ -23,9 +29,12 @@ long validationGameArea() {
     short minArea = 2, maxArea = 14;
     do {
         result = validation();
-        if (result > maxArea || result < minArea)
+        if (result > maxArea || result < minArea) {
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
             printf("Неверный ввод размера поля! Размер поля может принимать значения от %hd до %hd\n", minArea,
                    maxArea);
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+        }
     } while (result > maxArea || result < minArea);
     return result;
 }
@@ -35,11 +44,28 @@ long validationWithArgument(short max) {
     short minArea = 2, maxArea = max;
     do {
         result = validation();
-        if (result > maxArea || result < minArea)
-            printf("Неверный ввод размера поля! Размер поля может принимать значения от %hd до %hd\n", minArea,
+        if (result > maxArea || result < minArea) {
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+            printf("Неверный ввод размера поля! Очки для победы могут принимать значения от %hd до %hd\n", minArea,
                    maxArea);
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+        }
     } while (result > maxArea || result < minArea);
     return result;
+}
+
+void showHelloMessage() {
+    system("cls");
+    printf("Приветствую!\n");
+    printf("Это игра 'Крестики и нолики'\n");
+    printf("Перед игрой вам нужно ввести высоту и ширину игрового поля\n");
+    printf("Затем выбрать кол-во очков для победы крестиков и для победы ноликов\n");
+    printf("Очки для победы не могут быть больше чем высота и ширина поля\n");
+    printf("Выигрышная лииня выделяется ");
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
+    printf("зелёным\n");
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+    printf("Если на поле не осталось места - игра завершается ничьей\n");
 }
 
 bool checkWin(int m, int area[][m], int positionCursor[], int statementForWin, bool XorO) {
@@ -127,6 +153,40 @@ void drawWinLine(int m, int area[][m], int size, int positionWinPoints[], short 
 
 }
 
+void printSymbol(short numberSymbol) {
+    switch (numberSymbol) {
+        case 35:
+            printf("#");
+            break;
+        case 88:
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 3);
+            printf("X");
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+            break;
+        case 881:
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
+            printf("X");
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+            break;
+        case 79:
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6);
+            printf("O");
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+            break;
+        case 791:
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
+            printf("O");
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+            break;
+        case 149:
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
+            printf("•");
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+            break;
+        default:
+            printf(" ");
+    }
+}
 
 void moveCursor(int m, int area[][m], int positionCursor[], short orientation) {
     bool checkForMoves = checkForMove(m, area, positionCursor[1], positionCursor[0]);
@@ -199,19 +259,14 @@ void moveCursor(int m, int area[][m], int positionCursor[], short orientation) {
     }
 }
 
-bool setXorO(int m, int area[][m], int gameData[], int positionCursor[], int positionX[], int positionO[],
-             bool whoseStep) {
+bool setXorO(int m, int area[][m], int gameData[], int positionCursor[], bool whoseStep) {
     if (!checkForMove(m, area, positionCursor[1], positionCursor[0])) {
         if (!whoseStep) {
             area[positionCursor[0]][positionCursor[1]] = 881;
-            positionX[gameData[1] + gameData[1]] = positionCursor[0];
-            positionX[gameData[1] + gameData[1] + 1] = positionCursor[1];
             gameData[1]++;
             gameData[0]--;
         } else {
             area[positionCursor[0]][positionCursor[1]] = 791;
-            positionO[gameData[2] + gameData[2]] = positionCursor[0];
-            positionO[gameData[2] + gameData[2] + 1] = positionCursor[1];
             gameData[2]++;
             gameData[0]--;
         }
@@ -220,13 +275,30 @@ bool setXorO(int m, int area[][m], int gameData[], int positionCursor[], int pos
     return whoseStep;
 }
 
-void showHelloMessage() {
-    printf("Приветствую!\n");
-    printf("Это игра 'Крестики и нолики'\n");
-    printf("Перед игрой вам нужно ввести высоту и ширину игрового поля\n");
-    printf("Затем выбрать кол-во очков для победы крестиков и для победы ноликов\n");
-    printf("Очки для победы не могут быть больше чем высота и ширина поля\n");
-    printf("Если на поле не осталось места - игра завершается ничьей\n");
+void showMenu(int n, int m, int gameData[], int area[][m], int pointsForWinX, int pointsForWinO, bool XorO) {
+    system("cls");
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < m; ++j) {
+            printSymbol((short) area[i][j]);
+            if (j == m - 1) printf("\n");
+        }
+    if (XorO) {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6);
+        printf("ХОД НОЛИКОВ\n");
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+    } else {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 3);
+        printf("ХОД КРЕСТИКОВ\n");
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+    }
+    printf("Размер поля: %dx%d\n", n - 2, m - 2);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 3);
+    printf("Кол-во очков для победы X: %d\n", pointsForWinX);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6);
+    printf("Кол-во очков для победы 0: %d\n", pointsForWinO);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
+    printf("Кол-во свободных клеток: %d\n", gameData[0]);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
 }
 
 void fillingArea(int n, int m, int area[][m]) {
@@ -240,52 +312,6 @@ void fillingArea(int n, int m, int area[][m]) {
     }
 }
 
-void printSymbol(short numberSymbol) {
-    switch (numberSymbol) {
-        case 35:
-            printf("#");
-            break;
-        case 88:
-            printf("X");
-            break;
-        case 881:
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
-            printf("X");
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY);
-            break;
-        case 79:
-            printf("O");
-            break;
-        case 791:
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
-            printf("O");
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY);
-            break;
-        case 149:
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
-            printf("•");
-            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY);
-            break;
-        default:
-            printf(" ");
-    }
-}
-
-void showMenu(int n, int m, int gameData[], int area[][m], int pointsForWinX, int pointsForWinO, bool XorO) {
-    system("cls");
-    for (int i = 0; i < n; ++i)
-        for (int j = 0; j < m; ++j) {
-            printSymbol((short) area[i][j]);
-            if (j == m - 1) printf("\n");
-        }
-    if (XorO) printf("ХОД НОЛИКОВ\n");
-    else printf("ХОД КРЕСТИКОВ\n");
-    printf("Размер поля: %dx%d\n", n - 2, m - 2);
-    printf("Кол-во очков для победы X: %d\n", pointsForWinX);
-    printf("Кол-во очков для победы 0: %d\n", pointsForWinO);
-    printf("Кол-во свободных клеток: %d\n", gameData[0]);
-}
-
 void cleanArea(int n, int m, int area[][m]) {
     for (int i = 1; i < n - 1; i++)
         for (int j = 1; j < m - 1; j++)
@@ -293,11 +319,11 @@ void cleanArea(int n, int m, int area[][m]) {
     area[1][1] = 149;
 }
 
-bool checkOverflow(double d) {
-    return d >= -2147483648 && d <= 2147483647;
-}
-
 bool checkForMove(int m, int area[][m], int x, int y) {
     int value = area[y][x];
     return value == 35 || value == 88 || value == 79 || value == 881 || value == 791;
+}
+
+bool checkOverflow(double d) {
+    return d >= -2147483648 && d <= 2147483647;
 }
