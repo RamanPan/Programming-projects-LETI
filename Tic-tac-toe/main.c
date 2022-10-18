@@ -12,7 +12,7 @@
 
 int main() {
     SetConsoleOutputCP(CP_UTF8);
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
     bool exitFlag = false;
     while (!exitFlag) {
         srand(time(NULL));
@@ -28,12 +28,13 @@ int main() {
         const short pointsForWinO = (short) validationWithArgument(MAX(n - 2, m - 2));
         int gameArea[n][m];
         //0 - кол-во свободных клеток, 1 - кол-во крестиков, 2 - кол-во ноликов
-        int gameData[3] = {(n - 2) * (m - 2), 0, 0}, positionCursor[2] = {1, 1}, positionX[192], positionO[192];
+        int gameData[3] = {(n - 2) * (m - 2), 0, 0}, positionCursor[2] = {1, 1};
         int symbol;
         char YN;
-        bool winFirst = false, winSecond = false, draw = false, XorO = false;
+        bool winX = false, win0 = false, draw = false, XorO = false;
         if (rand() % 2 == 0) XorO = true;
         else XorO = false;
+        bool checkChanges;
         fillingArea(n, m, gameArea);
         cleanArea(n, m, gameArea);
         showMenu(n, m, gameData, gameArea, pointsForWinX, pointsForWinO, XorO);
@@ -74,32 +75,40 @@ int main() {
                     moveCursor(m, gameArea, positionCursor, 3);
                     break;
                 case 27:
+                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
                     printf("Вы уверены что хотите выйти?(Y/N)\n");
-                    scanf("%s", &YN);
+                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+                    YN = getch();
                     if (YN == 'Y') return 0;
                     break;
                 case 13:
-                    setXorO(m, gameArea, gameData, positionCursor, positionX, positionO, XorO);
-                    if (!XorO) winFirst = checkWin(m, gameArea, positionCursor, pointsForWinX, false);
-                    else winSecond = checkWin(m, gameArea, positionCursor, pointsForWinX, true);
-                    XorO = !XorO;
+                    checkChanges = setXorO(m, gameArea, gameData, positionCursor, XorO);
+                    if (!XorO) winX = checkWin(m, gameArea, positionCursor, pointsForWinX, XorO);
+                    else win0 = checkWin(m, gameArea, positionCursor, pointsForWinO, XorO);
+                    if (checkChanges != XorO) XorO = !XorO;
                     break;
                 default:;
             }
             showMenu(n, m, gameData, gameArea, pointsForWinX, pointsForWinO, XorO);
-            if (winFirst) {
+            if (winX) {
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 3);
                 printf("Крестики победили!\n");
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
                 printf("Поздравляем с победой!\n");
-            } else if (winSecond) {
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+            } else if (win0) {
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6);
                 printf("Нолики победили!\n");
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2);
                 printf("Поздравляем с победой!\n");
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
             } else if (gameData[0] == 0) {
                 draw = true;
                 printf("Ничья!\n");
             }
-            if (winFirst || winSecond || draw) {
+            if (winX || win0 || draw) {
                 printf("Хотите сыграть ещё раз?(Y/N)\n");
-                scanf("%s", &YN);
+                YN = getch();
                 startAgain = true;
                 if (YN == 'Y') {}
                 else exitFlag = true;
