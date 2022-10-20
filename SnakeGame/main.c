@@ -6,6 +6,7 @@
 
 int main() {
     SetConsoleOutputCP(CP_UTF8);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
     bool exitFlag = false;
     while (!exitFlag) {
         srand(time(NULL));
@@ -13,10 +14,11 @@ int main() {
         bool startAgain = false;
         printf("Введите размерность поля\n");
         const long n = validationGameArea() + 2;
-        int gameArea[n][n], positionSnakes[4], endTailFirstSnake[2], pointFood[8], endTailSecondSnake[2], allTailFirstSnake[20], allTailSecondSnake[20];
+        const short N = (short) (n - 5);
+        int gameArea[n][n], positionSnakes[4], endTailFirstSnake[2], pointFood[8], endTailSecondSnake[2], allTailFirstSnake[50], allTailSecondSnake[50];
         //0 - кол-во свободных клеток, 1 - кол-во еды, 2 - длина первой змейки, 3 - длина второй змейки
         int gameData[4] = {(n - 2) * (n - 2) - 2, 0, 1, 1};
-        int pointsForWin[8] = {4, 5, 6, 7, 8, 9, 10, 11};
+        int pointsForWin[8] = {4, 6, 8, 10, 12, 14, 16, 20};
         int symbol;
         short orientationFirstSnake, orientationSecondSnake;
         char YN;
@@ -25,7 +27,7 @@ int main() {
         cleanArea(n, gameArea);
         generatePositionSnakes(n, gameArea, positionSnakes, gameData);
         generateFood(n, gameData, gameArea, pointFood);
-        showMenu(n, gameData, gameArea);
+        showMenu(n, gameData, gameArea, pointsForWin[N]);
         while (!startAgain) {
             symbol = getch();
             if (symbol == 224) symbol = getch();
@@ -95,26 +97,36 @@ int main() {
                                            true);
                     break;
                 case 27:
-                    printf("Вы уверены что хотите выйти?(Y/N)\n");
-                    scanf("%s", &YN);
+                    printf("Вы уверены что хотите выйти?(Y - да, любой другой символ - нет)\n");
+                    fflush(stdin);
+                    YN = getchar();
+                    fflush(stdin);
                     if (YN == 'Y') return 0;
                     break;
                 default:;
             }
-            showMenu(n, gameData, gameArea);
-            if (winFirst || gameData[2] == pointsForWin[n - 5]) {
+            showMenu(n, gameData, gameArea, pointsForWin[n - 5]);
+            if (winFirst || gameData[2] == pointsForWin[N]) {
                 winFirst = true;
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE);
                 printf("Первая змейка победила!\n");
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
                 printf("Поздравляем с победой!\n");
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
             }
-            if (winSecond || gameData[3] == pointsForWin[n - 5]) {
+            if (winSecond || gameData[3] == pointsForWin[N]) {
                 winSecond = true;
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 5);
                 printf("Вторая змейка победила!\n");
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
                 printf("Поздравляем с победой!\n");
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
             }
             if (winFirst || winSecond) {
-                printf("Хотите сыграть ещё раз?(Y/N)\n");
-                scanf("%s", &YN);
+                printf("Хотите сыграть ещё раз?(Y - да, любой другой символ - нет)\n");
+                fflush(stdin);
+                YN = getchar();
+                fflush(stdin);
                 startAgain = true;
                 if (YN == 'Y') {}
                 else exitFlag = true;

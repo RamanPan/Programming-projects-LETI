@@ -7,7 +7,7 @@ long validation();
 
 long validationGameArea();
 
-void showMenu(int n, int gameData[], int area[][n]);
+void showMenu(int n, int gameData[], int area[][n], int pointsForWin);
 
 void fillingArea(int n, int area[][n]);
 

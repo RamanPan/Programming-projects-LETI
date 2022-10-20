@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <windows.h>
 #include "functionality.h"
 
 long validation() {
@@ -9,22 +10,39 @@ long validation() {
     while (!validationFlag) {
         if (scanf("%lf", &result)) {
             if (!checkOverflow(result)) {
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
                 printf("Неправильный ввод! Число вышло за границу дозволенного! Попробуйте снова!\n");
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
             } else validationFlag = true;
-        } else printf("Неправильный ввод! Попробуйте снова!\n");
+        } else {
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+            printf("Неправильный ввод! Попробуйте снова!\n");
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+        }
         fflush(stdin);
     }
     return (long) result;
 }
 
-void showMenu(int n, int gameData[], int area[][n]) {
+void showMenu(int n, int gameData[], int area[][n], int pointsForWin) {
     system("cls");
     for (int i = 0; i < n; ++i)
         for (int j = 0; j < n; ++j) {
             printSymbol((short) area[i][j]);
             if (j == n - 1) printf("\n");
         }
-    printf("Счёт: %d:%d\n", gameData[2], gameData[3]);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
+    printf("Счёт: ");
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE);
+    printf("%d", gameData[2]);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+    printf(":");
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 5);
+    printf("%d\n", gameData[3]);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+    printf("Кол-во очков для победы: %d\n", pointsForWin);
+    printf("Кол-во свободных клеток: %d\n", gameData[0]);
+    printf("Кол-во еды на поле: %d\n", gameData[1]);
 }
 
 void fillingArea(int n, int area[][n]) {
@@ -381,7 +399,7 @@ snakeMotion(int n, int area[][n], int gameData[], int positionSnakes[], int endT
             default:;
         }
     }
-    if(isItFood) generateFood(n, gameData, area, pointFood);
+    if (isItFood) generateFood(n, gameData, area, pointFood);
     checkPointFood(n, area, gameData, pointFood);
     return false;
 }
@@ -610,8 +628,19 @@ void generateFood(int n, int gameData[], int area[][n], int pointFood[]) {
                     pointFood[5] = j;
                     break;
                 case 4:
-                    pointFood[6] = i;
-                    pointFood[7] = j;
+                    if (pointFood[0] == 0 && pointFood[1] == 0) {
+                        pointFood[0] = i;
+                        pointFood[1] = j;
+                    } else if (pointFood[2] == 0 && pointFood[3] == 0) {
+                        pointFood[2] = i;
+                        pointFood[3] = j;
+                    } else if (pointFood[4] == 0 && pointFood[5] == 0) {
+                        pointFood[4] = i;
+                        pointFood[5] = j;
+                    } else {
+                        pointFood[6] = i;
+                        pointFood[7] = j;
+                    }
                     break;
             }
             gameData[0] = gameData[0] - 1;
@@ -768,32 +797,56 @@ void showHelloMessage() {
     printf("Добро пожаловать в Змейку!!!\n");
     printf("Краткий гайд:\n");
     printf("Размер поля может быть от 3x3 до 10x10\n");
-    printf("Голова первой змейки обозначается 1, второй 2\n");
-    printf("Хвост первой змейки обозначается $, второй &\n");
+    printf("Голова первой змейки обозначается ");
+    printSymbol('1');
+    printf(", второй ");
+    printSymbol('2');
+    printf("\n");
+    printf("Хвост первой змейки обозначается ");
+    printSymbol('$');
+    printf(" ,второй ");
+    printSymbol('&');
+    printf("\n");
     printf("Первая змейка ходит на стрелочки, вторая на WASD\n");
-    printf("Еда выглядит - e\n");
-    printf("Стенки - #\n");
+    printf("Еда - ");
+    printSymbol('e');
+    printf("\n");
+    printf("Стенки - ");
+    printSymbol('#');
+    printf("\n");
 }
 
 void printSymbol(short numberSymbol) {
     switch (numberSymbol) {
         case 36:
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 11);
             printf("|$|");
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
             break;
         case 38:
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 13);
             printf("|&|");
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
             break;
         case 35:
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
             printf("|#|");
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
             break;
         case 49:
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE);
             printf("|1|");
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
             break;
         case 50:
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 5);
             printf("|2|");
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
             break;
         case 101:
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
             printf("|e|");
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
             break;
         default:
             printf("| |");
@@ -806,9 +859,12 @@ long validationGameArea() {
     short minArea = 3, maxArea = 10;
     do {
         result = validation();
-        if (result > maxArea || result < minArea)
+        if (result > maxArea || result < minArea) {
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
             printf("Неверный ввод размера поля! Размер поля может принимать значения от %hd до %hd\n", minArea,
                    maxArea);
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+        }
     } while (result > maxArea || result < minArea);
     return result;
 }
@@ -870,6 +926,57 @@ void determineThePosition(const int gameData[], const int endTailFirstSnake[], c
                 allTailFirstSnake[22] = endTailFirstSnake[0];
                 allTailFirstSnake[23] = endTailFirstSnake[1];
                 break;
+            case 13:
+                allTailFirstSnake[24] = endTailFirstSnake[0];
+                allTailFirstSnake[25] = endTailFirstSnake[1];
+                break;
+            case 14:
+                allTailFirstSnake[26] = endTailFirstSnake[0];
+                allTailFirstSnake[27] = endTailFirstSnake[1];
+                break;
+            case 15:
+                allTailFirstSnake[28] = endTailFirstSnake[0];
+                allTailFirstSnake[29] = endTailFirstSnake[1];
+                break;
+            case 16:
+                allTailFirstSnake[30] = endTailFirstSnake[0];
+                allTailFirstSnake[31] = endTailFirstSnake[1];
+                break;
+            case 17:
+                allTailFirstSnake[32] = endTailFirstSnake[0];
+                allTailFirstSnake[33] = endTailFirstSnake[1];
+                break;
+            case 18:
+                allTailFirstSnake[34] = endTailFirstSnake[0];
+                allTailFirstSnake[35] = endTailFirstSnake[1];
+                break;
+            case 19:
+                allTailFirstSnake[36] = endTailFirstSnake[0];
+                allTailFirstSnake[37] = endTailFirstSnake[1];
+                break;
+            case 20:
+                allTailFirstSnake[38] = endTailFirstSnake[0];
+                allTailFirstSnake[39] = endTailFirstSnake[1];
+                break;
+            case 21:
+                allTailFirstSnake[40] = endTailFirstSnake[0];
+                allTailFirstSnake[41] = endTailFirstSnake[1];
+                break;
+            case 22:
+                allTailFirstSnake[42] = endTailFirstSnake[0];
+                allTailFirstSnake[43] = endTailFirstSnake[1];
+                break;
+            case 23:
+                allTailFirstSnake[44] = endTailFirstSnake[0];
+                allTailFirstSnake[45] = endTailFirstSnake[1];
+            case 24:
+                allTailFirstSnake[46] = endTailFirstSnake[0];
+                allTailFirstSnake[47] = endTailFirstSnake[1];
+                break;
+            case 25:
+                allTailFirstSnake[48] = endTailFirstSnake[0];
+                allTailFirstSnake[49] = endTailFirstSnake[1];
+                break;
         }
     } else {
         switch (gameData[3]) {
@@ -920,6 +1027,58 @@ void determineThePosition(const int gameData[], const int endTailFirstSnake[], c
             case 12:
                 allTailSecondSnake[22] = endTailSecondSnake[0];
                 allTailSecondSnake[23] = endTailSecondSnake[1];
+                break;
+            case 13:
+                allTailSecondSnake[24] = endTailSecondSnake[0];
+                allTailSecondSnake[25] = endTailSecondSnake[1];
+                break;
+            case 14:
+                allTailSecondSnake[26] = endTailSecondSnake[0];
+                allTailSecondSnake[27] = endTailSecondSnake[1];
+                break;
+            case 15:
+                allTailSecondSnake[28] = endTailSecondSnake[0];
+                allTailSecondSnake[29] = endTailSecondSnake[1];
+                break;
+            case 16:
+                allTailSecondSnake[30] = endTailSecondSnake[0];
+                allTailSecondSnake[31] = endTailSecondSnake[1];
+                break;
+            case 17:
+                allTailSecondSnake[32] = endTailSecondSnake[0];
+                allTailSecondSnake[33] = endTailSecondSnake[1];
+                break;
+            case 18:
+                allTailSecondSnake[34] = endTailSecondSnake[0];
+                allTailSecondSnake[35] = endTailSecondSnake[1];
+                break;
+            case 19:
+                allTailSecondSnake[36] = endTailSecondSnake[0];
+                allTailSecondSnake[37] = endTailSecondSnake[1];
+                break;
+            case 20:
+                allTailSecondSnake[38] = endTailSecondSnake[0];
+                allTailSecondSnake[39] = endTailSecondSnake[1];
+                break;
+            case 21:
+                allTailSecondSnake[40] = endTailSecondSnake[0];
+                allTailSecondSnake[41] = endTailSecondSnake[1];
+                break;
+            case 22:
+                allTailSecondSnake[42] = endTailSecondSnake[0];
+                allTailSecondSnake[43] = endTailSecondSnake[1];
+                break;
+            case 23:
+                allTailSecondSnake[44] = endTailSecondSnake[0];
+                allTailSecondSnake[45] = endTailSecondSnake[1];
+                break;
+            case 24:
+                allTailSecondSnake[46] = endTailSecondSnake[0];
+                allTailSecondSnake[47] = endTailSecondSnake[1];
+                break;
+            case 25:
+                allTailSecondSnake[48] = endTailSecondSnake[0];
+                allTailSecondSnake[49] = endTailSecondSnake[1];
                 break;
         }
     }
