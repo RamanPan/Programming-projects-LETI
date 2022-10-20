@@ -156,35 +156,35 @@ void drawWinLine(int m, int area[][m], int size, int positionWinPoints[], short 
 void printSymbol(short numberSymbol) {
     switch (numberSymbol) {
         case 35:
-            printf("#");
+            printf("|#|");
             break;
         case 88:
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 3);
-            printf("X");
+            printf("|X|");
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
             break;
         case 881:
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
-            printf("X");
+            printf("|X|");
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
             break;
         case 79:
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6);
-            printf("O");
+            printf("|O|");
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
             break;
         case 791:
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
-            printf("O");
+            printf("|O|");
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
             break;
         case 149:
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
-            printf("•");
+            printf("|•|");
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
             break;
         default:
-            printf(" ");
+            printf("| |");
     }
 }
 
@@ -277,11 +277,20 @@ bool setXorO(int m, int area[][m], int gameData[], int positionCursor[], bool wh
 
 void showMenu(int n, int m, int gameData[], int area[][m], int pointsForWinX, int pointsForWinO, bool XorO) {
     system("cls");
-    for (int i = 0; i < n; ++i)
+    for (int i = 0; i < n; ++i) {
+        for (int k = 0; k < m; ++k) {
+            printf("---");
+            if (k == m - 1) printf("\n");
+        }
         for (int j = 0; j < m; ++j) {
             printSymbol((short) area[i][j]);
             if (j == m - 1) printf("\n");
         }
+    }
+    for (int k = 0; k < m; ++k) {
+        printf("---");
+        if (k == m - 1) printf("\n");
+    }
     if (XorO) {
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6);
         printf("ХОД НОЛИКОВ\n");

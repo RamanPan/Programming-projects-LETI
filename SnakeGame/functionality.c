@@ -778,25 +778,25 @@ void showHelloMessage() {
 void printSymbol(short numberSymbol) {
     switch (numberSymbol) {
         case 36:
-            printf("$");
+            printf("|$|");
             break;
         case 38:
-            printf("&");
+            printf("|&|");
             break;
         case 35:
-            printf("#");
+            printf("|#|");
             break;
         case 49:
-            printf("1");
+            printf("|1|");
             break;
         case 50:
-            printf("2");
+            printf("|2|");
             break;
         case 101:
-            printf("e");
+            printf("|e|");
             break;
         default:
-            printf(" ");
+            printf("| |");
     }
 }
 
