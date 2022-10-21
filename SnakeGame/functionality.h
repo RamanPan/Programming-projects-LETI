@@ -19,9 +19,17 @@ void generateWalls(int n, int m, int area[][m], int gameData[]);
 
 void generatePositionSnakes(int n, int m, int area[][m], int positionSnakes[], int gameData[]);
 
+void moveCursor(int m, int area[][m], int positionCursor[], short orientation);
+
+bool setWall(int m, int area[][m], int gameData[], int positionCursor[]);
+
+void createWalls(int m, int area[][m], int gameData[], int positionCursor[]);
+
+char getSymbol();
+
 void showHelloMessage();
 
-void cleanArea(int n, int m, int area[][m]);
+void cleanArea(int n, int m, int area[][m], bool createWalls);
 
 void determineThePosition(const int gameData[], const int endTailFirstSnake[], const int endTailSecondSnake[],
                           int allTailFirstSnake[], int allTailSecondSnake[], bool whichSnake);

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
+#include <conio.h>
 #include "functionality.h"
 
 long validation() {
@@ -659,10 +660,11 @@ void generateFood(int n, int m, int gameData[], int area[][m], int pointFood[]) 
     }
 }
 
-void cleanArea(int n, int m, int area[][m]) {
+void cleanArea(int n, int m, int area[][m], bool createWalls) {
     for (int i = 1; i < n - 1; i++)
         for (int j = 1; j < m - 1; j++)
             area[i][j] = 0;
+    if (createWalls) area[1][1] = 149;
 }
 
 void choosePointForNewPieceOfTail(int n, int m, int area[][m], int endTailFirstSnake[],
@@ -827,6 +829,141 @@ void showHelloMessage() {
     printf("\n");
 }
 
+char getSymbol() {
+    int YN;
+    fflush(stdin);
+    YN = getchar();
+    fflush(stdin);
+    return (char) YN;
+}
+
+void createWalls(int m, int area[][m], int gameData[], int positionCursor[]) {
+    bool exitFlag = false;
+    char YN;
+    int symbol;
+    while (!exitFlag) {
+        symbol = getch();
+        if (symbol == 224) symbol = getch();
+        switch (symbol) {
+            case 72:
+                moveCursor(m, area, positionCursor, 0);
+                break;
+                //нижняя стрелочка
+            case 80:
+                moveCursor(m, area, positionCursor, 1);
+                break;
+                //левая стрелочка
+            case 75:
+                moveCursor(m, area, positionCursor, 2);
+                break;
+                // правая стрелочка
+            case 77:
+                moveCursor(m, area, positionCursor, 3);
+                break;
+                //W
+            case 119:
+                moveCursor(m, area, positionCursor, 0);
+                break;
+                //S
+            case 115:
+                moveCursor(m, area, positionCursor, 1);
+                break;
+                //A
+            case 97:
+                moveCursor(m, area, positionCursor, 2);
+                break;
+                //D
+            case 100:
+                moveCursor(m, area, positionCursor, 3);
+                break;
+            case 27:
+                printf("Вы уверены что хотите закончить?(Y - да, любой другой символ - нет)\n");
+                YN = getSymbol();
+                if (YN == 'Y') return;
+                break;
+            case 13:
+                setWall(m, area, gameData, positionCursor);
+                break;
+            default:;
+        }
+    }
+}
+//void moveCursor(int m, int area[][m], int positionCursor[], short orientation) {
+//    bool checkForMoves = false;
+//    switch (orientation) {
+//        case 0:
+//            if (area[positionCursor[0] - 1][positionCursor[1]] == 35) break;
+//            if (!checkForMoves) area[positionCursor[0]][positionCursor[1]] = 0;
+//            else if (area[positionCursor[0]][positionCursor[1]] == 881) area[positionCursor[0]][positionCursor[1]] = 88;
+//            else if (area[positionCursor[0]][positionCursor[1]] == 791) area[positionCursor[0]][positionCursor[1]] = 79;
+//            if (!checkForMove(m, area, positionCursor[1], positionCursor[0] - 1)) {
+//                positionCursor[0]--;
+//                area[positionCursor[0]][positionCursor[1]] = 149;
+//            } else if (area[positionCursor[0] - 1][positionCursor[1]] == 88) {
+//                positionCursor[0]--;
+//                area[positionCursor[0]][positionCursor[1]] = 881;
+//            } else if (area[positionCursor[0] - 1][positionCursor[1]] == 79) {
+//                positionCursor[0]--;
+//                area[positionCursor[0]][positionCursor[1]] = 791;
+//            } else if (checkForMoves) area[positionCursor[0]][positionCursor[1]] = 149;
+//            break;
+//        case 1:
+//            if (area[positionCursor[0] + 1][positionCursor[1]] == 35) break;
+//            if (!checkForMoves) area[positionCursor[0]][positionCursor[1]] = 0;
+//            else if (area[positionCursor[0]][positionCursor[1]] == 881) area[positionCursor[0]][positionCursor[1]] = 88;
+//            else if (area[positionCursor[0]][positionCursor[1]] == 791) area[positionCursor[0]][positionCursor[1]] = 79;
+//            if (!checkForMove(m, area, positionCursor[1], positionCursor[0] + 1)) {
+//                positionCursor[0]++;
+//                area[positionCursor[0]][positionCursor[1]] = 149;
+//            } else if (area[positionCursor[0] + 1][positionCursor[1]] == 88) {
+//                positionCursor[0]++;
+//                area[positionCursor[0]][positionCursor[1]] = 881;
+//            } else if (area[positionCursor[0] + 1][positionCursor[1]] == 79) {
+//                positionCursor[0]++;
+//                area[positionCursor[0]][positionCursor[1]] = 791;
+//            } else if (checkForMoves) area[positionCursor[0]][positionCursor[1]] = 149;
+//            break;
+//        case 2:
+//            if (area[positionCursor[0]][positionCursor[1] - 1] == 35) break;
+//            if (!checkForMoves) area[positionCursor[0]][positionCursor[1]] = 0;
+//            else if (area[positionCursor[0]][positionCursor[1]] == 881) area[positionCursor[0]][positionCursor[1]] = 88;
+//            else if (area[positionCursor[0]][positionCursor[1]] == 791) area[positionCursor[0]][positionCursor[1]] = 79;
+//            if (!checkForMove(m, area, positionCursor[1] - 1, positionCursor[0])) {
+//                positionCursor[1]--;
+//                area[positionCursor[0]][positionCursor[1]] = 149;
+//            } else if (area[positionCursor[0]][positionCursor[1] - 1] == 88) {
+//                positionCursor[1]--;
+//                area[positionCursor[0]][positionCursor[1]] = 881;
+//            } else if (area[positionCursor[0]][positionCursor[1] - 1] == 79) {
+//                positionCursor[1]--;
+//                area[positionCursor[0]][positionCursor[1]] = 791;
+//            } else if (checkForMoves) area[positionCursor[0]][positionCursor[1]] = 149;
+//            break;
+//        case 3:
+//            if (area[positionCursor[0]][positionCursor[1] + 1] == 35) break;
+//            if (!checkForMoves) area[positionCursor[0]][positionCursor[1]] = 0;
+//            else if (area[positionCursor[0]][positionCursor[1]] == 881) area[positionCursor[0]][positionCursor[1]] = 88;
+//            else if (area[positionCursor[0]][positionCursor[1]] == 791) area[positionCursor[0]][positionCursor[1]] = 79;
+//            if (!checkForMove(m, area, positionCursor[1] + 1, positionCursor[0])) {
+//                positionCursor[1]++;
+//                area[positionCursor[0]][positionCursor[1]] = 149;
+//            } else if (area[positionCursor[0]][positionCursor[1] + 1] == 88) {
+//                positionCursor[1]++;
+//                area[positionCursor[0]][positionCursor[1]] = 881;
+//            } else if (area[positionCursor[0]][positionCursor[1] + 1] == 79) {
+//                positionCursor[1]++;
+//                area[positionCursor[0]][positionCursor[1]] = 791;
+//            } else if (checkForMoves) area[positionCursor[0]][positionCursor[1]] = 149;
+//            break;
+//        default:;
+//    }
+//}
+
+bool setWall(int m, int area[][m], int gameData[], int positionCursor[]) {
+    area[positionCursor[0]][positionCursor[1]] = '#';
+    ++gameData[4];
+}
+
 void printSymbol(short numberSymbol) {
     switch (numberSymbol) {
         case 36:
@@ -857,6 +994,11 @@ void printSymbol(short numberSymbol) {
         case 101:
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
             printf("|e|");
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+            break;
+        case 149:
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
+            printf("|•|");
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
             break;
         default:

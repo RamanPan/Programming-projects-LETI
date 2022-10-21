@@ -16,7 +16,7 @@ int main() {
         const long n = validationGameArea() + 2;
         printf("Введите ширину поля\n");
         const long m = validationGameArea() + 2;
-        int gameArea[n][m], positionSnakes[4], endTailFirstSnake[2], pointFood[8], endTailSecondSnake[2], allTailFirstSnake[50], allTailSecondSnake[50];
+        int gameArea[n][m], positionSnakes[4], positionCursor[2] = {1,1}, endTailFirstSnake[2], pointFood[8], endTailSecondSnake[2], allTailFirstSnake[50], allTailSecondSnake[50];
         //0 - кол-во свободных клеток, 1 - кол-во еды, 2 - длина первой змейки, 3 - длина второй змейки
         int gameData[5] = {(n - 2) * (m - 2) - 2, 0, 1, 1, 2 * ((n - 2) + m - 2) + 4};
 //        int pointsForWin[8] = {4, 6, 8, 10, 12, 14, 16, 20};
@@ -24,9 +24,12 @@ int main() {
         short orientationFirstSnake, orientationSecondSnake;
         char YN;
         bool winFirst = false, winSecond = false, draw = false;
-
+        printf("Хотите поставить стенки вручную или пусть генерируются?(Y - сами, любой другой символ - рандоманя генерация\n");
+        YN = getSymbol();
+        if(YN == 'Y') randomOrOwnWalls = true;
         fillingArea(n, m, gameArea);
-        cleanArea(n, m, gameArea);
+        cleanArea(n, m, gameArea,randomOrOwnWalls);
+        if(randomOrOwnWalls) createWalls(m,gameArea,gameData,positionCursor);
         generatePositionSnakes(n, m, gameArea, positionSnakes, gameData);
         generateFood(n, m, gameData, gameArea, pointFood);
         showMenu(n, m, gameData, gameArea);
@@ -104,9 +107,7 @@ int main() {
                     break;
                 case 27:
                     printf("Вы уверены что хотите выйти?(Y - да, любой другой символ - нет)\n");
-                    fflush(stdin);
-                    YN = getchar();
-                    fflush(stdin);
+                    YN = getSymbol();
                     if (YN == 'Y') return 0;
                     break;
                 default:;
@@ -137,9 +138,7 @@ int main() {
 
             if (winFirst || winSecond || draw) {
                 printf("Хотите сыграть ещё раз?(Y - да, любой другой символ - нет)\n");
-                fflush(stdin);
-                YN = getchar();
-                fflush(stdin);
+                YN = getSymbol();
                 startAgain = true;
                 if (YN == 'Y') {}
                 else exitFlag = true;
