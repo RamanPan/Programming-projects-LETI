@@ -9,6 +9,8 @@ long validationGameArea();
 
 void showMenu(int n,int m, int gameData[], int area[][m]);
 
+void showMenuForCreateWalls(int n,int m, int gameData[],int countCreateWalls, int area[][m]);
+
 void fillingArea(int n, int m, int area[][m]);
 
 void generateFood(int n, int m, int gameData[], int area[][m], int pointFood[]);
@@ -17,13 +19,13 @@ void preparationForGenerateWalls(int n, int m, int area[][m], int gameData[]);
 
 void generateWalls(int n, int m, int area[][m], int gameData[]);
 
-void generatePositionSnakes(int n, int m, int area[][m], int positionSnakes[], int gameData[]);
+void generatePositionSnakes(int n, int m, int area[][m], int positionSnakes[], int gameData[],bool wallsAreDone);
 
-void moveCursor(int m, int area[][m], int positionCursor[], short orientation);
+void moveCursor(int n, int m, int area[][m], int positionCursor[], short orientation);
 
-bool setWall(int m, int area[][m], int gameData[], int positionCursor[]);
+int setOrRemoveWall(int m, int area[][m], int gameData[], int positionCursor[],int countCreatedWalls, bool setOrRemove);
 
-void createWalls(int m, int area[][m], int gameData[], int positionCursor[]);
+void createWalls(int n, int m, int area[][m], int gameData[], int positionCursor[]);
 
 char getSymbol();
 
