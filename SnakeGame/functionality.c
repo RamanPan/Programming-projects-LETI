@@ -41,7 +41,8 @@ void showMenu(int n, int m, int gameData[], int area[][m]) {
     printf("%d\n", gameData[3]);
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
     printf("Кол-во свободных клеток: %d\n", gameData[0]);
-    printf("Кол-во еды на поле: %d\n", gameData[1]);
+    printf("Кол-во еды: %d\n", gameData[1]);
+    printf("Кол-во стенок: %d\n", gameData[4]);
 }
 
 void fillingArea(int n, int m, int area[][m]) {
@@ -604,9 +605,20 @@ bool checkForMove(int n, int m, int area[][m], int x, int y) {
 
 void generateFood(int n, int m, int gameData[], int area[][m], int pointFood[]) {
     short conditionToStop = 4;
-    if (gameData[0] < 4 && gameData[1] == 4 || gameData[0] == 0) {
+    if (gameData[0] == 0) {
         return;
-    } else if (gameData[0] < 4) conditionToStop = 1;
+    }
+//    switch (gameData[0] ) {
+//        case 1:
+//            conditionToStop = 1;
+//            break;
+//        case 2:
+//            conditionToStop = 2;
+//            break;
+//        case 3:
+//            conditionToStop = 3;
+//            break;
+//    }
     while (gameData[1] < conditionToStop) {
         int i = 1 + rand() % (n - 2);
         int j = 1 + rand() % (m - 2);
