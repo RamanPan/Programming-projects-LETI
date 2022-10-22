@@ -3,6 +3,8 @@
 #include <time.h>
 #include <conio.h>
 #include "functionality.h"
+#include "constants.h"
+
 
 int main() {
     SetConsoleOutputCP(CP_UTF8);
@@ -67,77 +69,77 @@ int main() {
             }
             if (!startAgain) {
                 symbol = getch();
-                if (symbol == 224) symbol = getch();
+                if (symbol == FIRST_BYTE_ARROW) symbol = getch();
                 switch (symbol) {
                     //верхняя стрелочка
-                    case 72:
-                        if (gameData[2] > 1 && orientationFirstSnake == 1) break;
-                        orientationFirstSnake = 0;
+                    case ARROW_UP:
+                        if (gameData[2] > 1 && orientationFirstSnake == ORIENTATION_DOWN) break;
+                        orientationFirstSnake = ORIENTATION_UP;
                         winSecond = snakeMotion(n, m, gameArea, gameData, positionSnakes, endTailFirstSnake,
                                                 endTailSecondSnake, allTailFirstSnake, allTailSecondSnake, pointFood,
                                                 orientationFirstSnake, false);
                         break;
                         //нижняя стрелочка
-                    case 80:
-                        if (gameData[2] > 1 && orientationFirstSnake == 0) break;
-                        orientationFirstSnake = 1;
+                    case ARROW_DOWN:
+                        if (gameData[2] > 1 && orientationFirstSnake == ORIENTATION_UP) break;
+                        orientationFirstSnake = ORIENTATION_DOWN;
                         winSecond = snakeMotion(n, m, gameArea, gameData, positionSnakes, endTailFirstSnake,
                                                 endTailSecondSnake, allTailFirstSnake, allTailSecondSnake, pointFood,
                                                 orientationFirstSnake, false);
                         break;
                         //левая стрелочка
-                    case 75:
-                        if (gameData[2] > 1 && orientationFirstSnake == 3) break;
-                        orientationFirstSnake = 2;
+                    case ARROW_LEFT:
+                        if (gameData[2] > 1 && orientationFirstSnake == ORIENTATION_RIGHT) break;
+                        orientationFirstSnake = ORIENTATION_LEFT;
                         winSecond = snakeMotion(n, m, gameArea, gameData, positionSnakes, endTailFirstSnake,
                                                 endTailSecondSnake, allTailFirstSnake, allTailSecondSnake, pointFood,
                                                 orientationFirstSnake, false);
                         break;
                         // правая стрелочка
-                    case 77:
-                        if (gameData[2] > 1 && orientationFirstSnake == 2) break;
-                        orientationFirstSnake = 3;
+                    case ARROW_RIGHT:
+                        if (gameData[2] > 1 && orientationFirstSnake == ORIENTATION_LEFT) break;
+                        orientationFirstSnake = ORIENTATION_RIGHT;
                         winSecond = snakeMotion(n, m, gameArea, gameData, positionSnakes, endTailFirstSnake,
                                                 endTailSecondSnake, allTailFirstSnake, allTailSecondSnake, pointFood,
                                                 orientationFirstSnake, false);
                         break;
                         //W
-                    case 119:
-                        if (gameData[3] > 1 && orientationSecondSnake == 1) break;
-                        orientationSecondSnake = 0;
+                    case W:
+                        if (gameData[3] > 1 && orientationSecondSnake == ORIENTATION_DOWN) break;
+                        orientationSecondSnake = ORIENTATION_UP;
                         winFirst = snakeMotion(n, m, gameArea, gameData, positionSnakes, endTailFirstSnake,
                                                endTailSecondSnake,
                                                allTailFirstSnake, allTailSecondSnake, pointFood, orientationSecondSnake,
                                                true);
                         break;
                         //S
-                    case 115:
-                        if (gameData[3] > 1 && orientationSecondSnake == 0) break;
-                        orientationSecondSnake = 1;
+                    case S:
+                        if (gameData[3] > 1 && orientationSecondSnake == ORIENTATION_UP) break;
+                        orientationSecondSnake = ORIENTATION_DOWN;
                         winFirst = snakeMotion(n, m, gameArea, gameData, positionSnakes, endTailFirstSnake,
                                                endTailSecondSnake,
                                                allTailFirstSnake, allTailSecondSnake, pointFood, orientationSecondSnake,
                                                true);
                         break;
                         //A
-                    case 97:
-                        if (gameData[3] > 1 && orientationSecondSnake == 3) break;
-                        orientationSecondSnake = 2;
+                    case A:
+                        if (gameData[3] > 1 && orientationSecondSnake == ORIENTATION_RIGHT) break;
+                        orientationSecondSnake = ORIENTATION_LEFT;
                         winFirst = snakeMotion(n, m, gameArea, gameData, positionSnakes, endTailFirstSnake,
                                                endTailSecondSnake,
                                                allTailFirstSnake, allTailSecondSnake, pointFood, orientationSecondSnake,
                                                true);
                         break;
                         //D
-                    case 100:
-                        if (gameData[3] > 1 && orientationSecondSnake == 2) break;
-                        orientationSecondSnake = 3;
+                    case D:
+                        if (gameData[3] > 1 && orientationSecondSnake == ORIENTATION_LEFT) break;
+                        orientationSecondSnake = ORIENTATION_RIGHT;
                         winFirst = snakeMotion(n, m, gameArea, gameData, positionSnakes, endTailFirstSnake,
                                                endTailSecondSnake,
                                                allTailFirstSnake, allTailSecondSnake, pointFood, orientationSecondSnake,
                                                true);
                         break;
-                    case 27:
+                    case ESC:
                         printf("Вы уверены что хотите выйти?(Y - да, любой другой символ - нет)\n");
                         YN = getSymbol();
                         if (YN == 'Y') return 0;
