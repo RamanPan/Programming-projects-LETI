@@ -18,15 +18,14 @@ int main() {
         const long m = validationGameArea() + 2;
         int gameArea[n][m], positionSnakes[4], positionCursor[2] = {1, 1}, endTailFirstSnake[2],
                 pointFood[8] = {0, 0, 0, 0, 0, 0, 0, 0},
-                endTailSecondSnake[2], allTailFirstSnake[50], allTailSecondSnake[50];
+                endTailSecondSnake[2], allTailFirstSnake[200], allTailSecondSnake[200];
         //0 - кол-во свободных клеток, 1 - кол-во еды, 2 - длина первой змейки, 3 - длина второй змейки
         int gameData[5] = {(n - 2) * (m - 2), 0, 1, 1, 2 * ((n - 2) + m - 2) + 4};
-//        int pointsForWin[8] = {4, 6, 8, 10, 12, 14, 16, 20};
         int symbol;
         short orientationFirstSnake, orientationSecondSnake;
         char YN;
         bool winFirst = false, winSecond = false, draw = false;
-        printf("Хотите поставить стенки вручную или пусть генерируются?(Y - сами, любой другой символ - рандоманя генерация\n");
+        printf("Хотите поставить стенки вручную или пусть генерируются?\n(Y - выставить вручную, любой другой символ - сгенерировать\n");
         YN = getSymbol();
         if (YN == 'Y') randomOrOwnWalls = true;
         fillingArea(n, m, gameArea);
@@ -35,7 +34,7 @@ int main() {
         gameData[0] -= 2;
         generatePositionSnakes(n, m, gameArea, positionSnakes, gameData, randomOrOwnWalls);
         generateFood(n, m, gameData, gameArea, pointFood);
-        showMenu(n, m, gameData, gameArea,positionSnakes);
+        showMenu(n, m, gameData, gameArea, positionSnakes);
         while (!startAgain) {
             if (gameData[0] == 0 && gameData[1] == 0) {
                 if (gameData[2] == gameData[3]) {
@@ -145,7 +144,7 @@ int main() {
                         break;
                     default:;
                 }
-                showMenu(n, m, gameData, gameArea,positionSnakes);
+                showMenu(n, m, gameData, gameArea, positionSnakes);
             }
         }
     }

@@ -44,7 +44,6 @@ void showMenu(int n, int m, int gameData[], int area[][m], int positionSnakes[])
     printf("Кол-во свободных клеток: %d\n", gameData[0]);
     printf("Кол-во еды: %d\n", gameData[1]);
     printf("Кол-во стенок: %d\n", gameData[4]);
-    printf("%d %d %d %d", positionSnakes[0], positionSnakes[1], positionSnakes[2], positionSnakes[3]);
 }
 
 void fillingArea(int n, int m, int area[][m]) {
@@ -104,8 +103,6 @@ snakeMotion(int n, int m, int area[][m], int gameData[], int positionSnakes[], i
                 if (gameData[2] >= 3 || gameData[2] == 2 && !isItFood)
                     tailMotion(n, m, area, gameData, positionSnakes, allTailFirstSnake, allTailSecondSnake, pointFood,
                                orientation, whichSnake);
-//                if (gameData[2] > 1 && area[positionSnakes[0]][positionSnakes[1] - 1] == 0)
-//                    area[positionSnakes[0]][positionSnakes[1] - 1] = 36;
                 break;
             case 2:
                 positionSnakes[1] = positionSnakes[1] - 1;
@@ -145,8 +142,6 @@ snakeMotion(int n, int m, int area[][m], int gameData[], int positionSnakes[], i
                 if (gameData[2] >= 3 || gameData[2] == 2 && !isItFood)
                     tailMotion(n, m, area, gameData, positionSnakes, allTailFirstSnake, allTailSecondSnake,
                                pointFood, orientation, whichSnake);
-//                if (gameData[2] > 1 && area[positionSnakes[0]][positionSnakes[1] + 1] == 0)
-//                    area[positionSnakes[0]][positionSnakes[1] + 1] = 36;
                 break;
             case 0:
                 positionSnakes[0] = positionSnakes[0] - 1;
@@ -186,8 +181,6 @@ snakeMotion(int n, int m, int area[][m], int gameData[], int positionSnakes[], i
                 if (gameData[2] >= 3 || gameData[2] == 2 && !isItFood)
                     tailMotion(n, m, area, gameData, positionSnakes, allTailFirstSnake, allTailSecondSnake, pointFood,
                                orientation, whichSnake);
-//                if (gameData[2] > 1 && area[positionSnakes[0] + 1][positionSnakes[1]] == 0)
-//                    area[positionSnakes[0] + 1][positionSnakes[1]] = 36;
                 break;
             case 1:
                 positionSnakes[0] = positionSnakes[0] + 1;
@@ -227,8 +220,6 @@ snakeMotion(int n, int m, int area[][m], int gameData[], int positionSnakes[], i
                 if (gameData[2] >= 3 || gameData[2] == 2 && !isItFood)
                     tailMotion(n, m, area, gameData, positionSnakes, allTailFirstSnake, allTailSecondSnake, pointFood,
                                orientation, whichSnake);
-//                if (gameData[2] > 1 && area[positionSnakes[0] - 1][positionSnakes[1]] == 0)
-//                    area[positionSnakes[0] - 1][positionSnakes[1]] = 36;
                 break;
             default:;
         }
@@ -272,8 +263,6 @@ snakeMotion(int n, int m, int area[][m], int gameData[], int positionSnakes[], i
                 if (gameData[3] >= 3 || gameData[3] == 2 && !isItFood)
                     tailMotion(n, m, area, gameData, positionSnakes, allTailFirstSnake, allTailSecondSnake, pointFood,
                                orientation, whichSnake);
-//                if (gameData[3] > 1 && area[positionSnakes[2]][positionSnakes[3] - 1] == 0)
-//                    area[positionSnakes[2]][positionSnakes[3] - 1] = 38;
                 break;
             case 2:
                 positionSnakes[3] = positionSnakes[3] - 1;
@@ -313,8 +302,6 @@ snakeMotion(int n, int m, int area[][m], int gameData[], int positionSnakes[], i
                 if (gameData[3] >= 3 || gameData[3] == 2 && !isItFood)
                     tailMotion(n, m, area, gameData, positionSnakes, allTailFirstSnake, allTailSecondSnake, pointFood,
                                orientation, whichSnake);
-//                if (gameData[3] > 1 && area[positionSnakes[2]][positionSnakes[3] + 1] == 0)
-//                    area[positionSnakes[2]][positionSnakes[3] + 1] = 38;
                 break;
             case 0:
                 positionSnakes[2] = positionSnakes[2] - 1;
@@ -354,8 +341,6 @@ snakeMotion(int n, int m, int area[][m], int gameData[], int positionSnakes[], i
                 if (gameData[3] >= 3 || gameData[3] == 2 && !isItFood)
                     tailMotion(n, m, area, gameData, positionSnakes, allTailFirstSnake, allTailSecondSnake, pointFood,
                                orientation, whichSnake);
-//                if (gameData[3] > 1 && area[positionSnakes[2] + 1][positionSnakes[3]] == 0)
-//                    area[positionSnakes[2] + 1][positionSnakes[3]] = 38;
                 break;
             case 1:
                 positionSnakes[2] = positionSnakes[2] + 1;
@@ -395,8 +380,6 @@ snakeMotion(int n, int m, int area[][m], int gameData[], int positionSnakes[], i
                 if (gameData[3] >= 3 || gameData[3] == 2 && !isItFood)
                     tailMotion(n, m, area, gameData, positionSnakes, allTailFirstSnake, allTailSecondSnake, pointFood,
                                orientation, whichSnake);
-//                if (gameData[3] > 1 && area[positionSnakes[2] - 1][positionSnakes[3]] == 0)
-//                    area[positionSnakes[2] - 1][positionSnakes[3]] = 38;
                 break;
             default:;
         }
@@ -776,6 +759,7 @@ void generateWalls(int n, int m, int area[][m], int gameData[]) {
     if (area[i][j] != 49 && area[i][j] != 50) {
         area[i][j] = '#';
         --gameData[0];
+        ++gameData[4];
     }
     for (int k = 0; k < sizeWall - 1; ++k) {
         orientation = rand() % 3;
@@ -785,6 +769,7 @@ void generateWalls(int n, int m, int area[][m], int gameData[]) {
                 if (area[i][j] != 49 && area[i][j] != 50) {
                     area[i][j] = '#';
                     --gameData[0];
+                    ++gameData[4];
                 }
                 break;
             case 1:
@@ -792,6 +777,7 @@ void generateWalls(int n, int m, int area[][m], int gameData[]) {
                 if (area[i][j] != 49 && area[i][j] != 50) {
                     area[i][j] = '#';
                     --gameData[0];
+                    ++gameData[4];
                 }
                 break;
             case 2:
@@ -799,6 +785,7 @@ void generateWalls(int n, int m, int area[][m], int gameData[]) {
                 if (area[i][j] != 49 && area[i][j] != 50) {
                     area[i][j] = '#';
                     --gameData[0];
+                    ++gameData[4];
                 }
                 break;
             case 3:
@@ -806,6 +793,7 @@ void generateWalls(int n, int m, int area[][m], int gameData[]) {
                 if (area[i][j] != 49 && area[i][j] != 50) {
                     area[i][j] = '#';
                     --gameData[0];
+                    ++gameData[4];
                 }
                 break;
             default:;
@@ -920,8 +908,6 @@ void moveCursor(int n, int m, int area[][m], int positionCursor[], short orienta
     switch (orientation) {
         case 0:
             if (positionCursor[0] - 1 == 0) break;
-//            && positionCursor[0] != 1 && positionCursor[0] != n - 1 && positionCursor[1] != 1 &&
-//               positionCursor[1] != m - 1
             if (area[positionCursor[0]][positionCursor[1]] == 351)
                 area[positionCursor[0]][positionCursor[1]] = '#';
             else if (area[positionCursor[0]][positionCursor[1]] != '#') area[positionCursor[0]][positionCursor[1]] = 0;
@@ -1034,11 +1020,6 @@ void printSymbol(short numberSymbol) {
     }
 }
 
-void checkPointHeads(int m, int area[][m], int positionSnakes[]) {
-    if (area[positionSnakes[0]][positionSnakes[1]] != '1') area[positionSnakes[0]][positionSnakes[1]] = '1';
-    if (area[positionSnakes[2]][positionSnakes[3]] != '2') area[positionSnakes[0]][positionSnakes[1]] = '2';
-}
-
 long validationGameArea() {
     long result;
     short minArea = 3, maxArea = 10;
@@ -1062,209 +1043,10 @@ void determineThePosition(const int gameData[], const int endTailFirstSnake[], c
                           int allTailFirstSnake[],
                           int allTailSecondSnake[], bool whichSnake) {
     if (!whichSnake) {
-        switch (gameData[2]) {
-            case 1:
-                allTailFirstSnake[0] = endTailFirstSnake[0];
-                allTailFirstSnake[1] = endTailFirstSnake[1];
-                break;
-            case 2:
-                allTailFirstSnake[2] = endTailFirstSnake[0];
-                allTailFirstSnake[3] = endTailFirstSnake[1];
-                break;
-            case 3:
-                allTailFirstSnake[4] = endTailFirstSnake[0];
-                allTailFirstSnake[5] = endTailFirstSnake[1];
-                break;
-            case 4:
-                allTailFirstSnake[6] = endTailFirstSnake[0];
-                allTailFirstSnake[7] = endTailFirstSnake[1];
-                break;
-            case 5:
-                allTailFirstSnake[8] = endTailFirstSnake[0];
-                allTailFirstSnake[9] = endTailFirstSnake[1];
-                break;
-            case 6:
-                allTailFirstSnake[10] = endTailFirstSnake[0];
-                allTailFirstSnake[11] = endTailFirstSnake[1];
-                break;
-            case 7:
-                allTailFirstSnake[12] = endTailFirstSnake[0];
-                allTailFirstSnake[13] = endTailFirstSnake[1];
-                break;
-            case 8:
-                allTailFirstSnake[14] = endTailFirstSnake[0];
-                allTailFirstSnake[15] = endTailFirstSnake[1];
-                break;
-            case 9:
-                allTailFirstSnake[16] = endTailFirstSnake[0];
-                allTailFirstSnake[17] = endTailFirstSnake[1];
-                break;
-            case 10:
-                allTailFirstSnake[18] = endTailFirstSnake[0];
-                allTailFirstSnake[19] = endTailFirstSnake[1];
-                break;
-            case 11:
-                allTailFirstSnake[20] = endTailFirstSnake[0];
-                allTailFirstSnake[21] = endTailFirstSnake[1];
-                break;
-            case 12:
-                allTailFirstSnake[22] = endTailFirstSnake[0];
-                allTailFirstSnake[23] = endTailFirstSnake[1];
-                break;
-            case 13:
-                allTailFirstSnake[24] = endTailFirstSnake[0];
-                allTailFirstSnake[25] = endTailFirstSnake[1];
-                break;
-            case 14:
-                allTailFirstSnake[26] = endTailFirstSnake[0];
-                allTailFirstSnake[27] = endTailFirstSnake[1];
-                break;
-            case 15:
-                allTailFirstSnake[28] = endTailFirstSnake[0];
-                allTailFirstSnake[29] = endTailFirstSnake[1];
-                break;
-            case 16:
-                allTailFirstSnake[30] = endTailFirstSnake[0];
-                allTailFirstSnake[31] = endTailFirstSnake[1];
-                break;
-            case 17:
-                allTailFirstSnake[32] = endTailFirstSnake[0];
-                allTailFirstSnake[33] = endTailFirstSnake[1];
-                break;
-            case 18:
-                allTailFirstSnake[34] = endTailFirstSnake[0];
-                allTailFirstSnake[35] = endTailFirstSnake[1];
-                break;
-            case 19:
-                allTailFirstSnake[36] = endTailFirstSnake[0];
-                allTailFirstSnake[37] = endTailFirstSnake[1];
-                break;
-            case 20:
-                allTailFirstSnake[38] = endTailFirstSnake[0];
-                allTailFirstSnake[39] = endTailFirstSnake[1];
-                break;
-            case 21:
-                allTailFirstSnake[40] = endTailFirstSnake[0];
-                allTailFirstSnake[41] = endTailFirstSnake[1];
-                break;
-            case 22:
-                allTailFirstSnake[42] = endTailFirstSnake[0];
-                allTailFirstSnake[43] = endTailFirstSnake[1];
-                break;
-            case 23:
-                allTailFirstSnake[44] = endTailFirstSnake[0];
-                allTailFirstSnake[45] = endTailFirstSnake[1];
-            case 24:
-                allTailFirstSnake[46] = endTailFirstSnake[0];
-                allTailFirstSnake[47] = endTailFirstSnake[1];
-                break;
-            case 25:
-                allTailFirstSnake[48] = endTailFirstSnake[0];
-                allTailFirstSnake[49] = endTailFirstSnake[1];
-                break;
-        }
+        allTailFirstSnake[(gameData[2] - 1) + (gameData[2] - 1)] = endTailFirstSnake[0];
+        allTailFirstSnake[(gameData[2] - 1) + (gameData[2] - 1) + 1] = endTailFirstSnake[1];
     } else {
-        switch (gameData[3]) {
-            case 1:
-                allTailSecondSnake[0] = endTailSecondSnake[0];
-                allTailSecondSnake[1] = endTailSecondSnake[1];
-                break;
-            case 2:
-                allTailSecondSnake[2] = endTailSecondSnake[0];
-                allTailSecondSnake[3] = endTailSecondSnake[1];
-                break;
-            case 3:
-                allTailSecondSnake[4] = endTailSecondSnake[0];
-                allTailSecondSnake[5] = endTailSecondSnake[1];
-                break;
-            case 4:
-                allTailSecondSnake[6] = endTailSecondSnake[0];
-                allTailSecondSnake[7] = endTailSecondSnake[1];
-                break;
-            case 5:
-                allTailSecondSnake[8] = endTailSecondSnake[0];
-                allTailSecondSnake[9] = endTailSecondSnake[1];
-                break;
-            case 6:
-                allTailSecondSnake[10] = endTailSecondSnake[0];
-                allTailSecondSnake[11] = endTailSecondSnake[1];
-                break;
-            case 7:
-                allTailSecondSnake[12] = endTailSecondSnake[0];
-                allTailSecondSnake[13] = endTailSecondSnake[1];
-                break;
-            case 8:
-                allTailSecondSnake[14] = endTailSecondSnake[0];
-                allTailSecondSnake[15] = endTailSecondSnake[1];
-                break;
-            case 9:
-                allTailSecondSnake[16] = endTailSecondSnake[0];
-                allTailSecondSnake[17] = endTailSecondSnake[1];
-                break;
-            case 10:
-                allTailSecondSnake[18] = endTailSecondSnake[0];
-                allTailSecondSnake[19] = endTailSecondSnake[1];
-                break;
-            case 11:
-                allTailSecondSnake[20] = endTailSecondSnake[0];
-                allTailSecondSnake[21] = endTailSecondSnake[1];
-                break;
-            case 12:
-                allTailSecondSnake[22] = endTailSecondSnake[0];
-                allTailSecondSnake[23] = endTailSecondSnake[1];
-                break;
-            case 13:
-                allTailSecondSnake[24] = endTailSecondSnake[0];
-                allTailSecondSnake[25] = endTailSecondSnake[1];
-                break;
-            case 14:
-                allTailSecondSnake[26] = endTailSecondSnake[0];
-                allTailSecondSnake[27] = endTailSecondSnake[1];
-                break;
-            case 15:
-                allTailSecondSnake[28] = endTailSecondSnake[0];
-                allTailSecondSnake[29] = endTailSecondSnake[1];
-                break;
-            case 16:
-                allTailSecondSnake[30] = endTailSecondSnake[0];
-                allTailSecondSnake[31] = endTailSecondSnake[1];
-                break;
-            case 17:
-                allTailSecondSnake[32] = endTailSecondSnake[0];
-                allTailSecondSnake[33] = endTailSecondSnake[1];
-                break;
-            case 18:
-                allTailSecondSnake[34] = endTailSecondSnake[0];
-                allTailSecondSnake[35] = endTailSecondSnake[1];
-                break;
-            case 19:
-                allTailSecondSnake[36] = endTailSecondSnake[0];
-                allTailSecondSnake[37] = endTailSecondSnake[1];
-                break;
-            case 20:
-                allTailSecondSnake[38] = endTailSecondSnake[0];
-                allTailSecondSnake[39] = endTailSecondSnake[1];
-                break;
-            case 21:
-                allTailSecondSnake[40] = endTailSecondSnake[0];
-                allTailSecondSnake[41] = endTailSecondSnake[1];
-                break;
-            case 22:
-                allTailSecondSnake[42] = endTailSecondSnake[0];
-                allTailSecondSnake[43] = endTailSecondSnake[1];
-                break;
-            case 23:
-                allTailSecondSnake[44] = endTailSecondSnake[0];
-                allTailSecondSnake[45] = endTailSecondSnake[1];
-                break;
-            case 24:
-                allTailSecondSnake[46] = endTailSecondSnake[0];
-                allTailSecondSnake[47] = endTailSecondSnake[1];
-                break;
-            case 25:
-                allTailSecondSnake[48] = endTailSecondSnake[0];
-                allTailSecondSnake[49] = endTailSecondSnake[1];
-                break;
-        }
+        allTailSecondSnake[(gameData[3] - 1) + (gameData[3] - 1)] = endTailSecondSnake[0];
+        allTailSecondSnake[(gameData[3] - 1) + (gameData[3] - 1) + 1] = endTailSecondSnake[1];
     }
 }
