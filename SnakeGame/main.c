@@ -32,10 +32,10 @@ int main() {
         fillingArea(n, m, gameArea);
         cleanArea(n, m, gameArea, randomOrOwnWalls);
         if (randomOrOwnWalls) createWalls(n, m, gameArea, gameData, positionCursor);
-        generatePositionSnakes(n, m, gameArea, positionSnakes, gameData, randomOrOwnWalls);
         gameData[0] -= 2;
+        generatePositionSnakes(n, m, gameArea, positionSnakes, gameData, randomOrOwnWalls);
         generateFood(n, m, gameData, gameArea, pointFood);
-        showMenu(n, m, gameData, gameArea);
+        showMenu(n, m, gameData, gameArea,positionSnakes);
         while (!startAgain) {
             if (gameData[0] == 0 && gameData[1] == 0) {
                 if (gameData[2] == gameData[3]) {
@@ -145,7 +145,7 @@ int main() {
                         break;
                     default:;
                 }
-                showMenu(n, m, gameData, gameArea);
+                showMenu(n, m, gameData, gameArea,positionSnakes);
             }
         }
     }

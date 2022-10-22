@@ -25,7 +25,7 @@ long validation() {
     return (long) result;
 }
 
-void showMenu(int n, int m, int gameData[], int area[][m]) {
+void showMenu(int n, int m, int gameData[], int area[][m], int positionSnakes[]) {
     system("cls");
     for (int i = 0; i < n; ++i)
         for (int j = 0; j < m; ++j) {
@@ -44,6 +44,7 @@ void showMenu(int n, int m, int gameData[], int area[][m]) {
     printf("Кол-во свободных клеток: %d\n", gameData[0]);
     printf("Кол-во еды: %d\n", gameData[1]);
     printf("Кол-во стенок: %d\n", gameData[4]);
+    printf("%d %d %d %d", positionSnakes[0], positionSnakes[1], positionSnakes[2], positionSnakes[3]);
 }
 
 void fillingArea(int n, int m, int area[][m]) {
@@ -612,17 +613,6 @@ void generateFood(int n, int m, int gameData[], int area[][m], int pointFood[]) 
         else if (gameData[0] == 2 && gameData[1] == 0) conditionToStop = 2;
         else if (gameData[0] == 3 && gameData[1] == 0) conditionToStop = 3;
     }
-//    switch (gameData[0] ) {
-//        case 1:
-//            conditionToStop = 1;
-//            break;
-//        case 2:
-//            conditionToStop = 2;
-//            break;
-//        case 3:
-//            conditionToStop = 3;
-//            break;
-//    }
     while (gameData[1] < conditionToStop) {
         int i = 1 + rand() % (n - 2);
         int j = 1 + rand() % (m - 2);
@@ -740,7 +730,8 @@ void choosePointForNewPieceOfTail(int n, int m, int area[][m], int endTailFirstS
 void generatePositionSnakes(int n, int m, int area[][m], int positionSnakes[], int gameData[], bool wallsAreDone) {
     int i1, j1;
     int i2, j2;
-    bool firstDone = false, secondDone = false, exit = false;
+    bool firstDone = false, secondDone = false;
+    short heads = 0;
     do {
         if (!firstDone) {
             i1 = 1 + rand() % (n - 2);
@@ -750,15 +741,17 @@ void generatePositionSnakes(int n, int m, int area[][m], int positionSnakes[], i
             i2 = 1 + rand() % (n - 2);
             j2 = 1 + rand() % (m - 2);
         }
-        if (area[i2][j2] == 0) {
-            secondDone = true;
-            area[i2][j2] = 50;
-        }
         if (area[i1][j1] == 0) {
             firstDone = true;
             area[i1][j1] = 49;
+            heads++;
         }
-    } while (!firstDone && !secondDone);
+        if (area[i2][j2] == 0) {
+            secondDone = true;
+            area[i2][j2] = 50;
+            heads++;
+        }
+    } while (heads != 2);
     positionSnakes[0] = i1;
     positionSnakes[1] = j1;
     positionSnakes[2] = i2;
@@ -767,9 +760,9 @@ void generatePositionSnakes(int n, int m, int area[][m], int positionSnakes[], i
 }
 
 void preparationForGenerateWalls(int n, int m, int area[][m], int gameData[]) {
-    int N = n - 2;
-    if (N < 5) return;
-    else if (N < 8) generateWalls(n, m, area, gameData);
+    int N = (n - 2) * (m - 2);
+    if (N < 25) return;
+    else if (N < 50) generateWalls(n, m, area, gameData);
     else {
         generateWalls(n, m, area, gameData);
         generateWalls(n, m, area, gameData);
@@ -854,7 +847,7 @@ char getSymbol() {
 }
 
 void createWalls(int n, int m, int area[][m], int gameData[], int positionCursor[]) {
-    bool exitFlag = false;
+    bool exitFlag = false, possibleExit = true;
     char YN;
     int symbol;
     int countCreatedWalls = 0;
@@ -895,12 +888,15 @@ void createWalls(int n, int m, int area[][m], int gameData[], int positionCursor
                 moveCursor(n, m, area, positionCursor, 3);
                 break;
             case 27:
-                printf("Вы уверены что хотите закончить?(Y - да, любой другой символ - нет)\n");
-                YN = getSymbol();
-                if (YN == 'Y') {
-                    if (area[positionCursor[0]][positionCursor[1]] == 351)
-                        area[positionCursor[0]][positionCursor[1]] = 35;
-                    return;
+                if (possibleExit) {
+                    printf("Вы уверены что хотите закончить строительство стен?(Y - да, любой другой символ - нет)\n");
+                    YN = getSymbol();
+                    if (YN == 'Y') {
+                        if (area[positionCursor[0]][positionCursor[1]] == 351)
+                            area[positionCursor[0]][positionCursor[1]] = 35;
+                        else area[positionCursor[0]][positionCursor[1]] = 0;
+                        return;
+                    }
                 }
                 break;
             case 13:
@@ -911,7 +907,12 @@ void createWalls(int n, int m, int area[][m], int gameData[], int positionCursor
             default:;
         }
         showMenuForCreateWalls(n, m, gameData, countCreatedWalls, area);
-        if (gameData[0] == 0) exitFlag = true;
+        if (gameData[0] < 2) {
+            possibleExit = false;
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+            printf("Минимум две клетки на поле должны быть свободны!\n");
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+        } else possibleExit = true;
     }
 }
 
@@ -1033,6 +1034,10 @@ void printSymbol(short numberSymbol) {
     }
 }
 
+void checkPointHeads(int m, int area[][m], int positionSnakes[]) {
+    if (area[positionSnakes[0]][positionSnakes[1]] != '1') area[positionSnakes[0]][positionSnakes[1]] = '1';
+    if (area[positionSnakes[2]][positionSnakes[3]] != '2') area[positionSnakes[0]][positionSnakes[1]] = '2';
+}
 
 long validationGameArea() {
     long result;

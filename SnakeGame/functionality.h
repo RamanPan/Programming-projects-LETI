@@ -7,7 +7,7 @@ long validation();
 
 long validationGameArea();
 
-void showMenu(int n,int m, int gameData[], int area[][m]);
+void showMenu(int n,int m, int gameData[], int area[][m],int positionSnakes[]);
 
 void showMenuForCreateWalls(int n,int m, int gameData[],int countCreateWalls, int area[][m]);
 
@@ -53,6 +53,8 @@ void choosePointForNewPieceOfTail(int n, int m, int area[][m], int endTailFirstS
 void checkTail(int n, int m, int N, int area[][m], const int tailSnake[], bool whichSnake);
 
 void checkPointFood(int n, int m, int area[][m], int gameData[], int pointFood[]);
+
+void checkPointHeads(int m, int area[][m], int positionSnakes[]);
 
 void findPointFood(int gameData[], int pointFood[], int y, int x);
 
