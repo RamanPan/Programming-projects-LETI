@@ -1,7 +1,3 @@
-//
-// Created by vpana on 28.10.2022.
-//
-
 #ifndef BASICSTRINGMETHODS_FUNCTIONALITY_H
 #define BASICSTRINGMETHODS_FUNCTIONALITY_H
 void showMenu(int position, char firstString[], char secondString[]);
@@ -9,6 +5,8 @@ void showMenu(int position, char firstString[], char secondString[]);
 void validationString(char string[], short maxLength);
 
 void consoleInterface();
+
+void showHelloMessage();
 
 int strLength(char string[]);
 
