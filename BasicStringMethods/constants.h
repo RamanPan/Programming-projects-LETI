@@ -1,7 +1,3 @@
-//
-// Created by vpana on 28.10.2022.
-//
-
 #ifndef BASICSTRINGMETHODS_CONSTANTS_H
 #define BASICSTRINGMETHODS_CONSTANTS_H
 // Константы управления
@@ -12,8 +8,20 @@
 #define ARROW_DOWN 80
 #define ESC 27
 #define ENTER 13
+#define ZERO 13
+#define ONE 48
+#define TWO 50
+#define THREE 51
+#define FOUR 52
+#define FIVE 53
+#define SIX 54
+#define SEVEN 55
+#define EIGHT 56
+#define NINE 57
 
 // Константы сравнения
 #define MAX_LENGTH_STRING 21
+#define MIN_ARROW_POSITION 21
+#define MAX_ARROW_POSITION 21
 
 #endif //BASICSTRINGMETHODS_CONSTANTS_H
