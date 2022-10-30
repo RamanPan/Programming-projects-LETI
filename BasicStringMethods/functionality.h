@@ -1,23 +1,26 @@
 #ifndef BASICSTRINGMETHODS_FUNCTIONALITY_H
 #define BASICSTRINGMETHODS_FUNCTIONALITY_H
-void showMenu(int position, char firstString[], char secondString[]);
 
-void validationString(char string[], short maxLength);
+void showMenu(int position, unsigned char firstString[], unsigned char secondString[]);
+
+void validationString(unsigned char string[], short maxLength);
 
 void consoleInterface();
 
 void showHelloMessage();
 
-int strLength(char string[]);
+int strLength(const unsigned char string[]);
 
-void strCat(char firstString[], char secondString[], short start, bool whichString);
+bool checkLatin(const unsigned char string[]);
 
-void strCopy(char firstString[], char secondString[], bool whichString);
+void strCat(unsigned char firstString[], unsigned char secondString[], short start, bool whichString);
 
-void strReverse(char string[]);
+void strCopy(unsigned char firstString[], unsigned char secondString[], bool whichString);
 
-void strLowerCase(char string[]);
+void strReverse(unsigned char string[]);
 
-void strUpperCase(char string[]);
+void strLowerCase(unsigned char string[]);
+
+void strUpperCase(unsigned char string[]);
 
 #endif //BASICSTRINGMETHODS_FUNCTIONALITY_H
