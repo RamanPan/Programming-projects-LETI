@@ -21,7 +21,7 @@ bool checkLatin(const unsigned char string[]);
 
 void initStringHollow(unsigned char string[]);
 
-void strCat(unsigned char firstString[], const unsigned char secondString[], short start);
+bool strCat(unsigned char firstString[], const unsigned char secondString[], short start);
 
 void strCopy(unsigned char firstString[], const unsigned char secondString[]);
 

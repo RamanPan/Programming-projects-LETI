@@ -35,7 +35,7 @@ void initStringHollow(unsigned char string[]) {
     for (int i = 0; i < strLength(string); ++i) string[i] = ' ';
 }
 
-void strCat(unsigned char firstString[], const unsigned char secondString[], short start) {
+bool strCat(unsigned char firstString[], const unsigned char secondString[], short start) {
     unsigned char tempString[MAX_LENGTH_STRING + 1];
     int i, j = 0;
     for (i = 0; i < start; ++i)
@@ -47,13 +47,23 @@ void strCat(unsigned char firstString[], const unsigned char secondString[], sho
         tempString[i] = firstString[start + j];
     }
     tempString[MAX_LENGTH_STRING] = END_STRING;
-    if (strLength(tempString) > MAX_LENGTH_STRING) {
+    if (strLength(tempString) >= MAX_LENGTH_STRING) {
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
         printf("Невозможно внедрить строку, так как при внедрении её длина превышает максимальную!\n");
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
-        return;
+        return false;
     }
     strCopy(firstString, tempString);
+    return true;
+}
+
+void strReverse(unsigned char string[]) {
+    short length = strLength(string);
+    for (int i = 0, j = length - 1; i < length / 2; i++, j--) {
+        unsigned char temp = string[i];
+        string[i] = string[j];
+        string[j] = temp;
+    }
 }
 
 void strCopy(unsigned char firstString[], const unsigned char secondString[]) {
@@ -182,33 +192,42 @@ void consoleInterface() {
                 break;
             case 2:
                 if (permissionFlag) {
-                    printf("Какую строку вы хотите внедрить в другую?(1/2)\n");
+                    if (strLength(firstString) + strLength(secondString) >= MAX_LENGTH_STRING) {
+                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+                        printf("Невозможно внедрить строку, так как при внедрении её длина превышает максимальную!\n");
+                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+                        break;
+                    }
+                    printf("В какую строку вы хотите внедрить другую?(1/2)\n");
                     YN = (char) getchar();
                     printf("С какого символа начать внедрение?\n");
                     if (YN == '1') {
                         pointInsert = (short) validationWithArgument((short) strLength(secondString));
-                        strCat(secondString, firstString, pointInsert);
+                        if (strCat(firstString, secondString, pointInsert))
+                            showMenu(position, firstString, secondString);
                     } else if (YN == '2') {
                         pointInsert = (short) validationWithArgument((short) strLength(firstString));
-                        strCat(firstString, secondString, pointInsert);
+                        if (strCat(secondString, secondString, pointInsert))
+                            showMenu(position, firstString, secondString);
                     }
-                    showMenu(position, firstString, secondString);
                 }
                 break;
             case 3:
                 if (permissionFlag) {
-                    printf("Какую строку вы хотите скопировать в другую?(1/2)\n");
+                    printf("В какую строку вы хотите скопировать другую?(1/2)\n");
                     YN = (char) getchar();
                     if (YN == '1') {
-                        strCopy(secondString, firstString);
-                    } else if (YN == '2') {
                         strCopy(firstString, secondString);
+                    } else if (YN == '2') {
+                        strCopy(secondString, firstString);
                     }
                     showMenu(position, firstString, secondString);
                 }
                 break;
             case 4:
                 if (permissionFlag) {
+                    strReverse(firstString);
+                    strReverse(secondString);
                     showMenu(position, firstString, secondString);
                 }
                 break;
@@ -224,11 +243,15 @@ void consoleInterface() {
                 break;
             case 7:
                 if (permissionFlag) {
+                    printf("Введите строку\n");
+                    validationString(firstString);
                     showMenu(position, firstString, secondString);
                 }
                 break;
             case 8:
                 if (permissionFlag) {
+                    printf("Введите строку\n");
+                    validationString(secondString);
                     showMenu(position, firstString, secondString);
                 }
                 break;
