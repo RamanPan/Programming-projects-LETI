@@ -35,6 +35,27 @@ void initStringHollow(unsigned char string[]) {
     for (int i = 0; i < strLength(string); ++i) string[i] = ' ';
 }
 
+void strCat(unsigned char firstString[], const unsigned char secondString[], short start) {
+    unsigned char tempString[MAX_LENGTH_STRING + 1];
+    int i, j = 0;
+    for (i = 0; i < start; ++i)
+        tempString[i] = firstString[i];
+    for (; i < strLength(secondString) + start; ++i, ++j)
+        tempString[i] = secondString[j];
+    j = 0;
+    for (; i < MAX_LENGTH_STRING; ++i, ++j) {
+        tempString[i] = firstString[start + j];
+    }
+    tempString[MAX_LENGTH_STRING] = END_STRING;
+    if (strLength(tempString) > MAX_LENGTH_STRING) {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+        printf("Невозможно внедрить строку, так как при внедрении её длина превышает максимальную!\n");
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+        return;
+    }
+    strCopy(firstString, tempString);
+}
+
 void strCopy(unsigned char firstString[], const unsigned char secondString[]) {
     for (int i = 0; i < MAX_LENGTH_STRING; ++i)
         firstString[i] = secondString[i];
@@ -81,6 +102,7 @@ void consoleInterface() {
     unsigned char secondString[MAX_LENGTH_STRING] = " ";
     short symbol;
     short position = 0;
+    short pointInsert;
     char YN;
     showHelloMessage();
     printf("Введите первую строку!(не более 20 символов)\n");
@@ -160,43 +182,54 @@ void consoleInterface() {
                 break;
             case 2:
                 if (permissionFlag) {
-
+                    printf("Какую строку вы хотите внедрить в другую?(1/2)\n");
+                    YN = (char) getchar();
+                    printf("С какого символа начать внедрение?\n");
+                    if (YN == '1') {
+                        pointInsert = (short) validationWithArgument((short) strLength(secondString));
+                        strCat(secondString, firstString, pointInsert);
+                    } else if (YN == '2') {
+                        pointInsert = (short) validationWithArgument((short) strLength(firstString));
+                        strCat(firstString, secondString, pointInsert);
+                    }
+                    showMenu(position, firstString, secondString);
                 }
                 break;
             case 3:
                 if (permissionFlag) {
                     printf("Какую строку вы хотите скопировать в другую?(1/2)\n");
-                    YN = getchar();
+                    YN = (char) getchar();
                     if (YN == '1') {
-                        strCopy(secondString,firstString);
+                        strCopy(secondString, firstString);
                     } else if (YN == '2') {
-                        strCopy(firstString,secondString);
+                        strCopy(firstString, secondString);
                     }
+                    showMenu(position, firstString, secondString);
                 }
                 break;
             case 4:
                 if (permissionFlag) {
-
+                    showMenu(position, firstString, secondString);
                 }
                 break;
             case 5:
                 if (permissionFlag) {
-
+                    showMenu(position, firstString, secondString);
                 }
                 break;
             case 6:
                 if (permissionFlag) {
-
+                    showMenu(position, firstString, secondString);
                 }
                 break;
             case 7:
                 if (permissionFlag) {
-
+                    showMenu(position, firstString, secondString);
                 }
                 break;
             case 8:
                 if (permissionFlag) {
-
+                    showMenu(position, firstString, secondString);
                 }
                 break;
             case 9:
@@ -209,4 +242,43 @@ void consoleInterface() {
             default:;
         }
     }
+}
+
+long validation() {
+    bool validationFlag = false;
+    double result;
+    while (!validationFlag) {
+        if (scanf("%lf", &result)) {
+            if (!checkOverflow(result)) {
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+                printf("Неправильный ввод! Число вышло за границу дозволенного! Попробуйте снова!\n");
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+            } else validationFlag = true;
+        } else {
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+            printf("Неправильный ввод! Попробуйте снова!\n");
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+        }
+        fflush(stdin);
+    }
+    return (long) result;
+}
+
+long validationWithArgument(short max) {
+    long result;
+    short minArea = 0, maxArea = max;
+    do {
+        result = validation();
+        if (result > maxArea || result < minArea) {
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+            printf("Неверный ввод! Значение должно быть от %hd до %hd\n", minArea,
+                   maxArea);
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+        }
+    } while (result > maxArea || result < minArea);
+    return result;
+}
+
+bool checkOverflow(double d) {
+    return d >= -2147483648 && d <= 2147483647;
 }

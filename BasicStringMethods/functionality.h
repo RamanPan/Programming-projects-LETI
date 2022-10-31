@@ -5,6 +5,12 @@ void showMenu(int position, unsigned char firstString[], unsigned char secondStr
 
 void validationString(unsigned char string[], short maxLength);
 
+bool checkOverflow(double d);
+
+long validation();
+
+long validationWithArgument(short max);
+
 void consoleInterface();
 
 void showHelloMessage();
@@ -15,7 +21,7 @@ bool checkLatin(const unsigned char string[]);
 
 void initStringHollow(unsigned char string[]);
 
-void strCat(unsigned char firstString[], unsigned char secondString[], short start, bool whichString);
+void strCat(unsigned char firstString[], const unsigned char secondString[], short start);
 
 void strCopy(unsigned char firstString[], const unsigned char secondString[]);
 
