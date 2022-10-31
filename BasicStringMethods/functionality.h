@@ -13,9 +13,11 @@ int strLength(const unsigned char string[]);
 
 bool checkLatin(const unsigned char string[]);
 
+void initStringHollow(unsigned char string[]);
+
 void strCat(unsigned char firstString[], unsigned char secondString[], short start, bool whichString);
 
-void strCopy(unsigned char firstString[], unsigned char secondString[], bool whichString);
+void strCopy(unsigned char firstString[], const unsigned char secondString[]);
 
 void strReverse(unsigned char string[]);
 

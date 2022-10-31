@@ -17,10 +17,11 @@ void showMenu(short position, unsigned char firstString[], unsigned char secondS
     printf("7) Изменить первую строку%s\n", position == 7 ? " <--" : " ");
     printf("8) Изменить вторую строку%s\n", position == 8 ? " <--" : " ");
     printf("9) Выход%s\n", position == 9 ? " <--" : " ");
-    printf("Первая строка = %s, Вторая строка = %s\n", firstString, secondString);
+    printf("Первая строка = %s\n", firstString);
+    printf("Вторая строка = %s\n", secondString);
 }
 
-void showHelloMessage() {
+inline void showHelloMessage() {
     printf("Приветствую!\n");
 }
 
@@ -30,14 +31,13 @@ int strLength(const unsigned char string[]) {
     return i;
 }
 
-void strCopy(unsigned char firstString[], unsigned char secondString[], bool whichString) {
-    if (whichString) {
-        for (int i = 0; i < strLength(secondString); ++i)
-            firstString[i] = secondString[i];
-    } else {
-        for (int i = 0; i < strLength(firstString); ++i)
-            secondString[i] = firstString[i];
-    }
+void initStringHollow(unsigned char string[]) {
+    for (int i = 0; i < strLength(string); ++i) string[i] = ' ';
+}
+
+void strCopy(unsigned char firstString[], const unsigned char secondString[]) {
+    for (int i = 0; i < MAX_LENGTH_STRING; ++i)
+        firstString[i] = secondString[i];
 }
 
 bool checkLatin(const unsigned char string[]) {
@@ -69,7 +69,7 @@ void validationString(unsigned char string[]) {
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
         }
     }
-    strCopy(string, tempString, true);
+    strCopy(string, tempString);
     string[MAX_LENGTH_STRING - 1] = END_STRING;
     fflush(stdin);
 }
@@ -77,7 +77,8 @@ void validationString(unsigned char string[]) {
 void consoleInterface() {
     SetConsoleOutputCP(CP_UTF8);
     bool exitFlag = false, permissionFlag;
-    unsigned char firstString[MAX_LENGTH_STRING] = "", secondString[MAX_LENGTH_STRING] = "";
+    unsigned char firstString[MAX_LENGTH_STRING] = " ";
+    unsigned char secondString[MAX_LENGTH_STRING] = " ";
     short symbol;
     short position = 0;
     char YN;
@@ -153,7 +154,8 @@ void consoleInterface() {
         switch (position) {
             case 1:
                 if (permissionFlag) {
-
+                    printf("Длина первой строки: %d\n", strLength(firstString));
+                    printf("Длина второй строки: %d\n", strLength(secondString));
                 }
                 break;
             case 2:
@@ -163,7 +165,13 @@ void consoleInterface() {
                 break;
             case 3:
                 if (permissionFlag) {
-
+                    printf("Какую строку вы хотите скопировать в другую?(1/2)\n");
+                    YN = getchar();
+                    if (YN == '1') {
+                        strCopy(secondString,firstString);
+                    } else if (YN == '2') {
+                        strCopy(firstString,secondString);
+                    }
                 }
                 break;
             case 4:
