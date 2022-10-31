@@ -24,6 +24,25 @@ void showMenu(short position, unsigned char firstString[], unsigned char secondS
 inline void showHelloMessage() {
     printf("Приветствую!\n");
 }
+void strLowerCase(unsigned char string[]) {
+    int i = 0;
+    unsigned char symbol;
+    while (string[i] != END_STRING) {
+        symbol = string[i];
+        if(65 <= symbol && symbol <= 90) string[i] = symbol + 32;
+        ++i;
+    }
+}
+
+void strUpperCase(unsigned char string[]) {
+    int i = 0;
+    unsigned char symbol;
+    while (string[i] != END_STRING) {
+        symbol = string[i];
+        if(97 <= symbol && symbol <= 122) string[i] = symbol - 32;
+        ++i;
+    }
+}
 
 int strLength(const unsigned char string[]) {
     int i = 0;
@@ -233,11 +252,15 @@ void consoleInterface() {
                 break;
             case 5:
                 if (permissionFlag) {
+                    strLowerCase(firstString);
+                    strLowerCase(secondString);
                     showMenu(position, firstString, secondString);
                 }
                 break;
             case 6:
                 if (permissionFlag) {
+                    strUpperCase(firstString);
+                    strUpperCase(secondString);
                     showMenu(position, firstString, secondString);
                 }
                 break;
