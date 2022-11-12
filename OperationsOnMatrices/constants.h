@@ -7,8 +7,8 @@
 #define ARROW_DOWN 80
 #define ESC 27
 #define ENTER 13
-#define ZERO 13
-#define ONE 48
+#define ZERO 48
+#define ONE 49
 #define TWO 50
 #define THREE 51
 #define FOUR 52
@@ -21,5 +21,5 @@
 #define MIN_MATRIX_SIZE 1
 #define MAX_MATRIX_SIZE 8
 #define MIN_ARROW_POSITION 1
-#define MAX_ARROW_POSITION 9
+#define MAX_ARROW_POSITION 10
 #endif //OPERATIONSONMATRICES_CONSTANTS_H
