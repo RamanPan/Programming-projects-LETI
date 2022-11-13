@@ -14,19 +14,19 @@ void showMenu(int position, const int *N, const int *M, const int *R, const int 
 
 void showHelloMessage();
 
-void randomizeValuesInMatrix(const int *N, const int *M, int matrix[][MAX_MATRIX_SIZE]);
+void randomizeValuesInMatrix(const int *N, const int *M, int **matrix);
 
-void initValuesInMatrix(const int *N, const int *M, int matrix[][MAX_MATRIX_SIZE]);
+void initValuesInMatrix(const int *N, const int *M, int **matrix);
 
-void transposeMatrix(const int *N, const int *M, int matrix[][MAX_MATRIX_SIZE]);
+void transposeMatrix(const int *N, const int *M, int **matrix);
 
-void outputMatrix(const int *N, const int *M, int matrix[][MAX_MATRIX_SIZE]);
+void outputMatrix(const int *N, const int *M, int **matrix);
 
-void calculateAdditionMatrix(const int *N, int matrix[][MAX_MATRIX_SIZE], int additionMatrix[][MAX_MATRIX_SIZE]);
+void calculateAdditionMatrix(const int *N, int **matrix, int **additionMatrix);
 
-void initHollowMatrix(const int *N, const int *M, int matrix[][MAX_MATRIX_SIZE]);
+void initHollowMatrix(const int *N, const int *M, int **matrix);
 
-void createMatrix(int &N, int &M, int matrix[][MAX_MATRIX_SIZE]);
+void createMatrix(int &N, int &M, int **matrix);
 
 int calculateDeterminant(int **M, int N);
 
@@ -34,16 +34,17 @@ int **getM(int **M, int N, int k);
 
 void choice(char &YN);
 
-int **castToPointer(int N, int M, int matrix[][MAX_MATRIX_SIZE]);
+template<typename Type>
+Type **createPointerToMatrix(int N);
 
-void calculateInverseMatrix(const int *N, const int *M, int D, int matrix[][MAX_MATRIX_SIZE]);
+void calculateInverseMatrix(const int *N, const int *M, int D, int **matrix);
 
-void multiplyMatrix(const int *firstN, const int *firstM, int firstMatrix[][MAX_MATRIX_SIZE], const int *secondN,
+void multiplyMatrix(const int *firstN, const int *firstM, int **firstMatrix, const int *secondN,
                     const int *secondM,
-                    int secondMatrix[][MAX_MATRIX_SIZE]);
+                    int **secondMatrix);
 
-void addOrSubtractMatrix(const int *firstN, const int *firstM, int firstMatrix[][MAX_MATRIX_SIZE], const int *secondN,
-               const int *secondM,
-               int secondMatrix[][MAX_MATRIX_SIZE]);
+void addOrSubtractMatrix(const int *firstN, const int *firstM, int **firstMatrix, const int *secondN,
+                         const int *secondM,
+                         int **secondMatrix);
 
 #endif //OPERATIONSONMATRICES_FUNCTIONALITY_H
