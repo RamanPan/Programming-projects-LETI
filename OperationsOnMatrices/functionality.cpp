@@ -97,24 +97,32 @@ void initHollowMatrix(const int *N, const int *M, int **matrix) {
             matrix[i][j] = 0;
 }
 
-//void createMatrix(int &N, int &M, int **matrix) {
-//    char YN;
-//    printf("Введите кол-во строк\n");
-//    N = validationWithArgument(MIN_MATRIX_SIZE, MAX_MATRIX_SIZE);
-//    printf("Введите кол-во столбцов \n");
-//    M = validationWithArgument(MIN_MATRIX_SIZE, MAX_MATRIX_SIZE);
-//    printf("Сгенерировать значения матрицы или ввести вручную?(1/2)\n");
-//    choice(YN);
-//    if (YN == '1') randomizeValuesInMatrix(&N, &M, matrix);
-//    else initValuesInMatrix(&N, &M, matrix);
-//}
-//
-//void randomizeValuesInMatrix(const int *N, const int *M, int **matrix) {
-//    for (int i = 0; i < *N; ++i)
-//        for (int j = 0; j < *M; ++j)
-//            matrix[i][j] = -MINMAX_RANDOMIZE_INTERVAL + rand() % (MINMAX_RANDOMIZE_INTERVAL * 2);
-//}
-//
+void createMatrix(int &N, int &M, int **matrix) {
+    char YN;
+    printf("Введите кол-во строк\n");
+    N = validationWithArgument(MIN_MATRIX_SIZE, MAX_MATRIX_SIZE);
+    printf("Введите кол-во столбцов \n");
+    M = validationWithArgument(MIN_MATRIX_SIZE, MAX_MATRIX_SIZE);
+    printf("Сгенерировать значения матрицы или ввести вручную?(1/2)\n");
+    choice(YN);
+    if (YN == '1') randomizeValuesInMatrix(&N, &M, matrix);
+    else initValuesInMatrix(&N, &M, matrix);
+}
+
+void randomizeValuesInMatrix(const int *N, const int *M, int **matrix) {
+    for (int i = 0; i < *N; ++i)
+        for (int j = 0; j < *M; ++j)
+            matrix[i][j] = -MINMAX_RANDOMIZE_INTERVAL + rand() % (MINMAX_RANDOMIZE_INTERVAL * 2);
+}
+
+void initValuesInMatrix(const int *N, const int *M, int **matrix) {
+    for (int i = 0; i < *N; ++i)
+        for (int j = 0; j < *M; ++j) {
+            printf("Введите элемент матрицы с координатами i = %d, j = %d\n", i + 1, j + 1);
+            matrix[i][j] = validationWithArgument(-MINMAX_RANDOMIZE_INTERVAL, MINMAX_RANDOMIZE_INTERVAL);
+        }
+}
+
 //void multiplyMatrix(const int *firstN, const int *firstM, int **firstMatrix, const int *secondN,
 //                    const int *secondM,
 //                    int **secondMatrix) {
@@ -241,13 +249,6 @@ void initHollowMatrix(const int *N, const int *M, int **matrix) {
 //    outputMatrix<double>(N, M, inverseMatrix);
 //}
 //
-//void initValuesInMatrix(const int *N, const int *M, int **matrix) {
-//    for (int i = 0; i < *N; ++i)
-//        for (int j = 0; j < *M; ++j) {
-//            printf("Введите элемент матрицы с координатами i = %d, j = %d\n", i + 1, j + 1);
-//            matrix[i][j] = validationWithArgument(-MINMAX_RANDOMIZE_INTERVAL, MINMAX_RANDOMIZE_INTERVAL);
-//        }
-//}
 //
 //void consoleInterface() {
 //    bool exitFlag = false, permissionFlag;
