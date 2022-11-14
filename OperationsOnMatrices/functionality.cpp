@@ -164,47 +164,47 @@ void multiplyMatrix(const int *firstN, const int *firstM, int **firstMatrix, con
     outputMatrix<int>(firstN, secondM, resultMatrix);
 }
 
-//void addOrSubtractMatrix(const int *firstN, const int *firstM, int **firstMatrix, const int *secondN,
-//                         const int *secondM,
-//                         int **secondMatrix) {
-//    if (*firstN != *secondN || *firstM != *secondM) {
-//        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
-//        printf("Невозможно сложить матрицы таких размерностей\n");
-//        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
-//        return;
-//    }
-//    char YN;
-//    bool addOrSub, howSub;
-//    int **resultMatrix = createPointerToMatrix<int>(MAX_MATRIX_SIZE);
-//    printf("Сложить или вычесть?(1/2)\n");
-//    choice(YN);
-//    if (YN == '1') addOrSub = false;
-//    else {
-//        addOrSub = true;
-//        printf("Вычесть первую матрицу из второй, или вторую из первой?(1/2)\n");
-//        choice(YN);
-//        howSub = YN == '1';
-//    }
-//    for (int i = 0; i < *firstN; i++)
-//        for (int j = 0; j < *firstM; j++) {
-//            if (!addOrSub)resultMatrix[i][j] = firstMatrix[i][j] + secondMatrix[i][j];
-//            else
-//                resultMatrix[i][j] = howSub ? secondMatrix[i][j] - firstMatrix[i][j] : firstMatrix[i][j] -
-//                                                                                       secondMatrix[i][j];
-//
-//        }
-//    printf("Полученная матрица:\n");
-//    outputMatrix<int>(firstN, secondN, resultMatrix);
-//}
-//
-//void transposeMatrix(const int *N, const int *M, int **matrix) {
-//    int **transposeMatrix = createPointerToMatrix<int>(MAX_MATRIX_SIZE);
-//    for (int i = 0; i < *N; i++)
-//        for (int j = 0; j < *M; j++)
-//            transposeMatrix[j][i] = matrix[i][j];
-//    outputMatrix<int>(M, N, transposeMatrix);
-//}
-//
+void addOrSubtractMatrix(const int *firstN, const int *firstM, int **firstMatrix, const int *secondN,
+                         const int *secondM,
+                         int **secondMatrix) {
+    if (*firstN != *secondN || *firstM != *secondM) {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+        printf("Невозможно сложить матрицы таких размерностей\n");
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+        return;
+    }
+    char YN;
+    bool addOrSub, howSub;
+    int **resultMatrix = createPointerToMatrix<int>(MAX_MATRIX_SIZE);
+    printf("Сложить или вычесть?(1/2)\n");
+    choice(YN);
+    if (YN == '1') addOrSub = false;
+    else {
+        addOrSub = true;
+        printf("Вычесть первую матрицу из второй, или вторую из первой?(1/2)\n");
+        choice(YN);
+        howSub = YN == '1';
+    }
+    for (int i = 0; i < *firstN; i++)
+        for (int j = 0; j < *firstM; j++) {
+            if (!addOrSub)resultMatrix[i][j] = firstMatrix[i][j] + secondMatrix[i][j];
+            else
+                resultMatrix[i][j] = howSub ? secondMatrix[i][j] - firstMatrix[i][j] : firstMatrix[i][j] -
+                                                                                       secondMatrix[i][j];
+
+        }
+    printf("Полученная матрица:\n");
+    outputMatrix<int>(firstN, secondN, resultMatrix);
+}
+
+void transposeMatrix(const int *N, const int *M, int **matrix) {
+    int **transposeMatrix = createPointerToMatrix<int>(MAX_MATRIX_SIZE);
+    for (int i = 0; i < *N; i++)
+        for (int j = 0; j < *M; j++)
+            transposeMatrix[j][i] = matrix[i][j];
+    outputMatrix<int>(M, N, transposeMatrix);
+}
+
 //int **getM(int **M, int N, int k) {
 //    int **A = new int *[N - 1];
 //    for (int i = 1; i < N; i++) {
