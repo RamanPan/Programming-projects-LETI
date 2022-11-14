@@ -205,27 +205,27 @@ void transposeMatrix(const int *N, const int *M, int **matrix) {
     outputMatrix<int>(M, N, transposeMatrix);
 }
 
-//int **getM(int **M, int N, int k) {
-//    int **A = new int *[N - 1];
-//    for (int i = 1; i < N; i++) {
-//        A[i - 1] = new int[N - 1];
-//        int m = 0;
-//        for (int j = 0; j < N; j++) {
-//            if (j == k) m++;
-//            else A[i - 1][j - m] = M[i][j];
-//        }
-//    }
-//    return A;
-//}
-//
-//int calculateDeterminant(int **M, int N) {
-//    if (N == 1) return M[0][0];
-//    int D = 0;
-//    for (int i = 0; i < N; i++)
-//        D += (((i + 1) % 2) ? 1 : -1) * M[0][i] * calculateDeterminant(getM(M, N, i), N - 1);
-//    return D;
-//}
-//
+int **getM(int **M, int N, int k) {
+    int **A = new int *[N - 1];
+    for (int i = 1; i < N; i++) {
+        A[i - 1] = new int[N - 1];
+        int m = 0;
+        for (int j = 0; j < N; j++) {
+            if (j == k) m++;
+            else A[i - 1][j - m] = M[i][j];
+        }
+    }
+    return A;
+}
+
+int calculateDeterminant(int **M, int N) {
+    if (N == 1) return M[0][0];
+    int D = 0;
+    for (int i = 0; i < N; i++)
+        D += (((i + 1) % 2) ? 1 : -1) * M[0][i] * calculateDeterminant(getM(M, N, i), N - 1);
+    return D;
+}
+
 //void calculateAdditionMatrix(const int *N, int **matrix, int **additionMatrix) {
 //    int **M = createPointerToMatrix<int>(MAX_MATRIX_SIZE);
 //    for (int i = 0; i < *N; ++i)
