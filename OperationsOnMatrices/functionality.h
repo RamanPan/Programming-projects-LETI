@@ -24,9 +24,11 @@ void outputMatrix(const int *N, const int *M, int **matrix);
 
 void calculateAdditionMatrix(const int *N, int **matrix, int **additionMatrix);
 
-void initHollowMatrix(const int *N, const int *M, int **matrix);
+void initMatrixValue(const int *N, const int *M, int **matrix, int valueForInit);
 
 void createMatrix(int &N, int &M, int **matrix);
+
+void outputMatrixWhenInit(const int *N, const int *M, int **matrix);
 
 int calculateDeterminant(int **M, int N);
 
