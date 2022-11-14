@@ -17,6 +17,22 @@ void outputMatrix(const int *N, const int *M, Type **matrix) {
             if (j == *M - 1) printf("\n");
         }
 }
+
+void outputMatrixWhenInit(const int *N, const int *M, int **matrix) {
+    for (int i = 0; i < *N; ++i)
+        for (int j = 0; j < *M; ++j) {
+            if (matrix[i][j] != 101) {
+                cout.precision(3);
+                cout << setfill(' ') << setw(7) << matrix[i][j] << " ";
+                if (j == *M - 1) printf("\n");
+            } else {
+                cout.precision(3);
+                cout << setfill(' ') << setw(7) << "*" << " ";
+                if (j == *M - 1) printf("\n");
+            }
+        }
+}
+
 void showHelloMessage() {
     printf("Приветствую!\n");
     printf("В этой программе вы можете произвести некоторые полезные действия над матрицами!\n");
@@ -91,10 +107,10 @@ long validationWithArgument(short min, short max) {
     return result;
 }
 
-void initHollowMatrix(const int *N, const int *M, int **matrix) {
+void initMatrixValue(const int *N, const int *M, int **matrix, int valueForInit) {
     for (int i = 0; i < *N; i++)
         for (int j = 0; j < *M; j++)
-            matrix[i][j] = 0;
+            matrix[i][j] = valueForInit;
 }
 
 void createMatrix(int &N, int &M, int **matrix) {
@@ -116,35 +132,38 @@ void randomizeValuesInMatrix(const int *N, const int *M, int **matrix) {
 }
 
 void initValuesInMatrix(const int *N, const int *M, int **matrix) {
+    initMatrixValue(N, M, matrix, 101);
     for (int i = 0; i < *N; ++i)
         for (int j = 0; j < *M; ++j) {
+            system("cls");
+            outputMatrixWhenInit(N, M, matrix);
             printf("Введите элемент матрицы с координатами i = %d, j = %d\n", i + 1, j + 1);
             matrix[i][j] = validationWithArgument(-MINMAX_RANDOMIZE_INTERVAL, MINMAX_RANDOMIZE_INTERVAL);
         }
 }
 
-//void multiplyMatrix(const int *firstN, const int *firstM, int **firstMatrix, const int *secondN,
-//                    const int *secondM,
-//                    int **secondMatrix) {
-//    if (*firstM != *secondN) {
-//        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
-//        printf("Невозможно умножить матрицы таких размерностей\n");
-//        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
-//        return;
-//    }
-//    int **resultMatrix = createPointerToMatrix<int>(MAX_MATRIX_SIZE);
-//    initHollowMatrix(firstN, secondM, resultMatrix);
-//    for (int i = 0; i < *firstN; ++i) {
-//        for (int j = 0; j < *secondM; ++j) {
-//            for (int m = 0, q = 0; m < *firstM; ++m, ++q) {
-//                resultMatrix[i][j] += firstMatrix[i][q] * secondMatrix[m][j];
-//            }
-//        }
-//    }
-//    printf("Полученная матрица:\n");
-//    outputMatrix<int>(firstN, secondM, resultMatrix);
-//}
-//
+void multiplyMatrix(const int *firstN, const int *firstM, int **firstMatrix, const int *secondN,
+                    const int *secondM,
+                    int **secondMatrix) {
+    if (*firstM != *secondN) {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+        printf("Невозможно умножить матрицы таких размерностей\n");
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+        return;
+    }
+    int **resultMatrix = createPointerToMatrix<int>(MAX_MATRIX_SIZE);
+    initMatrixValue(firstN, secondM, resultMatrix, 0);
+    for (int i = 0; i < *firstN; ++i) {
+        for (int j = 0; j < *secondM; ++j) {
+            for (int m = 0, q = 0; m < *firstM; ++m, ++q) {
+                resultMatrix[i][j] += firstMatrix[i][q] * secondMatrix[m][j];
+            }
+        }
+    }
+    printf("Полученная матрица:\n");
+    outputMatrix<int>(firstN, secondM, resultMatrix);
+}
+
 //void addOrSubtractMatrix(const int *firstN, const int *firstM, int **firstMatrix, const int *secondN,
 //                         const int *secondM,
 //                         int **secondMatrix) {
@@ -157,7 +176,6 @@ void initValuesInMatrix(const int *N, const int *M, int **matrix) {
 //    char YN;
 //    bool addOrSub, howSub;
 //    int **resultMatrix = createPointerToMatrix<int>(MAX_MATRIX_SIZE);
-//    initHollowMatrix(firstN, firstM, resultMatrix);
 //    printf("Сложить или вычесть?(1/2)\n");
 //    choice(YN);
 //    if (YN == '1') addOrSub = false;
@@ -200,6 +218,14 @@ void initValuesInMatrix(const int *N, const int *M, int **matrix) {
 //    return A;
 //}
 //
+//int calculateDeterminant(int **M, int N) {
+//    if (N == 1) return M[0][0];
+//    int D = 0;
+//    for (int i = 0; i < N; i++)
+//        D += (((i + 1) % 2) ? 1 : -1) * M[0][i] * calculateDeterminant(getM(M, N, i), N - 1);
+//    return D;
+//}
+//
 //void calculateAdditionMatrix(const int *N, int **matrix, int **additionMatrix) {
 //    int **M = createPointerToMatrix<int>(MAX_MATRIX_SIZE);
 //    for (int i = 0; i < *N; ++i)
@@ -222,13 +248,6 @@ void initValuesInMatrix(const int *N, const int *M, int **matrix) {
 //
 //}
 //
-//int calculateDeterminant(int **M, int N) {
-//    if (N == 1) return M[0][0];
-//    int D = 0;
-//    for (int i = 0; i < N; i++)
-//        D += (((i + 1) % 2) ? 1 : -1) * M[0][i] * calculateDeterminant(getM(M, N, i), N - 1);
-//    return D;
-//}
 //template<typename Type>
 //Type **createPointerToMatrix(int N) {
 //    Type **A = new Type *[N];
@@ -240,7 +259,6 @@ void initValuesInMatrix(const int *N, const int *M, int **matrix) {
 //
 //void calculateInverseMatrix(const int *N, const int *M, int D, int **matrix) {
 //    int **additionMatrix = createPointerToMatrix<int>(MAX_MATRIX_SIZE);
-//    initHollowMatrix(N, N, additionMatrix);
 //    calculateAdditionMatrix(N, matrix, additionMatrix);
 //    double **inverseMatrix = createPointerToMatrix<double>(MAX_MATRIX_SIZE);
 //    for (int i = 0; i < *N; ++i)
@@ -258,8 +276,10 @@ void initValuesInMatrix(const int *N, const int *M, int **matrix) {
 //    int N, M, R, K;
 //    int **firstMatrix = createPointerToMatrix<int>(MAX_MATRIX_SIZE);
 //    int **secondMatrix = createPointerToMatrix<int>(MAX_MATRIX_SIZE);
+//    system("cls");
 //    printf("Первая матрица:\n");
 //    createMatrix(N, M, firstMatrix);
+//    system("cls");
 //    printf("Вторая матрица:\n");
 //    createMatrix(R, K, secondMatrix);
 //    showMenu(position, &N, &M, &R, &K);
