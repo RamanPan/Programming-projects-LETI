@@ -169,7 +169,7 @@ void addOrSubtractMatrix(const int *firstN, const int *firstM, int **firstMatrix
                          int **secondMatrix) {
     if (*firstN != *secondN || *firstM != *secondM) {
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
-        printf("Невозможно сложить матрицы таких размерностей\n");
+        printf("Невозможно сложить/вычесть матрицы таких размерностей\n");
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
         return;
     }
@@ -226,48 +226,48 @@ int calculateDeterminant(int **M, int N) {
     return D;
 }
 
-//void calculateAdditionMatrix(const int *N, int **matrix, int **additionMatrix) {
-//    int **M = createPointerToMatrix<int>(MAX_MATRIX_SIZE);
-//    for (int i = 0; i < *N; ++i)
-//        for (int j = 0; j < *N; ++j) {
-//            int I = 0, J = 0;
-//            for (int k = 0; k < *N; ++k) {
-//                for (int q = 0; q < *N; ++q) {
-//                    if (k != i && q != j) {
-//                        M[I][J] = matrix[k][q];
-//                        J++;
-//                        if (J == *N - 1) {
-//                            I++;
-//                            J = 0;
-//                        };
-//                    }
-//                }
-//            }
-//            additionMatrix[i][j] = (int) pow(-1, i + j + 2) * calculateDeterminant(M, *N - 1);
-//        }
-//
-//}
-//
-//template<typename Type>
-//Type **createPointerToMatrix(int N) {
-//    Type **A = new Type *[N];
-//    for (int i = 0; i < N; i++) {
-//        A[i] = new Type[N];
-//    }
-//    return A;
-//}
-//
-//void calculateInverseMatrix(const int *N, const int *M, int D, int **matrix) {
-//    int **additionMatrix = createPointerToMatrix<int>(MAX_MATRIX_SIZE);
-//    calculateAdditionMatrix(N, matrix, additionMatrix);
-//    double **inverseMatrix = createPointerToMatrix<double>(MAX_MATRIX_SIZE);
-//    for (int i = 0; i < *N; ++i)
-//        for (int j = 0; j < *N; ++j)
-//            inverseMatrix[i][j] = ((double) 1 / D) * additionMatrix[j][i];
-//    outputMatrix<double>(N, M, inverseMatrix);
-//}
-//
-//
+void calculateAdditionMatrix(const int *N, int **matrix, int **additionMatrix) {
+    int **M = createPointerToMatrix<int>(MAX_MATRIX_SIZE);
+    for (int i = 0; i < *N; ++i)
+        for (int j = 0; j < *N; ++j) {
+            int I = 0, J = 0;
+            for (int k = 0; k < *N; ++k) {
+                for (int q = 0; q < *N; ++q) {
+                    if (k != i && q != j) {
+                        M[I][J] = matrix[k][q];
+                        J++;
+                        if (J == *N - 1) {
+                            I++;
+                            J = 0;
+                        };
+                    }
+                }
+            }
+            additionMatrix[i][j] = (int) pow(-1, i + j + 2) * calculateDeterminant(M, *N - 1);
+        }
+
+}
+
+template<typename Type>
+Type **createPointerToMatrix(int N) {
+    Type **A = new Type *[N];
+    for (int i = 0; i < N; i++) {
+        A[i] = new Type[N];
+    }
+    return A;
+}
+
+void calculateInverseMatrix(const int *N, const int *M, int D, int **matrix) {
+    int **additionMatrix = createPointerToMatrix<int>(MAX_MATRIX_SIZE);
+    calculateAdditionMatrix(N, matrix, additionMatrix);
+    double **inverseMatrix = createPointerToMatrix<double>(MAX_MATRIX_SIZE);
+    for (int i = 0; i < *N; ++i)
+        for (int j = 0; j < *N; ++j)
+            inverseMatrix[i][j] = ((double) 1 / D) * additionMatrix[j][i];
+    outputMatrix<double>(N, M, inverseMatrix);
+}
+
+
 //void consoleInterface() {
 //    bool exitFlag = false, permissionFlag;
 //    short symbol;
@@ -348,6 +348,12 @@ int calculateDeterminant(int **M, int N) {
 //        }
 //        showMenu(position, &N, &M, &R, &K);
 //        switch (position) {
+//            case 1:
+//                printf("Первая матрица:\n");
+//                outputMatrix<int>(&N, &M, firstMatrix);
+//                printf("Вторая матрица:\n");
+//                outputMatrix<int>(&R, &K, secondMatrix);
+//                break;
 //            case 2:
 //                if (permissionFlag) addOrSubtractMatrix(&N, &M, firstMatrix, &R, &K, secondMatrix);
 //                break;
@@ -364,48 +370,56 @@ int calculateDeterminant(int **M, int N) {
 //                transposeMatrix(&R, &K, secondMatrix);
 //                break;
 //            case 6:
-//                if (permissionFlag) {
-//                    if (N == M) {
-//                        printf("Определитель первой матрицы: %d\n", calculateDeterminant(firstMatrix, N));
-//                    } else {
-//                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
-//                        printf("Первая матрица не квадратная!\n");
-//                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
-//                    }
-//                    if (R == K) {
-//                        printf("Определитель второй матрицы: %d\n", calculateDeterminant(secondMatrix, R));
-//                    } else {
-//                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
-//                        printf("Вторая матрица не квадратная!\n");
-//                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
-//                    }
+//                if (N == M) {
+//                    printf("Определитель первой матрицы: %d\n", calculateDeterminant(firstMatrix, N));
+//                } else {
+//                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+//                    printf("Первая матрица не квадратная!\n");
+//                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
 //                }
+//                if (R == K) {
+//                    printf("Определитель второй матрицы: %d\n", calculateDeterminant(secondMatrix, R));
+//                } else {
+//                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+//                    printf("Вторая матрица не квадратная!\n");
+//                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+//                }
+//
 //                break;
 //            case 7:
-//                if (permissionFlag) {
-//                    if (N == M) {
-//                        printf("Обратная первой матрицы:\n");
-//                        if (N != 1) {
-//                            int D1 = calculateDeterminant(firstMatrix, N);
-//                            calculateInverseMatrix(&N, &M, D1, firstMatrix);
-//                        } else printf("%f", (double) ((double) 1 / firstMatrix[0][0]));
-//                    } else {
-//                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
-//                        printf("Первая матрица не квадратная!\n");
-//                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
-//                    }
-//                    if (R == K) {
-//                        printf("Обратная второй матрицы:\n");
-//                        if (R != 1) {
-//                            int D2 = calculateDeterminant(secondMatrix, R);
-//                            calculateInverseMatrix(&R, &K, D2, secondMatrix);
-//                        } else printf("%f", (double) ((double) 1 / secondMatrix[0][0]));
-//                    } else {
-//                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
-//                        printf("Вторая матрица не квадратная!\n");
-//                        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
-//                    }
+//                if (N == M) {
+//                    printf("Обратная первой матрицы:\n");
+//                    if (N != 1) {
+//                        int D1 = calculateDeterminant(firstMatrix, N);
+//                        if(D1 != 0) calculateInverseMatrix(&N, &M, D1, firstMatrix);
+//                        else {
+//                            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+//                            printf("Матрица вырожденная(определитель равен нулю)!\n");
+//                            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+//                        }
+//                    } else printf("%f", (double) ((double) 1 / firstMatrix[0][0]));
+//                } else {
+//                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+//                    printf("Первая матрица не квадратная!\n");
+//                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
 //                }
+//                if (R == K) {
+//                    printf("Обратная второй матрицы:\n");
+//                    if (R != 1) {
+//                        int D2 = calculateDeterminant(secondMatrix, R);
+//                        if(D2 != 0) calculateInverseMatrix(&R, &K, D2, secondMatrix);
+//                        else {
+//                            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+//                            printf("Матрица вырожденная(определитель равен нулю)!\n");
+//                            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+//                        }
+//                    } else printf("%f", (double) ((double) 1 / secondMatrix[0][0]));
+//                } else {
+//                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+//                    printf("Вторая матрица не квадратная!\n");
+//                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+//                }
+//
 //                break;
 //            case 8:
 //                if (permissionFlag) {
@@ -416,12 +430,6 @@ int calculateDeterminant(int **M, int N) {
 //                if (permissionFlag) {
 //                    createMatrix(R, K, secondMatrix);
 //                }
-//                break;
-//            case 1:
-//                printf("Первая матрица:\n");
-//                outputMatrix<int>(&N, &M, firstMatrix);
-//                printf("Вторая матрица:\n");
-//                outputMatrix<int>(&R, &K, secondMatrix);
 //                break;
 //            case 10:
 //                if (permissionFlag)
