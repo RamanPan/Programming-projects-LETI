@@ -21,7 +21,7 @@ void outputMatrix(const int *N, const int *M, Type **matrix) {
 void outputMatrixWhenInit(const int *N, const int *M, int **matrix) {
     for (int i = 0; i < *N; ++i)
         for (int j = 0; j < *M; ++j) {
-            if (matrix[i][j] != 101) {
+            if (matrix[i][j] != STAR) {
                 cout.precision(3);
                 cout << setfill(' ') << setw(7) << matrix[i][j] << " ";
                 if (j == *M - 1) printf("\n");
@@ -132,7 +132,7 @@ void randomizeValuesInMatrix(const int *N, const int *M, int **matrix) {
 }
 
 void initValuesInMatrix(const int *N, const int *M, int **matrix) {
-    initMatrixValue(N, M, matrix, 101);
+    initMatrixValue(N, M, matrix, STAR);
     for (int i = 0; i < *N; ++i)
         for (int j = 0; j < *M; ++j) {
             system("cls");
@@ -271,7 +271,7 @@ void calculateInverseMatrix(const int *N, const int *M, int D, int **matrix) {
 void consoleInterface() {
     bool exitFlag = false, permissionFlag;
     short symbol;
-    short position = 0;
+    short position = 1;
     showHelloMessage();
     int N, M, R, K;
     int **firstMatrix = createPointerToMatrix<int>(MAX_MATRIX_SIZE);

@@ -16,6 +16,7 @@
 #define SIX 54
 #define SEVEN 55
 #define EIGHT 56
+#define STAR 101
 #define NINE 57
 #define MINMAX_RANDOMIZE_INTERVAL 10
 #define MIN_MATRIX_SIZE 1
