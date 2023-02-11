@@ -1,5 +1,6 @@
 # Programming projects ETU LETI
- Все учебные проекты по дисциплине "Прогрaммирование":
+ Все учебные проекты по дисциплине "Прогрaммирование"
+# Первый семестр 
 ## 1 - Calculator with Аrrow and Number Control (Kалькулятор с стрелочным и цифровым управлением) - сдано
 ## 2 - Spirаl Output with Аrrow and Number Control (Вывод спирали с стрелочным и цифровым управлением) - сдано
 ## 3 - Tic-tac-toe with a field of arbitrary ordеr (Креcтики-нолики с полем произвольного порядка) - сдано
