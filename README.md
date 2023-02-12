@@ -7,3 +7,4 @@
 ## 4 - Basic string methods with interface in consol (Реализация базовых методов для работы со строками с интерфейсом) - сдано
 ## 5 - Оperations on matrices (Операции над матрицами) - сдано
 ## * - Snake Game (Игра "Змейка") - сдано
+# Второй семестр
