@@ -195,6 +195,30 @@ void showMenu(int position, int lengthList, Element *startList) {
     showList(startList);
 }
 
+void showList(Element *startList) {
+    Element *currentElement = startList;
+    while (currentElement != nullptr) {
+        std::cout << currentElement->number << " ";
+        currentElement = currentElement->next;
+    }
+    std::cout << std::endl;
+}
+
+Element *createList(int &counterElements, int &lengthList) {
+    system("cls");
+    std::cout << "Введите кол-во создаваемых элементов" << std::endl;
+    lengthList = validation();
+    counterElements = lengthList;
+    Element *current = nullptr, *next = nullptr;
+    for (int i = lengthList; i > 0; --i) {
+        current = new Element;
+        current->number = i;
+        current->next = next;
+        next = current;
+    }
+    return current;
+}
+
 
 
 
