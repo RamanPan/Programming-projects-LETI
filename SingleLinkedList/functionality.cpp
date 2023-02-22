@@ -219,6 +219,26 @@ Element *createList(int &counterElements, int &lengthList) {
     return current;
 }
 
+Element *addElementToList(int index, Element *startList, Element *elementBefore, int &lengthList) {
+    Element *newElement = new Element;
+    lengthList++;
+    std::cout << "Введите значение элемента" << std::endl;
+    newElement->number = validation();
+    if (startList == nullptr) {
+        newElement->next = nullptr;
+        startList = newElement;
+        return startList;
+    }
+    if (index == -1) {
+        newElement->next = startList;
+        return newElement;
+    }
+    Element *current = (elementBefore == nullptr) ? getElementByIndex(index, startList) : elementBefore;
+    newElement->next = current->next;
+    current->next = newElement;
+    return newElement;
+}
+
 
 
 
