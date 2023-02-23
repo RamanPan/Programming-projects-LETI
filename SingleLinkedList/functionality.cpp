@@ -239,6 +239,22 @@ Element *addElementToList(int index, Element *startList, Element *elementBefore,
     return newElement;
 }
 
+Element *insertAFewElements(int index, Element *startList, int &lengthList) {
+    std::cout << "Введите кол-во добавляемых элементов" << std::endl;
+    int quantityElements = validation(), i = 0;
+    Element *addedElement = nullptr;
+    if (startList == nullptr || index == -1) {
+        i = 1;
+        startList = addElementToList(index, startList, nullptr, lengthList);
+        if (index == -1) index++;
+//        addedElement = startList;
+    }
+    for (; i < quantityElements; ++i) {
+        addedElement = addElementToList(index, startList, addedElement, lengthList);
+    }
+    return startList;
+}
+
 
 int getIndex(int &lengthList) {
     printf("Введите индекс(от 0 до %d)\n", lengthList - 1);
