@@ -219,6 +219,15 @@ Element *createList(int &counterElements, int &lengthList) {
     return current;
 }
 
+Element *getElementByIndex(int index, Element *startList) {
+    if (index < 0) return nullptr;
+    Element *current = startList;
+    for (int i = 0; i < index; ++i) {
+        current = current->next;
+    }
+    return current;
+}
+
 Element *addElementToList(int index, Element *startList, Element *elementBefore, int &lengthList) {
     Element *newElement = new Element;
     lengthList++;
@@ -253,27 +262,6 @@ Element *insertAFewElements(int index, Element *startList, int &lengthList) {
         addedElement = addElementToList(index, startList, addedElement, lengthList);
     }
     return startList;
-}
-
-Element *deleteElement(int index, Element *startList, Element *elementBeforeElementForDelete, int &lengthList) {
-    Element *elementForDelete, *newStartList;
-    lengthList--;
-    if (index == 0) {
-        elementForDelete = startList;
-        newStartList = startList->next;
-        delete elementForDelete;
-        return newStartList;
-    }
-    if (elementBeforeElementForDelete == nullptr) {
-        elementBeforeElementForDelete = getElementByIndex(index - 1, startList);
-        elementForDelete = elementBeforeElementForDelete->next;
-        elementBeforeElementForDelete->next = elementForDelete->next;
-    } else {
-        elementForDelete = elementBeforeElementForDelete->next;
-        elementBeforeElementForDelete->next = elementForDelete->next;
-    }
-    delete elementForDelete;
-    return elementBeforeElementForDelete;
 }
 
 
