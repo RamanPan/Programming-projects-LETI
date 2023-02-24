@@ -264,6 +264,28 @@ Element *insertAFewElements(int index, Element *startList, int &lengthList) {
     return startList;
 }
 
+Element *deleteElement(int index, Element *startList, Element *elementBeforeElementForDelete, int &lengthList) {
+    Element *elementForDelete, *newStartList;
+    lengthList--;
+    if (index == 0) {
+        elementForDelete = startList;
+        newStartList = startList->next;
+        delete elementForDelete;
+        return newStartList;
+    }
+    if (elementBeforeElementForDelete == nullptr) {
+        elementBeforeElementForDelete = getElementByIndex(index - 1, startList);
+        elementForDelete = elementBeforeElementForDelete->next;
+        elementBeforeElementForDelete->next = elementForDelete->next;
+    } else {
+        elementForDelete = elementBeforeElementForDelete->next;
+        elementBeforeElementForDelete->next = elementForDelete->next;
+    }
+    delete elementForDelete;
+    return elementBeforeElementForDelete;
+}
+
+
 
 int getIndex(int &lengthList) {
     printf("Введите индекс(от 0 до %d)\n", lengthList - 1);
