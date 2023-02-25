@@ -308,6 +308,15 @@ Element *deletePartOfList(Element *startList, int &lengthList) {
 }
 
 
+void deleteList(Element *startList, int &lengthList) {
+    Element *elementForDelete;
+    while (startList != nullptr) {
+        elementForDelete = startList;
+        startList = startList->next;
+        delete elementForDelete;
+    }
+    lengthList = 0;
+}
 
 
 int getIndex(int &lengthList) {
