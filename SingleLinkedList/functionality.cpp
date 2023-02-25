@@ -285,6 +285,29 @@ Element *deleteElement(int index, Element *startList, Element *elementBeforeElem
     return elementBeforeElementForDelete;
 }
 
+Element *deletePartOfList(Element *startList, int &lengthList) {
+    if(lengthList == 1) {
+        return deleteElement(0,startList, nullptr,lengthList);
+    }
+    std::cout << "Введите диапозон удаления" << std::endl;
+    printf("Левая граница(от 0 до %d)\n", lengthList - 2);
+    int leftLimit = validationWithArgument(0, lengthList - 2);
+    printf("Правая граница(от %d до %d)\n", leftLimit, lengthList - 1);
+    int rightLimit = validationWithArgument(leftLimit, lengthList - 1);
+    Element *elementBeforeForDelete = nullptr;
+    while (leftLimit <= rightLimit) {
+        if (leftLimit != 0) {
+            elementBeforeForDelete = deleteElement(leftLimit, startList, elementBeforeForDelete, lengthList);
+            leftLimit++;
+        } else {
+            startList = deleteElement(leftLimit, startList, elementBeforeForDelete, lengthList);
+            rightLimit--;
+        }
+    }
+    return (leftLimit == 0) ? startList : nullptr;
+}
+
+
 
 
 int getIndex(int &lengthList) {
