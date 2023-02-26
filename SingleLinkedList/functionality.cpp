@@ -318,6 +318,21 @@ void deleteList(Element *startList, int &lengthList) {
     lengthList = 0;
 }
 
+Element *reverseList(Element *startList, int lengthList) {
+    Element *arr[lengthList];
+    for (int i = 0; i < lengthList; ++i) {
+        arr[i] = startList;
+        startList = startList->next;
+    }
+    for (int i = lengthList - 1; i >= 0; --i) {
+        if (i != 0) arr[i]->next = arr[i - 1];
+        else arr[i]->next = nullptr;
+    }
+
+    return arr[lengthList - 1];
+}
+
+
 
 int getIndex(int &lengthList) {
     printf("Введите индекс(от 0 до %d)\n", lengthList - 1);
