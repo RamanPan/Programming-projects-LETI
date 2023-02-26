@@ -332,6 +332,12 @@ Element *reverseList(Element *startList, int lengthList) {
     return arr[lengthList - 1];
 }
 
+Element *getTail(Element *cur) {
+    while (cur != nullptr && cur->next != nullptr)
+        cur = cur->next;
+    return cur;
+}
+
 
 
 int getIndex(int &lengthList) {
