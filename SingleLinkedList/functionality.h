@@ -46,10 +46,10 @@ Element *partitionForDescending(Element *head, Element *end,
 
 Element *getTail(Element *cur);
 
-Element *quickSortRecur1(Element *head,
+Element *quickSortRecurAscending(Element *head,
                          Element *end);
 
-Element *quickSortRecur2(Element *head,
+Element *quickSortRecurDescending(Element *head,
                          Element *end);
 
 int getIndex(int &lengthList);
