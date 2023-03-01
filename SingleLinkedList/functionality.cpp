@@ -289,7 +289,7 @@ Element *deletePartOfList(Element *startList, int &lengthList) {
     if(lengthList == 1) {
         return deleteElement(0,startList, nullptr,lengthList);
     }
-    std::cout << "Введите диапозон удаления" << std::endl;
+    std::cout << "Введите диапазон удаления" << std::endl;
     printf("Левая граница(от 0 до %d)\n", lengthList - 2);
     int leftLimit = validationWithArgument(0, lengthList - 2);
     printf("Правая граница(от %d до %d)\n", leftLimit, lengthList - 1);
