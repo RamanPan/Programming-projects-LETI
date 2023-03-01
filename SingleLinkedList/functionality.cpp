@@ -180,17 +180,58 @@ void showHelloMessage() {
 void showMenu(int position, int lengthList, Element *startList) {
     system("cls");
     printf("Выберите действие:\n");
-    printf("1) Пересоздать список%s\n", position == 1 ? " <--" : " ");
-    printf("2) Добавить элемент по индексу%s\n", position == 2 ? " <--" : " ");
-    printf("3) Вставить список новых элементов%s\n", position == 3 ? " <--" : " ");
-    printf("4) Удалить элемент по индексу%s\n", position == 4 ? " <--" : " ");
-    printf("5) Удалить часть списка%s\n", position == 5 ? " <--" : " ");
-    printf("6) Перевернуть список%s\n", position == 6 ? " <--" : " ");
-    printf("7) Отсортировать список по возрастанию%s\n", position == 7 ? " <--" : " ");
-    printf("8) Отсортировать список по убыванию%s\n", position == 8 ? " <--" : " ");
-    printf("9) Удалить весь список%s\n", position == 9 ? " <--" : " ");
-    printf("0) Выход%s\n", position == 10 ? " <--" : " ");
+    if (position == 1) {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
+        printf("1) Пересоздать список <--\n");
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+    } else printf("1) Пересоздать список\n");
+    if (position == 2) {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
+        printf("2) Добавить элемент по индексу <--\n");
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+    } else printf("2) Добавить элемент по индексу\n");
+    if (position == 3) {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
+        printf("3) Вставить список новых элементов <--\n");
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+    } else printf("3) Вставить список новых элементов\n");
+    if (position == 4) {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
+        printf("4) Удалить элемент по индексу <--\n");
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+    } else printf("4) Удалить элемент по индексу\n");
+    if (position == 5) {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
+        printf("5) Удалить часть списка <--\n");
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+    } else printf("5) Удалить часть списка\n");
+    if (position == 6) {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
+        printf("6) Перевернуть список <--\n");
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+    } else printf("6) Перевернуть список\n");
+    if (position == 7) {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
+        printf("7) Отсортировать список по возрастанию <--\n");
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+    } else printf("7) Отсортировать список по возрастанию\n");
+    if (position == 8) {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
+        printf("8) Отсортировать список по убыванию <--\n");
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+    } else printf("8) Отсортировать список по убыванию\n");
+    if (position == 9) {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 10);
+        printf("9) Удалить весь список <--\n");
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+    } else printf("9) Удалить весь список\n");
+    if (position == 10) {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 12);
+        printf("0) Выход <--\n");
+    } else printf("0) Выход\n");
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 6);
     printf("Длина списка: %d\n", lengthList);
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
     printf("Список: ");
     showList(startList);
 }
@@ -286,8 +327,8 @@ Element *deleteElement(int index, Element *startList, Element *elementBeforeElem
 }
 
 Element *deletePartOfList(Element *startList, int &lengthList) {
-    if(lengthList == 1) {
-        return deleteElement(0,startList, nullptr,lengthList);
+    if (lengthList == 1) {
+        return deleteElement(0, startList, nullptr, lengthList);
     }
     std::cout << "Введите диапазон удаления" << std::endl;
     printf("Левая граница(от 0 до %d)\n", lengthList - 2);
@@ -401,7 +442,7 @@ Element *partitionForDescending(Element *head, Element *end,
 }
 
 Element *quickSortRecurAscending(Element *head,
-                         Element *end) {
+                                 Element *end) {
     if (!head || head == end)
         return head;
     Element *newHead = nullptr, *newEnd = nullptr;
@@ -409,8 +450,7 @@ Element *quickSortRecurAscending(Element *head,
     pivot = partitionForAscending(head, end, &newHead, &newEnd);
     if (newHead != pivot) {
         Element *tmp = newHead;
-        while (tmp->next != pivot)
-            tmp = tmp->next;
+        while (tmp->next != pivot) tmp = tmp->next;
         tmp->next = nullptr;
         newHead = quickSortRecurAscending(newHead, tmp);
         tmp = getTail(newHead);
@@ -421,7 +461,7 @@ Element *quickSortRecurAscending(Element *head,
 }
 
 Element *quickSortRecurDescending(Element *head,
-                         Element *end) {
+                                  Element *end) {
     if (!head || head == end)
         return head;
     Element *newHead = nullptr, *newEnd = nullptr;
@@ -429,8 +469,7 @@ Element *quickSortRecurDescending(Element *head,
     pivot = partitionForDescending(head, end, &newHead, &newEnd);
     if (newHead != pivot) {
         Element *tmp = newHead;
-        while (tmp->next != pivot)
-            tmp = tmp->next;
+        while (tmp->next != pivot) tmp = tmp->next;
         tmp->next = nullptr;
         newHead = quickSortRecurDescending(newHead, tmp);
         tmp = getTail(newHead);
