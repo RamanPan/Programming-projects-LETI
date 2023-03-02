@@ -3,4 +3,4 @@ project(SingleLinkedList)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(SingleLinkedList main.cpp functionality.cpp functionality.h)
+add_executable(SingleLinkedList main.cpp AllFunctions.h AddInListFunctions.cpp DeleteFromListFunctions.cpp SortingFunctions.cpp BaseFunctions.cpp)

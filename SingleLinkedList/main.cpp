@@ -1,4 +1,4 @@
-#include "functionality.h"
+#include "AllFunctions.h"
 
 int main() {
     consoleInterface();

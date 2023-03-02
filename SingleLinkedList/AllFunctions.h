@@ -1,7 +1,14 @@
-#ifndef SINGLELINKEDLIST_FUNCTIONALITY_H
-#define SINGLELINKEDLIST_FUNCTIONALITY_H
+#ifndef SINGLELINKEDLIST_ALLFUNCTIONS_H
+#define SINGLELINKEDLIST_ALLFUNCTIONS_H
 
 #include "constants.h"
+#include <cstdio>
+#include <cstdlib>
+#include <conio.h>
+#include <iomanip>
+#include <windows.h>
+#include <iostream>
+
 
 struct Element {
     int number;
@@ -47,10 +54,10 @@ Element *partitionForDescending(Element *head, Element *end,
 Element *getTail(Element *cur);
 
 Element *quickSortRecurAscending(Element *head,
-                         Element *end);
+                                 Element *end);
 
 Element *quickSortRecurDescending(Element *head,
-                         Element *end);
+                                  Element *end);
 
 int getIndex(int &lengthList);
 
@@ -64,4 +71,4 @@ void choice(char &YN);
 
 long validationWithArgument(int min, int max);
 
-#endif //SINGLELINKEDLIST_FUNCTIONALITY_H
+#endif //SINGLELINKEDLIST_ALLFUNCTIONS_H
