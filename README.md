@@ -8,4 +8,4 @@
 ## 5 - Оperations on matrices (Операции над матрицами) - сдано
 ## * - Snake Game (Игра "Змейка") - сдано
 # Второй семестр
-## 1 - Single Linked List with Аrrow and Number Сontrol (Односвязный связной список с стрелочным и цифровым управлением) - 
+## 1 - Single Linked List with Аrrow and Number Сontrol (Односвязный связной список с стрелочным и цифровым управлением) - сдано 02.03.2023 
