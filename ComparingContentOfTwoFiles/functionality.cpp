@@ -1,3 +1,4 @@
+#include <iomanip>
 #include "functionality.h"
 
 ifstream getFileWithCheckExists() {
@@ -26,20 +27,26 @@ ifstream getFileWithCheckExists() {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
     return file;
 }
-
-void showMenu(ifstream& first, ifstream& second) {
-    cout.width(30),cout << "first",cout.width(30), cout << "|",cout.width(30),cout << "second";
-    string lineFirstFile,lineSecondFile;
-    while(!first.eof() && !second.eof()) {
-        if(!first.eof()) getline(first,lineFirstFile);
-        else lineFirstFile = "";
-        if(!second.eof()) getline(second,lineSecondFile);
-        else lineSecondFile = "";
-        cout.width(30);
-        cout << lineFirstFile;
-        cout.width(30);
+vector<string> readAllLinesFromFile(ifstream& file) {
+    string line;
+    vector<string> allLines;
+    while(getline(file,line)) {
+        allLines.push_back(line);
+    }
+    return allLines;
+}
+void showMenu(vector<string> first, vector<string> second) {
+    cout.width(30),cout << "first",cout.width(30), cout << "|",cout.width(30),cout << "second" << endl;
+    int i = 0;
+    string lineFirstFile, lineSecondFile;
+    cout.fill(' ');
+    while(i < max(first.size(),second.size())) {
+        if(i < first.size()) lineFirstFile = first.at(i);
+        if(i < second.size()) lineSecondFile = second.at(i);
+        cout << lineFirstFile << setw(60 - lineFirstFile.size());
         cout << "|";
-        cout.width(30);
         cout << lineSecondFile;
+        cout << endl;
+        i++;
     }
 }

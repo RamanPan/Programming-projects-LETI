@@ -9,6 +9,8 @@
 using namespace std;
 ifstream getFileWithCheckExists();
 
-void showMenu(ifstream& first, ifstream& second);
+void showMenu(vector<string> first, vector<string> second);
+
+vector<string> readAllLinesFromFile(ifstream& file);
 
 #endif //COMPARINGCONTENTOFTWOFILES_FUNCTIONALITY_H
