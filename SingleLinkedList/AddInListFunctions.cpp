@@ -1,11 +1,10 @@
 #include "AllFunctions.h"
 
 
-Element *createList(int &counterElements, int &lengthList) {
+Element *createList(int &lengthList) {
     system("cls");
     std::cout << "Введите кол-во создаваемых элементов" << std::endl;
-    lengthList = validation();
-    counterElements = lengthList;
+    lengthList = validationWithArgument(MIN_ELEMENTS_QUANTITY,MAX_ELEMENTS_QUANTITY);
     Element *current = nullptr, *next = nullptr;
     for (int i = lengthList; i > 0; --i) {
         current = new Element;
@@ -38,13 +37,12 @@ Element *addElementToList(int index, Element *startList, Element *elementBefore,
 
 Element *insertAFewElements(int index, Element *startList, int &lengthList) {
     std::cout << "Введите кол-во добавляемых элементов" << std::endl;
-    int quantityElements = validation(), i = 0;
+    int quantityElements = validationWithArgument(MIN_ELEMENTS_QUANTITY,MAX_ELEMENTS_QUANTITY), i = 0;
     Element *addedElement = nullptr;
     if (startList == nullptr || index == -1) {
         i = 1;
         startList = addElementToList(index, startList, nullptr, lengthList);
         if (index == -1) index++;
-//        addedElement = startList;
     }
     for (; i < quantityElements; ++i) {
         addedElement = addElementToList(index, startList, addedElement, lengthList);

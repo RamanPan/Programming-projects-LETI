@@ -5,9 +5,9 @@ void consoleInterface() {
     bool exitFlag = false, permissionFlag;
     short symbol;
     short position = 1;
-    int counterElements, lengthList, index = -1;
+    int lengthList, index = -1;
     showHelloMessage();
-    Element *startElement = createList(counterElements, lengthList), *tempPtr;
+    Element *startElement = createList(lengthList), *tempPtr;
     showMenu(position, lengthList, startElement);
     while (!exitFlag) {
         permissionFlag = false;
@@ -77,7 +77,7 @@ void consoleInterface() {
             case 1:
                 if (permissionFlag) {
                     deleteList(startElement, lengthList);
-                    startElement = createList(counterElements, lengthList);
+                    startElement = createList(lengthList);
                     showMenu(position, lengthList, startElement);
                 }
                 break;

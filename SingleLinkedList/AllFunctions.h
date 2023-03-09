@@ -29,7 +29,7 @@ void showHelloMessage();
 
 void consoleInterface();
 
-Element *createList(int &counterElements, int &lengthList);
+Element *createList(int &lengthList);
 
 void deleteList(Element *startList, int &lengthList);
 
