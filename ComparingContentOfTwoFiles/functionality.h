@@ -7,7 +7,7 @@
 #include <windows.h>
 #include <utility>
 #include <vector>
-#include <stdio.h>
+#include <cstdio>
 #include <conio.h>
 
 #define ESC 27
@@ -65,6 +65,8 @@ public:
 };
 
 ifstream getFileWithCheckExists();
+
+ifstream getFileWithCheckExists(char* path);
 
 void findDiff(vector<Word> &wordsFromFirstFile, vector<Word> &wordsFromSecondFile);
 

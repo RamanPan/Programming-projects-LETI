@@ -1,16 +1,23 @@
 #include <iomanip>
 #include "functionality.h"
+#include "helpFunc.h"
 
-ifstream getFileWithCheckExists() {
+ifstream getFileWithCheckExists(char *path) {
     ifstream file;
-    string path;
+    string pathToFile = path;
+    string prefix = "../";
     bool isOpen = false;
+    if (!pathToFile.empty()) {
+        file.open(pathToFile);
+        isOpen = true;
+    }
     while (!isOpen) {
         cout << "Введите путь к файлу" << endl;
-        cin >> path;
-        file.open(path);
+        cin >> pathToFile;
+        if (pathToFile.find('/') == std::string::npos) pathToFile = prefix.append(pathToFile);
+        file.open(pathToFile);
         if (file.is_open()) {
-            if (path.substr(path.find_last_of('.') + 1) == "txt") isOpen = true;
+            if (pathToFile.substr(pathToFile.find_last_of('.') + 1) == "txt") isOpen = true;
             else {
                 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
                 printf("Расширение файла не txt! Попробуйте снова!\n");
@@ -21,32 +28,83 @@ ifstream getFileWithCheckExists() {
             printf("Неправильный путь к файлу! Попробуйте снова!\n");
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
         }
+        prefix = "../";
     }
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN);
     printf("Файл успешно открыт!\n");
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
     return file;
 }
-vector<string> readAllLinesFromFile(ifstream& file) {
+
+vector<string> readAllLinesFromFile(ifstream &file) {
     string line;
     vector<string> allLines;
-    while(getline(file,line)) {
+    while (getline(file, line)) {
         allLines.push_back(line);
     }
     return allLines;
 }
-void showMenu(vector<string> first, vector<string> second) {
-    cout.width(30),cout << "first",cout.width(30), cout << "|",cout.width(30),cout << "second" << endl;
-    int i = 0;
-    string lineFirstFile, lineSecondFile;
+
+void getAllWordsFromLines(vector<string> &lines, vector<Word> &words) {
+    vector<string> splitLine;
+    for (int i = 0; i < lines.size(); ++i) {
+        splitLine = split(lines.at(i), ' ');
+        for (int j = 0; j < splitLine.size(); ++j) {
+            Word word(j, i, splitLine.at(j));
+            words.push_back(word);
+        }
+    }
+}
+
+void showMenu(vector<Word> &first, vector<Word> &second) {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    cout.width(45), cout << "first", cout.width(50), cout << "|", cout.width(45), cout << "second" << endl;
+    int countFirst = 0, countSecond = 0, countLine = 0;
     cout.fill(' ');
-    while(i < max(first.size(),second.size())) {
-        if(i < first.size()) lineFirstFile = first.at(i);
-        if(i < second.size()) lineSecondFile = second.at(i);
-        cout << lineFirstFile << setw(60 - lineFirstFile.size());
+    int sizeLine;
+    Word *word;
+    while (countFirst < first.size() || countSecond < second.size()) {
+        sizeLine = 0;
+        do {
+            if (countFirst == first.size()) break;
+            word = &(first.at(countFirst));
+            if (countLine != word->getNumberLine()) break;
+            word->getStatus() == RED ? SetConsoleTextAttribute(hConsole, 12) :
+            word->getStatus() == GREEN ? SetConsoleTextAttribute(hConsole, 10) : SetConsoleTextAttribute(hConsole, 7);
+            cout << (*word).getStatement() << " ";
+            sizeLine += word->getStatement().size() + 1;
+            countFirst++;
+        } while (true);
+        cout << setw(95 - sizeLine);
+        SetConsoleTextAttribute(hConsole, 6);
         cout << "|";
-        cout << lineSecondFile;
+        sizeLine = 0;
+        do {
+            if (countSecond == second.size()) break;
+            word = &(second.at(countSecond));
+            if (countLine != word->getNumberLine()) break;
+            word->getStatus() == RED ? SetConsoleTextAttribute(hConsole, 12) :
+            word->getStatus() == GREEN ? SetConsoleTextAttribute(hConsole, 10) : SetConsoleTextAttribute(hConsole, 7);
+            cout << word->getStatement() << " ";
+            sizeLine += word->getStatement().size();
+            countSecond++;
+        } while (true);
         cout << endl;
-        i++;
+        countLine++;
+    }
+    SetConsoleTextAttribute(hConsole, 7);
+}
+
+void findDiff(vector<Word> &wordsFromFirstFile, vector<Word> &wordsFromSecondFile) {
+    for (const Word &w: wordsFromFirstFile) {
+        for (int i = 0; i < wordsFromSecondFile.size(); ++i) {
+            if (w.getStatement() == wordsFromSecondFile.at(i).getStatement() &&
+                wordsFromSecondFile.at(i).getStatus() != GREEN) {
+                wordsFromSecondFile.at(i).setStatus(GREEN);
+                i = wordsFromSecondFile.size();
+            } else {
+                if (wordsFromSecondFile.at(i).getStatus() != GREEN) { wordsFromSecondFile.at(i).setStatus(RED); }
+            }
+        }
     }
 }
