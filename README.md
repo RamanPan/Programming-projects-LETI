@@ -9,5 +9,6 @@
 ## * - Snake Game (Игра "Змейка") - сдано
 # Второй семестр
 ## 1 - Single Linked List with Аrrow and Number Сontrol (Односвязный связной список с стрелочным и цифровым управлением) - сдано 02.03.2023 
-## 2 - Comparing content of two files (Сравнение содержимого двух файлов) - 
+## 2 - Comparing content of two files (Сравнение содержимого двух файлов) - сдано 16.03.2023
+## 3 - Hierarchical structure of data storage (Иерархическая структура хранения данных)
 # Курсовой проект: 
