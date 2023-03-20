@@ -1,20 +1,39 @@
 #include <iomanip>
+#include <algorithm>
 #include "functionality.h"
 #include "helpFunc.h"
 
 ifstream getFileWithCheckExists(char *path) {
     ifstream file;
-    string pathToFile = path;
+    string pathToFile;
+    if (path != nullptr) pathToFile = path;
     string prefix = "../";
     bool isOpen = false;
     if (!pathToFile.empty()) {
+        if (pathToFile.find(':') == std::string::npos) pathToFile = prefix.append(pathToFile);
         file.open(pathToFile);
+        if (file.is_open()) {
+            if (pathToFile.substr(pathToFile.find_last_of('.') + 1) == "txt") isOpen = true;
+            else {
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+                printf("Расширение файла не txt!\n");
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+                exit(0);
+            }
+        } else {
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
+            printf("Неправильный путь к файлу!\n");
+            SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
+            exit(0);
+        }
         isOpen = true;
     }
     while (!isOpen) {
         cout << "Введите путь к файлу" << endl;
+        prefix = "../";
         cin >> pathToFile;
-        if (pathToFile.find('/') == std::string::npos) pathToFile = prefix.append(pathToFile);
+        if (pathToFile.find(':') == std::string::npos) pathToFile = prefix.append(pathToFile);
+//        replace(pathToFile.begin(), pathToFile.end(), '/', '\\');
         file.open(pathToFile);
         if (file.is_open()) {
             if (pathToFile.substr(pathToFile.find_last_of('.') + 1) == "txt") isOpen = true;

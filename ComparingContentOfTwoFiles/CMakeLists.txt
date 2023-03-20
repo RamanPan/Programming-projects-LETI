@@ -6,5 +6,4 @@ set(CMAKE_CXX_STANDARD_LIBRARIES "-static-libgcc -static-libstdc++ -lwsock32 -lw
 
 set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive")
 
-
 add_executable(ComparingContentOfTwoFiles main.cpp functionality.cpp functionality.h helpFunc.cpp helpFunc.h)
