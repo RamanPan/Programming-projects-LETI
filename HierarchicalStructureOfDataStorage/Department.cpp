@@ -8,7 +8,7 @@ void Department::setTitle(const std::string &title) {
     Department::title = title;
 }
 
-const std::vector<Group> &Department::getGroups() const {
+std::vector<Group> &Department::getGroups() const {
     return groups;
 }
 

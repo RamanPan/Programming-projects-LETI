@@ -8,7 +8,7 @@ void Faculty::setTitle(const std::string &title) {
     Faculty::title = title;
 }
 
-const std::vector<Department> &Faculty::getDepartments() const {
+std::vector<Department> &Faculty::getDepartments() {
     return departments;
 }
 

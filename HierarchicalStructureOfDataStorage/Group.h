@@ -13,7 +13,7 @@ public:
 
     void setNumber(int number);
 
-    const std::vector<Student> &getStudents() const;
+    std::vector<Student> &getStudents();
 
     void setStudents(const std::vector<Student> &students);
 

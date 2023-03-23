@@ -16,7 +16,7 @@ public:
 
     void setTitle(const std::string &title);
 
-    const std::vector<Group> &getGroups() const;
+    std::vector<Group> &getGroups() const;
 
     void setGroups(const std::vector<Group> &groups);
 };

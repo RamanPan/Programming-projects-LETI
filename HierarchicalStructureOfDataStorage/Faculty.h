@@ -17,8 +17,9 @@ public:
 
     void setTitle(const std::string &title);
 
-    const std::vector<Department> &getDepartments() const;
+    std::vector<Department> &getDepartments();
 
     void setDepartments(const std::vector<Department> &departments);
 };
+
 #endif //HIERARCHICALSTRUCTUREOFDATASTORAGE_FACULTY_H

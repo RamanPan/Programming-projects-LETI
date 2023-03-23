@@ -19,8 +19,9 @@ public:
 
     void setTitle(const std::string &title);
 
-    const std::vector<Faculty> &getFaculties() const;
+    std::vector<Faculty> &getFaculties();
 
     void setFaculties(const std::vector<Faculty> &faculties);
 };
+
 #endif //HIERARCHICALSTRUCTUREOFDATASTORAGE_UNIVERSITY_H

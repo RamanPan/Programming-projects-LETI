@@ -8,7 +8,7 @@ void Group::setNumber(int number) {
     Group::number = number;
 }
 
-const std::vector<Student> &Group::getStudents() const {
+std::vector<Student> &Group::getStudents() {
     return students;
 }
 
