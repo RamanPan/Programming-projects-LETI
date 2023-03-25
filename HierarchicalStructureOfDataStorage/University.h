@@ -15,11 +15,19 @@ public:
 
     explicit University(const std::string &title);
 
+    void addFaculty();
+
+    Faculty *findFaculty(std::string data);
+
+    void deleteFaculty(std::string data);
+
     const std::string &getTitle() const;
 
     void setTitle(const std::string &title);
 
     std::vector<Faculty> &getFaculties();
+
+    void deleteAll();
 
     void setFaculties(const std::vector<Faculty> &faculties);
 };
