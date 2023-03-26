@@ -13,13 +13,13 @@ private:
 public:
     University();
 
-    explicit University(const std::string &title);
+    explicit University(std::string title);
 
     void addFaculty();
 
-    Faculty *findFaculty(std::string data);
+    Faculty *findFaculty(const std::string& data);
 
-    void deleteFaculty(std::string data);
+    void deleteFaculty(const std::string& data);
 
     const std::string &getTitle() const;
 

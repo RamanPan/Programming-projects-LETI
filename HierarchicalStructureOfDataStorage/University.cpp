@@ -2,6 +2,7 @@
 
 #include <utility>
 #include "validationFunctions.h"
+#include "Messages.h"
 
 const std::string &University::getTitle() const {
     return title;
@@ -19,7 +20,7 @@ void University::setFaculties(const std::vector<Faculty> &faculties) {
     University::faculties = faculties;
 }
 
-University::University(const std::string &title) : title(title) {}
+University::University(std::string title) : title(std::move(title)) {}
 
 University::University() {}
 
@@ -39,7 +40,7 @@ void University::addFaculty() {
     faculties.push_back(faculty);
 }
 
-Faculty *University::findFaculty(std::string data) {
+Faculty *University::findFaculty(const std::string &data) {
     for (Faculty &f: faculties) {
         if (f.getTitle() == data)
             return &f;
@@ -48,7 +49,7 @@ Faculty *University::findFaculty(std::string data) {
     return nullptr;
 }
 
-void University::deleteFaculty(std::string data) {
+void University::deleteFaculty(const std::string &data) {
     int index = -1;
     Faculty f;
     for (int i = 0; i < faculties.size(); ++i) {
@@ -62,3 +63,11 @@ void University::deleteFaculty(std::string data) {
     if (index != -1) faculties.erase(faculties.begin() + index);
     else showErrorMessage("Такого факультета не существует");
 }
+
+void University::deleteAll() {
+    for (Faculty f: faculties) {
+        f.deleteAll();
+    }
+    faculties.clear();
+}
+
