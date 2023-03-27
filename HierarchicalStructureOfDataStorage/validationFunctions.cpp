@@ -2,14 +2,15 @@
 #include <iostream>
 #include "validationFunctions.h"
 
-std::string validateString(std::string message) {
+std::string validateString(std::string message, bool validate) {
     std::string string;
     showInfoMessage(message);
     std::cin >> string;
-    while (string.empty()) {
-        showErrorMessage("Строка не может быть пустой");
-        std::cin >> string;
-    }
+    if (validate)
+        while (string.empty()) {
+            showErrorMessage("Строка не может быть пустой");
+            std::cin >> string;
+        }
     return string;
 }
 
@@ -50,8 +51,8 @@ long validationWithArgument(int min, int max) {
 void choice(char &YN) {
     bool exit = false;
     while (!exit) {
-        YN = (char) getchar();
         fflush(stdin);
+        YN = (char) getchar();
         if (YN == '1' || YN == '2') exit = true;
         else if (YN != ENTER) {
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
