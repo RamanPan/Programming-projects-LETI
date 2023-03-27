@@ -19,7 +19,7 @@ public:
 
     Faculty *findFaculty(const std::string& data);
 
-    void deleteFaculty(const std::string& data);
+    bool deleteFaculty(const std::string& data);
 
     const std::string &getTitle() const;
 

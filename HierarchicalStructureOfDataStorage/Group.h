@@ -13,6 +13,14 @@ public:
 
     void setNumber(int number);
 
+    void addStudent();
+
+    Student *findStudent(const std::string& data);
+
+    void deleteStudent(const std::string& data);
+
+    void deleteAll();
+
     std::vector<Student> &getStudents();
 
     void setStudents(const std::vector<Student> &students);

@@ -27,7 +27,7 @@ University::University() {}
 void University::addFaculty() {
     Faculty faculty;
     char permission;
-    faculty.setTitle(validateString("Введите название факультета"));
+    faculty.setTitle(validateString("Введите название факультета", true));
     showInfoMessage("Создать кафедры прямо сейчас?(1 - Да, 2 - Нет)");
     choice(permission);
     if (permission == '1') {
@@ -49,7 +49,7 @@ Faculty *University::findFaculty(const std::string &data) {
     return nullptr;
 }
 
-void University::deleteFaculty(const std::string &data) {
+bool University::deleteFaculty(const std::string &data) {
     int index = -1;
     Faculty f;
     for (int i = 0; i < faculties.size(); ++i) {
@@ -60,8 +60,12 @@ void University::deleteFaculty(const std::string &data) {
             break;
         }
     }
-    if (index != -1) faculties.erase(faculties.begin() + index);
+    if (index != -1) {
+        faculties.erase(faculties.begin() + index);
+        return true;
+    }
     else showErrorMessage("Такого факультета не существует");
+    return false;
 }
 
 void University::deleteAll() {
