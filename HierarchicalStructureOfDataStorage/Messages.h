@@ -5,7 +5,7 @@
 
 void showErrorMessage(const std::string &message);
 
-void showInfoMessage(const std::string message);
+void showInfoMessage(const std::string &message);
 
 long validation();
 
