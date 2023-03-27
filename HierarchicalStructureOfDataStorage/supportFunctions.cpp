@@ -3,6 +3,7 @@
 #include "supportFunctions.h"
 #include "constants.h"
 #include "Messages.h"
+#include "validationFunctions.h"
 
 void showMenuForUniversity(int position, University &university) {
     system("cls");
@@ -86,19 +87,18 @@ void consoleInterfaceForUniversity(University &university) {
         switch (position) {
             case 1:
                 if (permissionFlag) {
-                    if (permissionFlag) {
-                        Faculty faculty;
-                        std::cout << "Введите название факультета!" << std::endl;
-                        std::cin >> title;
-                        faculty.setTitle(title);
-                        if (title.empty()) showErrorMessage("Название не может быть пустым!");
-                        else university.getFaculties().push_back(faculty);
-                    }
+                    university.addFaculty();
+                    showMenuForUniversity(position, university);
+
                 }
                 break;
             case 2:
                 if (permissionFlag) {
-
+                    if (!university.getFaculties().empty()) {
+                        if (university.deleteFaculty(
+                                validateString("Введите название факультета", true)))
+                            showMenuForUniversity(position, university);
+                    } else showErrorMessage("Факультеты отсутствуют");
                 }
                 break;
             case 3:
@@ -106,22 +106,30 @@ void consoleInterfaceForUniversity(University &university) {
                     std::cout << "Введите новое название!" << std::endl;
                     std::cin >> title;
                     if (title.empty()) showErrorMessage("Название не может быть пустым!");
-                    else university.setTitle(title);
+                    else {
+                        university.setTitle(title);
+                        showMenuForUniversity(position, university);
+                    }
                 }
                 break;
             case 4:
                 if (permissionFlag) {
-
+                    if (!university.getFaculties().empty()) {
+                        Faculty *f = university.findFaculty(validateString("Введите название факультета", true));
+                        if (f != nullptr) consoleInterfaceForFaculty(*f, university);
+                    } else showErrorMessage("Факультеты отсутствуют");
                 }
                 break;
             case 5:
                 if (permissionFlag) {
 
+                    showMenuForUniversity(position, university);
                 }
                 break;
             case 6:
                 if (permissionFlag) {
 
+                    showMenuForUniversity(position, university);
                 }
                 break;
             case 7:
@@ -129,7 +137,6 @@ void consoleInterfaceForUniversity(University &university) {
                     exit(0);
                 }
                 break;
-
             default:;
         }
     }
@@ -150,7 +157,6 @@ void showMenuForFaculty(int position, Faculty &faculty) {
     std::cout << "Кафедры факультета: ";
     for (const Department &department: faculty.getDepartments())
         std::cout << department.getTitle() << std::endl;
-    std::cout << std::endl;
 }
 
 void consoleInterfaceForFaculty(Faculty &faculty, University &university) {
