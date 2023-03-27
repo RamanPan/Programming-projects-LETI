@@ -1,5 +1,6 @@
 #ifndef HIERARCHICALSTRUCTUREOFDATASTORAGE_DEPARTMENT_H
 #define HIERARCHICALSTRUCTUREOFDATASTORAGE_DEPARTMENT_H
+
 #include <string>
 #include "Group.h"
 
@@ -16,8 +17,17 @@ public:
 
     void setTitle(const std::string &title);
 
-    std::vector<Group> &getGroups() const;
+    void addGroup();
+
+    Group *findGroup(int data);
+
+    void deleteGroup(int data);
+
+    void deleteAll();
+
+    std::vector<Group> &getGroups();
 
     void setGroups(const std::vector<Group> &groups);
 };
+
 #endif //HIERARCHICALSTRUCTUREOFDATASTORAGE_DEPARTMENT_H

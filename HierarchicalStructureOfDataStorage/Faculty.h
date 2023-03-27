@@ -13,6 +13,14 @@ public:
 
     Faculty();
 
+    void addDepartment();
+
+    Department *findDepartment(const std::string& data);
+
+    void deleteDepartment(const std::string& data);
+
+    void deleteAll();
+
     const std::string &getTitle() const;
 
     void setTitle(const std::string &title);
