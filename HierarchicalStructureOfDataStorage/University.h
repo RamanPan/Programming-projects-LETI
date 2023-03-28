@@ -17,9 +17,9 @@ public:
 
     void addFaculty();
 
-    Faculty *findFaculty(const std::string& data);
+    Faculty *findFaculty(const std::string &data);
 
-    bool deleteFaculty(const std::string& data);
+    bool deleteFaculty(const std::string &data);
 
     const std::string &getTitle() const;
 
@@ -28,6 +28,10 @@ public:
     std::vector<Faculty> &getFaculties();
 
     void deleteAll();
+
+    void writeToFile(std::ofstream &out);
+
+    void readFromFile(std::istream &in);
 
     void setFaculties(const std::vector<Faculty> &faculties);
 };

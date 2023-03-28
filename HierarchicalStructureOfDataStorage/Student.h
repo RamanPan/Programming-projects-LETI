@@ -1,7 +1,14 @@
 #ifndef HIERARCHICALSTRUCTUREOFDATASTORAGE_STUDENT_H
 #define HIERARCHICALSTRUCTUREOFDATASTORAGE_STUDENT_H
+
 #include <string>
-enum Gender {MEN,WOMEN};
+#include <fstream>
+#include "conio.h"
+
+enum Gender {
+    MEN, WOMEN
+};
+
 class Student {
 private:
     std::string firstname;
@@ -10,6 +17,7 @@ private:
     Gender gender;
 public:
     Student(const std::string &firstname, const std::string &surname, const std::string &patronymic, Gender gender);
+
     Student();
 
     const std::string &getFirstname() const;
@@ -17,6 +25,10 @@ public:
     void setFirstname(const std::string &firstname);
 
     const std::string &getSurname() const;
+
+    void writeToFile(std::ofstream &out);
+
+    void readFromFile(std::istream &in);
 
     void setSurname(const std::string &surname);
 

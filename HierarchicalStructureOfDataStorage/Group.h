@@ -21,6 +21,10 @@ public:
 
     void deleteAll();
 
+    void writeToFile(std::ofstream &out);
+
+    void readFromFile(std::istream &in);
+
     std::vector<Student> &getStudents();
 
     void setStudents(const std::vector<Student> &students);
