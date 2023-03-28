@@ -23,6 +23,11 @@ public:
 
     const std::string &getTitle() const;
 
+    void writeToFile(std::ofstream &out);
+
+    void readFromFile(std::istream &in);
+
+
     void setTitle(const std::string &title);
 
     std::vector<Department> &getDepartments();

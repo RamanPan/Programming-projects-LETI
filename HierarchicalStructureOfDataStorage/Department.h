@@ -25,6 +25,10 @@ public:
 
     void deleteAll();
 
+    void writeToFile(std::ofstream &out);
+
+    void readFromFile(std::istream &in);
+
     std::vector<Group> &getGroups();
 
     void setGroups(const std::vector<Group> &groups);
