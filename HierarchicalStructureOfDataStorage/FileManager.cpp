@@ -6,7 +6,7 @@ void writeStringToFile(std::ofstream &out, const std::string &string) {
     for (char i: string) {
         out << std::bitset<8>(i) << ' ';
     }
-    out << std::bitset<8>(SPLIT_USUAL_VALUE) << ' ';
+    out << std::bitset<8>(SPLIT_USUAL_VALUE) << ' ' << std::endl;
 }
 
 std::string readStringFromFile(std::ifstream &in) {

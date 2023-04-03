@@ -45,10 +45,10 @@ void Student::setGender(Gender gender) {
 }
 
 void Student::writeToFile(std::ofstream &out) {
-    out << std::bitset<8>(IDENTITY_STUDENT) << ' ';
+    out << std::bitset<8>(IDENTITY_STUDENT) << ' ' << std::endl;
     writeStringToFile(out, firstname);
     writeStringToFile(out, surname);
     writeStringToFile(out, patronymic);
-    out << std::bitset<1>(gender);
+    out << std::bitset<8>(gender) << ' ' << std::endl;
 }
 

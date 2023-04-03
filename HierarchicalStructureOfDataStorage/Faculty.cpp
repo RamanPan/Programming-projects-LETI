@@ -74,7 +74,7 @@ bool Faculty::deleteDepartment(const std::string &data) {
 }
 
 void Faculty::writeToFile(std::ofstream &out) {
-    out << std::bitset<8>(IDENTITY_FACULTY) << ' ';
+    out << std::bitset<8>(IDENTITY_FACULTY) << ' ' << std::endl;
     writeStringToFile(out, title);
     for (Department &department: departments)
         department.writeToFile(out);

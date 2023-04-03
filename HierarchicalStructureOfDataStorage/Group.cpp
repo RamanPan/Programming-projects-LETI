@@ -68,8 +68,8 @@ void Group::deleteAll() {
 }
 
 void Group::writeToFile(std::ofstream &out) {
-    out << std::bitset<8>(IDENTITY_GROUP) << ' ';
-    out << std::bitset<16>(number) << ' ';
+    out << std::bitset<8>(IDENTITY_GROUP) << ' ' << std::endl;
+    out << std::bitset<16>(number) << ' ' << std::endl;
     for (Student &student: students)
         student.writeToFile(out);
 }

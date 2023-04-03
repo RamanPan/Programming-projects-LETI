@@ -75,7 +75,7 @@ void Department::deleteAll() {
 }
 
 void Department::writeToFile(std::ofstream &out) {
-    out << std::bitset<8>(IDENTITY_DEPARTMENT) << ' ';
+    out << std::bitset<8>(IDENTITY_DEPARTMENT) << ' ' << std::endl;
     writeStringToFile(out, title);
     for (Group &group: groups)
         group.writeToFile(out);
