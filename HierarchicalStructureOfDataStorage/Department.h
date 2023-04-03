@@ -21,13 +21,11 @@ public:
 
     Group *findGroup(int data);
 
-    void deleteGroup(int data);
+    bool deleteGroup(int data);
 
     void deleteAll();
 
     void writeToFile(std::ofstream &out);
-
-    void readFromFile(std::ifstream &in);
 
     std::vector<Group> &getGroups();
 

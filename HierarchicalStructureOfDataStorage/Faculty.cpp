@@ -53,7 +53,7 @@ Department *Faculty::findDepartment(const std::string &data) {
     return nullptr;
 }
 
-void Faculty::deleteDepartment(const std::string &data) {
+bool Faculty::deleteDepartment(const std::string &data) {
     int index = -1;
     Department d;
     for (int i = 0; i < departments.size(); ++i) {
@@ -64,19 +64,21 @@ void Faculty::deleteDepartment(const std::string &data) {
             break;
         }
     }
-    if (index != -1) departments.erase(departments.begin() + index);
+    if (index != -1) {
+        departments.erase(departments.begin() + index);
+        return true;
+    }
     else showErrorMessage("Такой кафедры не существует");
+    return false;
 
 }
 
 void Faculty::writeToFile(std::ofstream &out) {
-    writeStringToFile(out,title);
+    out << std::bitset<8>(IDENTITY_FACULTY) << ' ';
+    writeStringToFile(out, title);
     for (Department &department: departments)
         department.writeToFile(out);
 }
 
-void Faculty::readFromFile(std::istream &in) {
-
-}
 
 

@@ -17,16 +17,13 @@ public:
 
     Department *findDepartment(const std::string& data);
 
-    void deleteDepartment(const std::string& data);
+    bool deleteDepartment(const std::string& data);
 
     void deleteAll();
 
     const std::string &getTitle() const;
 
     void writeToFile(std::ofstream &out);
-
-    void readFromFile(std::ifstream &in);
-
 
     void setTitle(const std::string &title);
 

@@ -6,6 +6,12 @@ Student::Student() {}
 Student::Student(const std::string &firstname, const std::string &surname, const std::string &patronymic, Gender gender)
         : firstname(firstname), surname(surname), patronymic(patronymic), gender(gender) {}
 
+Student::Student(const std::string &firstname, const std::string &surname, const std::string &patronymic, int gender)
+        : firstname(firstname), surname(surname), patronymic(patronymic) {
+    if (gender == 0) this->gender = MEN;
+    else this->gender = WOMEN;
+}
+
 const std::string &Student::getFirstname() const {
     return firstname;
 }
@@ -39,12 +45,10 @@ void Student::setGender(Gender gender) {
 }
 
 void Student::writeToFile(std::ofstream &out) {
+    out << std::bitset<8>(IDENTITY_STUDENT) << ' ';
     writeStringToFile(out, firstname);
     writeStringToFile(out, surname);
     writeStringToFile(out, patronymic);
-    out << std::bitset<1>(gender) << std::endl;
+    out << std::bitset<1>(gender);
 }
 
-void Student::readFromFile(std::istream &in) {
-
-}

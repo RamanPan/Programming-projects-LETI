@@ -5,6 +5,7 @@
 #include <fstream>
 #include "conio.h"
 #include "FileManager.h"
+#include "constants.h"
 
 enum Gender {
     MEN, WOMEN
@@ -19,6 +20,8 @@ private:
 public:
     Student(const std::string &firstname, const std::string &surname, const std::string &patronymic, Gender gender);
 
+    Student(const std::string &firstname, const std::string &surname, const std::string &patronymic, int gender);
+
     Student();
 
     const std::string &getFirstname() const;
@@ -28,8 +31,6 @@ public:
     const std::string &getSurname() const;
 
     void writeToFile(std::ofstream &out);
-
-    void readFromFile(std::ifstream &in);
 
     void setSurname(const std::string &surname);
 

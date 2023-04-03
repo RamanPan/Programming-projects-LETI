@@ -1,9 +1,9 @@
 #include "University.h"
 
 #include <utility>
+#include <iostream>
 #include "validationFunctions.h"
 #include "Messages.h"
-#include "FileManager.h"
 
 const std::string &University::getTitle() const {
     return title;
@@ -76,13 +76,74 @@ void University::deleteAll() {
 }
 
 void University::writeToFile(std::ofstream &out) {
-    writeStringToFile(out,"u");
+    out << std::bitset<8>(IDENTITY_UNIVERSITY) << ' ';
     writeStringToFile(out, title);
     for (Faculty &faculty: faculties)
         faculty.writeToFile(out);
 }
 
-void University::readFromFile(std::istream &in) {
-
+bool University::readFromFile(std::ifstream &in) {
+    if (readAndCheckIdentity(in, 'U')) {
+        deleteAll();
+        title = readStringFromFile(in);
+        char status;
+        Faculty *nowF = nullptr;
+        Department *nowD = nullptr;
+        Group *nowG = nullptr;
+        bool notMistake = true, mistake = false;
+        while (!in.eof()) {
+            status = readIdentity(in);
+            if (status == 0) break;
+            if (mistake) {
+                std::cout << 1;
+                notMistake = false;
+            }
+            if (notMistake) {
+                switch (status) {
+                    case 'F': {
+                        Faculty faculty(readStringFromFile(in));
+                        faculties.push_back(faculty);
+                        nowF = &faculties.at(faculties.size() - 1);
+                    }
+                        break;
+                    case 'D': {
+                        Department department(readStringFromFile(in));
+                        if (nowF != nullptr) {
+                            nowF->getDepartments().push_back(department);
+                            nowD = &nowF->getDepartments().at(nowF->getDepartments().size() - 1);
+                        } else mistake = true;
+                    }
+                        break;
+                    case 'G': {
+                        Group group(readIntFromFile(in));
+                        if (nowD != nullptr) {
+                            nowD->getGroups().push_back(group);
+                            nowG = &nowD->getGroups().at(nowD->getGroups().size() - 1);
+                        } else mistake = true;
+                    }
+                        break;
+                    case 'S': {
+                        Student student;
+                        student.setFirstname(readStringFromFile(in));
+                        student.setSurname(readStringFromFile(in));
+                        student.setPatronymic(readStringFromFile(in));
+                        if (readIntFromFile(in) == 0) student.setGender(MEN);
+                        else student.setGender(WOMEN);
+                        if (nowG != nullptr) {
+                            nowG->getStudents().push_back(student);
+                        } else mistake = true;
+                    }
+                        break;
+                }
+            } else {
+                showErrorMessage("Данные в файле хранятся в неправильном формате");
+                return false;
+            }
+        }
+    } else {
+        showErrorMessage("Данные в файле хранятся в неправильном формате");
+        return false;
+    }
+    return true;
 }
 

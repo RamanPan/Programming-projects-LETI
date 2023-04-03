@@ -30,7 +30,7 @@ void Department::addGroup() {
     showInfoMessage("Добавить студентов прямо сейчас?(1 - Да, 2 - Нет)");
     choice(permission);
     if (permission == '1') {
-        showInfoMessage("Введите кол-во создаваемых групп");
+        showInfoMessage("Введите кол-во создаваемых студентов");
         int quantity = validation();
         for (int i = 0; i < quantity; ++i) {
             group.addStudent();
@@ -48,7 +48,7 @@ Group *Department::findGroup(int data) {
     return nullptr;
 }
 
-void Department::deleteGroup(int data) {
+bool Department::deleteGroup(int data) {
     int index = -1;
     Group g;
     for (int i = 0; i < groups.size(); ++i) {
@@ -59,9 +59,12 @@ void Department::deleteGroup(int data) {
             break;
         }
     }
-    if (index != -1) groups.erase(groups.begin() + index);
+    if (index != -1) {
+        groups.erase(groups.begin() + index);
+        return true;
+    }
     else showErrorMessage("Такой кафедры не существует");
-
+    return false;
 }
 
 void Department::deleteAll() {
@@ -72,7 +75,9 @@ void Department::deleteAll() {
 }
 
 void Department::writeToFile(std::ofstream &out) {
-    writeStringToFile(out,title);
+    out << std::bitset<8>(IDENTITY_DEPARTMENT) << ' ';
+    writeStringToFile(out, title);
     for (Group &group: groups)
         group.writeToFile(out);
 }
+

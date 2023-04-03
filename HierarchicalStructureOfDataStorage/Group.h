@@ -17,13 +17,11 @@ public:
 
     Student *findStudent(const std::string& data);
 
-    void deleteStudent(const std::string& data);
+    bool deleteStudent(const std::string& data);
 
     void deleteAll();
 
     void writeToFile(std::ofstream &out);
-
-    void readFromFile(std::ifstream &in);
 
     std::vector<Student> &getStudents();
 

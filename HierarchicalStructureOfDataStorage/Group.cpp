@@ -44,7 +44,7 @@ Student *Group::findStudent(const std::string &data) {
     return nullptr;
 }
 
-void Group::deleteStudent(const std::string &data) {
+bool Group::deleteStudent(const std::string &data) {
     int index = -1;
     Student s;
     for (int i = 0; i < students.size(); ++i) {
@@ -54,8 +54,12 @@ void Group::deleteStudent(const std::string &data) {
             break;
         }
     }
-    if (index != -1) students.erase(students.begin() + index);
+    if (index != -1) {
+        students.erase(students.begin() + index);
+        return true;
+    }
     else showErrorMessage("Студента с такой фамилией не существует");
+    return false;
 
 }
 
@@ -64,11 +68,9 @@ void Group::deleteAll() {
 }
 
 void Group::writeToFile(std::ofstream &out) {
-    out << std::bitset<16>(number) << std::endl;
+    out << std::bitset<8>(IDENTITY_GROUP) << ' ';
+    out << std::bitset<16>(number) << ' ';
     for (Student &student: students)
         student.writeToFile(out);
 }
 
-void Group::readFromFile(std::istream &in) {
-
-}
