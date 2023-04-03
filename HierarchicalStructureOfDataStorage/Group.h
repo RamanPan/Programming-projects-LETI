@@ -23,7 +23,7 @@ public:
 
     void writeToFile(std::ofstream &out);
 
-    void readFromFile(std::istream &in);
+    void readFromFile(std::ifstream &in);
 
     std::vector<Student> &getStudents();
 

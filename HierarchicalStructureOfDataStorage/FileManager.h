@@ -9,6 +9,6 @@ void writeStringToFile(std::ofstream &out, const std::string &string);
 
 std::string readStringFromFile(std::ifstream &in);
 
-bool readAndCheckIdentity(std::ifstream &in, int identity);
+bool readAndCheckIdentity(std::ifstream &in, char identity);
 
 #endif //HIERARCHICALSTRUCTUREOFDATASTORAGE_FILEMANAGER_H

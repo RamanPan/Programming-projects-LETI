@@ -29,7 +29,7 @@ public:
 
     void writeToFile(std::ofstream &out);
 
-    void readFromFile(std::istream &in);
+    void readFromFile(std::ifstream &in);
 
     void setSurname(const std::string &surname);
 
