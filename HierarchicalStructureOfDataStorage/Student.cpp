@@ -1,7 +1,6 @@
 #include "Student.h"
 
 
-
 Student::Student() {}
 
 Student::Student(const std::string &firstname, const std::string &surname, const std::string &patronymic, Gender gender)
@@ -37,4 +36,15 @@ Gender Student::getGender() const {
 
 void Student::setGender(Gender gender) {
     Student::gender = gender;
+}
+
+void Student::writeToFile(std::ofstream &out) {
+    writeStringToFile(out, firstname);
+    writeStringToFile(out, surname);
+    writeStringToFile(out, patronymic);
+    out << std::bitset<1>(gender) << std::endl;
+}
+
+void Student::readFromFile(std::istream &in) {
+
 }

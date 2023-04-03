@@ -3,6 +3,7 @@
 #include <utility>
 #include "validationFunctions.h"
 #include "Messages.h"
+#include "FileManager.h"
 
 const std::string &University::getTitle() const {
     return title;
@@ -63,8 +64,7 @@ bool University::deleteFaculty(const std::string &data) {
     if (index != -1) {
         faculties.erase(faculties.begin() + index);
         return true;
-    }
-    else showErrorMessage("Такого факультета не существует");
+    } else showErrorMessage("Такого факультета не существует");
     return false;
 }
 
@@ -73,5 +73,16 @@ void University::deleteAll() {
         f.deleteAll();
     }
     faculties.clear();
+}
+
+void University::writeToFile(std::ofstream &out) {
+    writeStringToFile(out,"u");
+    writeStringToFile(out, title);
+    for (Faculty &faculty: faculties)
+        faculty.writeToFile(out);
+}
+
+void University::readFromFile(std::istream &in) {
+
 }
 

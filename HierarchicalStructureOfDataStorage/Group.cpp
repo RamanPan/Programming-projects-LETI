@@ -62,3 +62,13 @@ void Group::deleteStudent(const std::string &data) {
 void Group::deleteAll() {
     students.clear();
 }
+
+void Group::writeToFile(std::ofstream &out) {
+    out << std::bitset<16>(number) << std::endl;
+    for (Student &student: students)
+        student.writeToFile(out);
+}
+
+void Group::readFromFile(std::istream &in) {
+
+}

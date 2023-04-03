@@ -4,6 +4,7 @@
 #include <string>
 #include <fstream>
 #include "conio.h"
+#include "FileManager.h"
 
 enum Gender {
     MEN, WOMEN
@@ -41,6 +42,4 @@ public:
     void setGender(Gender gender);
 
 };
-
-
 #endif //HIERARCHICALSTRUCTUREOFDATASTORAGE_STUDENT_H

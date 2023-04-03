@@ -122,8 +122,10 @@ void consoleInterfaceForUniversity(University &university) {
                 break;
             case 5:
                 if (permissionFlag) {
-
-                    showMenuForUniversity(position, university);
+                    std::ofstream out(R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)", std::ios_base::binary | std::ios_base::out);
+                    university.writeToFile(out);
+                    std::ifstream in(R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)", std::ios_base::binary | std::ios_base::in);
+                    readStringFromFile(in);
                 }
                 break;
             case 6:
@@ -517,16 +519,12 @@ void consoleInterfaceForGroup(Group &group, University &university) {
                 break;
             case 8:
                 if (permissionFlag) {
-                    if (permissionFlag) {
-                        exit(0);
-                    }
-                    break;
+                    exit(0);
                 }
                 break;
             default:;
         }
     }
 }
-
 
 

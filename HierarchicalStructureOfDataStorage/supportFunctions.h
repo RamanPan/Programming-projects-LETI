@@ -20,4 +20,5 @@ void consoleInterfaceForDepartment(Department &department, University &universit
 
 void consoleInterfaceForGroup(Group &group, University &university);
 
+
 #endif //HIERARCHICALSTRUCTUREOFDATASTORAGE_SUPPORTFUNCTIONS_H

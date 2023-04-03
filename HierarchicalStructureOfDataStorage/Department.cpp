@@ -70,3 +70,9 @@ void Department::deleteAll() {
     }
     groups.clear();
 }
+
+void Department::writeToFile(std::ofstream &out) {
+    writeStringToFile(out,title);
+    for (Group &group: groups)
+        group.writeToFile(out);
+}

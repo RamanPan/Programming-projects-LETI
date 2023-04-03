@@ -24,7 +24,7 @@ Faculty::Faculty() {}
 void Faculty::addDepartment() {
     Department department;
     char permission;
-    department.setTitle(validateString("Введите название кафедры",true));
+    department.setTitle(validateString("Введите название кафедры", true));
     showInfoMessage("Создать группы прямо сейчас?(1 - Да, 2 - Нет)");
     choice(permission);
     if (permission == '1') {
@@ -53,7 +53,7 @@ Department *Faculty::findDepartment(const std::string &data) {
     return nullptr;
 }
 
-void Faculty::deleteDepartment(const std::string& data) {
+void Faculty::deleteDepartment(const std::string &data) {
     int index = -1;
     Department d;
     for (int i = 0; i < departments.size(); ++i) {
@@ -66,6 +66,16 @@ void Faculty::deleteDepartment(const std::string& data) {
     }
     if (index != -1) departments.erase(departments.begin() + index);
     else showErrorMessage("Такой кафедры не существует");
+
+}
+
+void Faculty::writeToFile(std::ofstream &out) {
+    writeStringToFile(out,title);
+    for (Department &department: departments)
+        department.writeToFile(out);
+}
+
+void Faculty::readFromFile(std::istream &in) {
 
 }
 
