@@ -76,7 +76,7 @@ void University::deleteAll() {
 }
 
 void University::writeToFile(std::ofstream &out) {
-    out << std::bitset<8>(IDENTITY_UNIVERSITY) << ' ';
+    out << std::bitset<8>(IDENTITY_UNIVERSITY) << ' ' << std::endl;
     writeStringToFile(out, title);
     for (Faculty &faculty: faculties)
         faculty.writeToFile(out);
