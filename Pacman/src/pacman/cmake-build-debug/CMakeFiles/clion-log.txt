@@ -1,0 +1,5 @@
+"E:\CLion 2022.2.3\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=E:/CLion 2022.2.3/bin/ninja/win/ninja.exe" -G Ninja -S E:\C_C++\Programming-projects-LETI\Pacman\src\pacman -B E:\C_C++\Programming-projects-LETI\Pacman\src\pacman\cmake-build-debug
+-- Found SFML 2.5.1 in E:/TRPO/SFML-2.5.1/lib/cmake/SFML
+-- Configuring done
+-- Generating done
+-- Build files have been written to: E:/C_C++/Programming-projects-LETI/Pacman/src/pacman/cmake-build-debug
