@@ -11,7 +11,7 @@ long validation();
 
 long validationWithArgument(int min, int max);
 
-std::string validateString(std::string message, bool validate);
+std::string validateString(const std::string& message, bool validate);
 
 void choice(char &YN);
 
