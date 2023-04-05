@@ -131,20 +131,12 @@ void consoleInterfaceForUniversity(University &university) {
                 break;
             case 5:
                 if (permissionFlag) {
-                    std::ofstream out(
-                            R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
-                            std::ios_base::binary | std::ios_base::out);
-                    university.writeToFile(out);
-                    out.close();
+                    university.writeToFile();
                 }
                 break;
             case 6:
                 if (permissionFlag) {
-                    std::ifstream in(
-                            R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
-                            std::ios_base::binary | std::ios_base::in);
-                    if (university.readFromFile(in)) {
-                        in.close();
+                    if (university.readFromFile()) {
                         showMenuForUniversity(position, university);
                     }
                 }
@@ -154,11 +146,7 @@ void consoleInterfaceForUniversity(University &university) {
                     std::cout << "Сохранится перед выходом?(1 - да, 2 - нет)" << std::endl;
                     choice(YN);
                     if (YN == '1') {
-                        std::ofstream out(
-                                R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
-                                std::ios_base::binary | std::ios_base::out);
-                        university.writeToFile(out);
-                        out.close();
+                        university.writeToFile();
                     }
                     exit(0);
                 }
@@ -296,20 +284,12 @@ void consoleInterfaceForFaculty(Faculty &faculty, University &university) {
                 break;
             case 5:
                 if (permissionFlag) {
-                    std::ofstream out(
-                            R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
-                            std::ios_base::binary | std::ios_base::out);
-                    university.writeToFile(out);
-                    out.close();
+                    university.writeToFile();
                 }
                 break;
             case 6:
                 if (permissionFlag) {
-                    std::ifstream in(
-                            R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
-                            std::ios_base::binary | std::ios_base::in);
-                    if (university.readFromFile(in)) {
-                        in.close();
+                    if (university.readFromFile()) {
                         showMenuForFaculty(position, faculty);
                     }
                 }
@@ -328,7 +308,7 @@ void consoleInterfaceForFaculty(Faculty &faculty, University &university) {
                         std::ofstream out(
                                 R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
                                 std::ios_base::binary | std::ios_base::out);
-                        university.writeToFile(out);
+                        university.writeToFile();
                         out.close();
                     }
                     exit(0);
@@ -469,20 +449,12 @@ void consoleInterfaceForDepartment(Department &department, University &universit
                 break;
             case 5:
                 if (permissionFlag) {
-                    std::ofstream out(
-                            R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
-                            std::ios_base::binary | std::ios_base::out);
-                    university.writeToFile(out);
-                    out.close();
+                    university.writeToFile();
                 }
                 break;
             case 6:
                 if (permissionFlag) {
-                    std::ifstream in(
-                            R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
-                            std::ios_base::binary | std::ios_base::in);
-                    if (university.readFromFile(in)) {
-                        in.close();
+                    if (university.readFromFile()) {
                         showMenuForDepartment(position, department);
                     }
                 }
@@ -497,11 +469,7 @@ void consoleInterfaceForDepartment(Department &department, University &universit
                     std::cout << "Сохранится перед выходом?(1 - да, 2 - нет)" << std::endl;
                     choice(YN);
                     if (YN == '1') {
-                        std::ofstream out(
-                                R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
-                                std::ios_base::binary | std::ios_base::out);
-                        university.writeToFile(out);
-                        out.close();
+                        university.writeToFile();
                     }
                     exit(0);
                 }
@@ -646,27 +614,19 @@ void consoleInterfaceForGroup(Group &group, University &university) {
                                     else s->setGender(WOMEN);
                                     break;
                             }
-                            showMenuForGroup(position,group);
+                            showMenuForGroup(position, group);
                         }
                     } else showErrorMessage("Студента с таким ФИО не существует");
                 }
                 break;
             case 5:
                 if (permissionFlag) {
-                    std::ofstream out(
-                            R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
-                            std::ios_base::binary | std::ios_base::out);
-                    university.writeToFile(out);
-                    out.close();
+                    university.writeToFile();
                 }
                 break;
             case 6:
                 if (permissionFlag) {
-                    std::ifstream in(
-                            R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
-                            std::ios_base::binary | std::ios_base::in);
-                    if (university.readFromFile(in)) {
-                        in.close();
+                    if (university.readFromFile()) {
                         showMenuForGroup(position, group);
                     }
                 }
@@ -681,11 +641,7 @@ void consoleInterfaceForGroup(Group &group, University &university) {
                     std::cout << "Сохранится перед выходом?(1 - да, 2 - нет)" << std::endl;
                     choice(YN);
                     if (YN == '1') {
-                        std::ofstream out(
-                                R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
-                                std::ios_base::binary | std::ios_base::out);
-                        university.writeToFile(out);
-                        out.close();
+                        university.writeToFile();
                     }
                     exit(0);
                 }

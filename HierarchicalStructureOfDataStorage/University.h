@@ -29,9 +29,9 @@ public:
 
     void deleteAll();
 
-    void writeToFile(std::ofstream &out);
+    void writeToFile();
 
-    bool readFromFile(std::ifstream &in);
+    bool readFromFile();
 
     void setFaculties(const std::vector<Faculty> &faculties);
 };

@@ -30,7 +30,7 @@ void Group::addStudent() {
     s.setPatronymic(validateString("Введите отчество студента(если есть)", false));
     showInfoMessage("Мужчина или женщина?(1/2)");
     choice(permission);
-    if (permission) s.setGender(MEN);
+    if (permission == '1') s.setGender(MEN);
     else s.setGender(WOMEN);
     students.push_back(s);
 }
@@ -57,8 +57,7 @@ bool Group::deleteStudent(const std::string &data) {
     if (index != -1) {
         students.erase(students.begin() + index);
         return true;
-    }
-    else showErrorMessage("Студента с такой фамилией не существует");
+    } else showErrorMessage("Студента с такой фамилией не существует");
     return false;
 
 }

@@ -75,14 +75,21 @@ void University::deleteAll() {
     faculties.clear();
 }
 
-void University::writeToFile(std::ofstream &out) {
-    out << std::bitset<8>(IDENTITY_UNIVERSITY) << ' ' << std::endl;
+void University::writeToFile() {
+    std::ofstream out(
+            R"(D:\Coding\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
+            std::ios_base::binary | std::ios_base::out);
+    out << std::bitset<8>((int) 'U') << ' ' << std::endl;
     writeStringToFile(out, title);
     for (Faculty &faculty: faculties)
         faculty.writeToFile(out);
+    out.close();
 }
 
-bool University::readFromFile(std::ifstream &in) {
+bool University::readFromFile() {
+    std::ifstream in(
+            R"(D:\Coding\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
+            std::ios_base::binary | std::ios_base::in);
     if (readAndCheckIdentity(in, 'U')) {
         deleteAll();
         title = readStringFromFile(in);
@@ -137,13 +144,15 @@ bool University::readFromFile(std::ifstream &in) {
                 }
             } else {
                 showErrorMessage("Данные в файле хранятся в неправильном формате");
+                in.close();
                 return false;
             }
         }
     } else {
         showErrorMessage("Данные в файле хранятся в неправильном формате");
+        in.close();
         return false;
     }
+    in.close();
     return true;
 }
-
