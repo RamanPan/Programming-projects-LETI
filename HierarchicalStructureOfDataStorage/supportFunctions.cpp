@@ -135,6 +135,7 @@ void consoleInterfaceForUniversity(University &university) {
                             R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
                             std::ios_base::binary | std::ios_base::out);
                     university.writeToFile(out);
+                    out.close();
                 }
                 break;
             case 6:
@@ -157,6 +158,7 @@ void consoleInterfaceForUniversity(University &university) {
                                 R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
                                 std::ios_base::binary | std::ios_base::out);
                         university.writeToFile(out);
+                        out.close();
                     }
                     exit(0);
                 }
@@ -287,7 +289,7 @@ void consoleInterfaceForFaculty(Faculty &faculty, University &university) {
                         Department *d = faculty.findDepartment(validateString("Введите название кафедры", true));
                         if (d != nullptr) {
                             consoleInterfaceForDepartment(*d, university);
-                            showMenuForFaculty(position,faculty);
+                            showMenuForFaculty(position, faculty);
                         }
                     } else showErrorMessage("Кафедры с таким названием не существует");
                 }
@@ -298,6 +300,7 @@ void consoleInterfaceForFaculty(Faculty &faculty, University &university) {
                             R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
                             std::ios_base::binary | std::ios_base::out);
                     university.writeToFile(out);
+                    out.close();
                 }
                 break;
             case 6:
@@ -307,7 +310,7 @@ void consoleInterfaceForFaculty(Faculty &faculty, University &university) {
                             std::ios_base::binary | std::ios_base::in);
                     if (university.readFromFile(in)) {
                         in.close();
-                        showMenuForUniversity(position, university);
+                        showMenuForFaculty(position, faculty);
                     }
                 }
                 break;
@@ -326,6 +329,7 @@ void consoleInterfaceForFaculty(Faculty &faculty, University &university) {
                                 R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
                                 std::ios_base::binary | std::ios_base::out);
                         university.writeToFile(out);
+                        out.close();
                     }
                     exit(0);
                 }
@@ -469,6 +473,7 @@ void consoleInterfaceForDepartment(Department &department, University &universit
                             R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
                             std::ios_base::binary | std::ios_base::out);
                     university.writeToFile(out);
+                    out.close();
                 }
                 break;
             case 6:
@@ -478,7 +483,7 @@ void consoleInterfaceForDepartment(Department &department, University &universit
                             std::ios_base::binary | std::ios_base::in);
                     if (university.readFromFile(in)) {
                         in.close();
-                        showMenuForUniversity(position, university);
+                        showMenuForDepartment(position, department);
                     }
                 }
                 break;
@@ -496,6 +501,7 @@ void consoleInterfaceForDepartment(Department &department, University &universit
                                 R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
                                 std::ios_base::binary | std::ios_base::out);
                         university.writeToFile(out);
+                        out.close();
                     }
                     exit(0);
                 }
@@ -507,6 +513,7 @@ void consoleInterfaceForDepartment(Department &department, University &universit
 void showMenuForGroup(int position, Group &group) {
     system("cls");
     bool flag = false;
+    std::string gender;
     printf("Выберите действие:\n");
     printf("1) Добавить студента%s\n", position == 1 ? " <--" : " ");
     printf("2) Отчислить студента%s\n", position == 2 ? " <--" : " ");
@@ -517,14 +524,13 @@ void showMenuForGroup(int position, Group &group) {
     printf("7) Вернуться на уровень группы%s\n", position == 7 ? " <--" : " ");
     printf("8) Выход%s\n", position == 8 ? " <--" : " ");
     std::cout << "Номер группы: " << group.getNumber() << std::endl;
-    std::cout << "Студенты: ";
-    if (group.getStudents().empty()) std::cout << std::endl;
-    else
-        for (const Student &student: group.getStudents()) {
-            std::cout << student.getFirstname() << " " << student.getSurname() << " " << student.getPatronymic()
-                      << std::endl;
-            flag = true;
-        }
+    std::cout << "Студенты: " << std::endl;
+    for (const Student &student: group.getStudents()) {
+        gender = (student.getGender() == MEN) ? "- men" : "- women";
+        std::cout << student.getFirstname() << " " << student.getSurname() << " " << student.getPatronymic() << " "
+                  << gender << std::endl;
+        flag = true;
+    }
     if (flag)std::cout << std::endl;
 }
 
@@ -625,10 +631,10 @@ void consoleInterfaceForGroup(Group &group, University &university) {
                             int choice = validationWithArgument(1, 4);
                             switch (choice) {
                                 case 1:
-                                    s->setFirstname(validateString("Введите новую фамилию", true));
+                                    s->setSurname(validateString("Введите новую фамилию", true));
                                     break;
                                 case 2:
-                                    s->setSurname(validateString("Введите новое имя", true));
+                                    s->setFirstname(validateString("Введите новое имя", true));
                                     break;
                                 case 3:
                                     s->setPatronymic(validateString("Введите новое отчество", true));
@@ -640,6 +646,7 @@ void consoleInterfaceForGroup(Group &group, University &university) {
                                     else s->setGender(WOMEN);
                                     break;
                             }
+                            showMenuForGroup(position,group);
                         }
                     } else showErrorMessage("Студента с таким ФИО не существует");
                 }
@@ -650,6 +657,7 @@ void consoleInterfaceForGroup(Group &group, University &university) {
                             R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
                             std::ios_base::binary | std::ios_base::out);
                     university.writeToFile(out);
+                    out.close();
                 }
                 break;
             case 6:
@@ -659,7 +667,7 @@ void consoleInterfaceForGroup(Group &group, University &university) {
                             std::ios_base::binary | std::ios_base::in);
                     if (university.readFromFile(in)) {
                         in.close();
-                        showMenuForUniversity(position, university);
+                        showMenuForGroup(position, group);
                     }
                 }
                 break;
@@ -677,6 +685,7 @@ void consoleInterfaceForGroup(Group &group, University &university) {
                                 R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
                                 std::ios_base::binary | std::ios_base::out);
                         university.writeToFile(out);
+                        out.close();
                     }
                     exit(0);
                 }
