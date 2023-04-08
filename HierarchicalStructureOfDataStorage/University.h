@@ -29,9 +29,9 @@ public:
 
     void deleteAll();
 
-    void writeToFile();
+    void writeToFile(bool isItSafe);
 
-    bool readFromFile();
+    bool readFromFile(bool isItSafe);
 
     void setFaculties(const std::vector<Faculty> &faculties);
 };

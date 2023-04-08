@@ -8,16 +8,17 @@
 void showMenuForUniversity(int position, University &university) {
     system("cls");
     bool flag = false;
-    printf("Выберите действие:\n");
-    printf("1) Добавить факультет%s\n", position == 1 ? " <--" : " ");
-    printf("2) Удалить факультет%s\n", position == 2 ? " <--" : " ");
-    printf("3) Сменить название университета%s\n", position == 3 ? " <--" : " ");
-    printf("4) Выбрать факультет для редактирования%s\n", position == 4 ? " <--" : " ");
-    printf("5) Сохранить данные%s\n", position == 5 ? " <--" : " ");
-    printf("6) Загрузить данные%s\n", position == 6 ? " <--" : " ");
-    printf("7) Выход%s\n", position == 7 ? " <--" : " ");
-    std::cout << "Название университета: " << university.getTitle() << std::endl;
-    std::cout << "Факультеты университета: ";
+    printf("выберите действие:\n");
+    printf("1) добавить факультет%s\n", position == 1 ? " <--" : " ");
+    printf("2) удалить факультет%s\n", position == 2 ? " <--" : " ");
+    printf("3) сменить название университета%s\n", position == 3 ? " <--" : " ");
+    printf("4) выбрать факультет для редактирования%s\n", position == 4 ? " <--" : " ");
+    printf("5) найти студента(ов)%s\n", position == 5 ? " <--" : " ");
+    printf("6) сохранить данные%s\n", position == 6 ? " <--" : " ");
+    printf("7) загрузить данные%s\n", position == 7 ? " <--" : " ");
+    printf("8) выход%s\n", position == 8 ? " <--" : " ");
+    std::cout << "название университета: " << university.getTitle() << std::endl;
+    std::cout << "факультеты университета: ";
     if (university.getFaculties().empty()) std::cout << std::endl;
     else
         for (const Faculty &faculty: university.getFaculties()) {
@@ -42,20 +43,20 @@ void consoleInterfaceForUniversity(University &university) {
             case ARROW_UP:
                 if (0 != position - 1)
                     position--;
-                else position = MAX_ARROW_POSITION_UNI;
+                else position = MAX_ARROW_POSITION_UNI_AND_STUD;
                 break;
             case ARROW_DOWN:
-                if (position < MAX_ARROW_POSITION_UNI) position++;
+                if (position < MAX_ARROW_POSITION_UNI_AND_STUD) position++;
                 else
                     position = MIN_ARROW_POSITION;
                 break;
             case W:
                 if (0 != position - 1)
                     position--;
-                else position = MAX_ARROW_POSITION_UNI;
+                else position = MAX_ARROW_POSITION_UNI_AND_STUD;
                 break;
             case S:
-                if (position < MAX_ARROW_POSITION_UNI) position++;
+                if (position < MAX_ARROW_POSITION_UNI_AND_STUD) position++;
                 else
                     position = MIN_ARROW_POSITION;
                 break;
@@ -131,12 +132,12 @@ void consoleInterfaceForUniversity(University &university) {
                 break;
             case 5:
                 if (permissionFlag) {
-                    university.writeToFile();
+                    university.writeToFile(false);
                 }
                 break;
             case 6:
                 if (permissionFlag) {
-                    if (university.readFromFile()) {
+                    if (university.readFromFile(false)) {
                         showMenuForUniversity(position, university);
                     }
                 }
@@ -146,7 +147,7 @@ void consoleInterfaceForUniversity(University &university) {
                     std::cout << "Сохранится перед выходом?(1 - да, 2 - нет)" << std::endl;
                     choice(YN);
                     if (YN == '1') {
-                        university.writeToFile();
+                        university.writeToFile(false);
                     }
                     exit(0);
                 }
@@ -284,12 +285,12 @@ void consoleInterfaceForFaculty(Faculty &faculty, University &university) {
                 break;
             case 5:
                 if (permissionFlag) {
-                    university.writeToFile();
+                    university.writeToFile(false);
                 }
                 break;
             case 6:
                 if (permissionFlag) {
-                    if (university.readFromFile()) {
+                    if (university.readFromFile(false)) {
                         showMenuForFaculty(position, faculty);
                     }
                 }
@@ -305,11 +306,7 @@ void consoleInterfaceForFaculty(Faculty &faculty, University &university) {
                     std::cout << "Сохранится перед выходом?(1 - да, 2 - нет)" << std::endl;
                     choice(YN);
                     if (YN == '1') {
-                        std::ofstream out(
-                                R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
-                                std::ios_base::binary | std::ios_base::out);
-                        university.writeToFile();
-                        out.close();
+                        university.writeToFile(false);
                     }
                     exit(0);
                 }
@@ -449,12 +446,12 @@ void consoleInterfaceForDepartment(Department &department, University &universit
                 break;
             case 5:
                 if (permissionFlag) {
-                    university.writeToFile();
+                    university.writeToFile(false);
                 }
                 break;
             case 6:
                 if (permissionFlag) {
-                    if (university.readFromFile()) {
+                    if (university.readFromFile(false)) {
                         showMenuForDepartment(position, department);
                     }
                 }
@@ -469,7 +466,7 @@ void consoleInterfaceForDepartment(Department &department, University &universit
                     std::cout << "Сохранится перед выходом?(1 - да, 2 - нет)" << std::endl;
                     choice(YN);
                     if (YN == '1') {
-                        university.writeToFile();
+                        university.writeToFile(false);
                     }
                     exit(0);
                 }
@@ -621,12 +618,12 @@ void consoleInterfaceForGroup(Group &group, University &university) {
                 break;
             case 5:
                 if (permissionFlag) {
-                    university.writeToFile();
+                    university.writeToFile(false);
                 }
                 break;
             case 6:
                 if (permissionFlag) {
-                    if (university.readFromFile()) {
+                    if (university.readFromFile(false)) {
                         showMenuForGroup(position, group);
                     }
                 }
@@ -641,7 +638,7 @@ void consoleInterfaceForGroup(Group &group, University &university) {
                     std::cout << "Сохранится перед выходом?(1 - да, 2 - нет)" << std::endl;
                     choice(YN);
                     if (YN == '1') {
-                        university.writeToFile();
+                        university.writeToFile(false);
                     }
                     exit(0);
                 }
