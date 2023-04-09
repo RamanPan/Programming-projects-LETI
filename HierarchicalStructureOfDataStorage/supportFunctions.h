@@ -12,6 +12,8 @@ void showMenuForDepartment(int position, Department &department);
 
 void showMenuForGroup(int position, Group &group);
 
+void showStudents(std::vector<std::string> students);
+
 void consoleInterfaceForUniversity(University &university);
 
 void consoleInterfaceForFaculty(Faculty &faculty, University &university);
