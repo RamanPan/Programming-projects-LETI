@@ -41,7 +41,7 @@ long validationWithArgument(int min, int max) {
         result = validation();
         if (result > max || result < min) {
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
-            printf("Неверный ввод! Значение должно быть от %d до %d\n", min,
+            printf("неверный ввод! Значение должно быть от %d до %d\n", min,
                    max);
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
         }
@@ -58,7 +58,7 @@ void choice(char &YN) {
         if (YN == '1' || YN == '2') exit = true;
         else if (YN != ENTER) {
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
-            printf("Неверный ввод! Значение должно быть либо 1, либо 2 \n");
+            printf("неверный ввод! Значение должно быть либо 1, либо 2 \n");
             SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x07);
         }
     }

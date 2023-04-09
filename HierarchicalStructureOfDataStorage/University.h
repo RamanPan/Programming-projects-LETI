@@ -29,6 +29,8 @@ public:
 
     void deleteAll();
 
+    std::vector<std::string> findStudent(int mode);
+
     void writeToFile(bool isItSafe);
 
     bool readFromFile(bool isItSafe);
