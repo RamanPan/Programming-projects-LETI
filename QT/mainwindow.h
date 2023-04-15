@@ -19,8 +19,11 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
 
     ~MainWindow() override;
+
 private slots:
+
     void handlePushButton();
+
 private:
     Ui::MainWindow *ui;
 

@@ -4,9 +4,7 @@
 
 // You may need to build the project (run Qt uic code generator) to get "ui_MainWindow.h" resolved
 
-#include <QLineEdit>
 #include <QPushButton>
-
 #include <QMessageBox>
 #include "mainwindow.h"
 #include "ui_mainWindow.h"
@@ -18,10 +16,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(handlePushButton()));
 
 }
-void MainWindow::handlePushButton()
-{
-    QMessageBox::information(this,"Полезная информация","Введенное ФИО: " + ui->line->text());
+
+void MainWindow::handlePushButton() {
+    QMessageBox::information(this, "Полезная информация", "Введенное ФИО: " + ui->line->text());
 }
+
 MainWindow::~MainWindow() {
     delete ui;
 }

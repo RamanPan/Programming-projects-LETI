@@ -1,6 +1,4 @@
 #include <QApplication>
-#include <QPushButton>
-#include <QLineEdit>
 #include "mainwindow.h"
 
 int main(int argc, char *argv[]) {
