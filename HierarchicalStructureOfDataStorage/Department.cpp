@@ -25,12 +25,12 @@ Department::Department() {}
 void Department::addGroup() {
     Group group;
     char permission;
-    showInfoMessage("Введите номер создаваемой группы");
+    showInfoMessage("введите номер создаваемой группы");
     group.setNumber(validationWithArgument(0, 10000));
-    showInfoMessage("Добавить студентов прямо сейчас?(1 - Да, 2 - Нет)");
+    showInfoMessage("добавить студентов прямо сейчас?(1 - Да, 2 - Нет)");
     choice(permission);
     if (permission == '1') {
-        showInfoMessage("Введите кол-во создаваемых студентов");
+        showInfoMessage("введите кол-во создаваемых студентов");
         int quantity = validation();
         for (int i = 0; i < quantity; ++i) {
             group.addStudent();
@@ -44,7 +44,7 @@ Group *Department::findGroup(int data) {
         if (g.getNumber() == data)
             return &g;
     }
-    showErrorMessage("Группа не была найдена");
+    showErrorMessage("группа не была найдена");
     return nullptr;
 }
 
@@ -62,8 +62,7 @@ bool Department::deleteGroup(int data) {
     if (index != -1) {
         groups.erase(groups.begin() + index);
         return true;
-    }
-    else showErrorMessage("Такой кафедры не существует");
+    } else showErrorMessage("такой кафедры не существует");
     return false;
 }
 

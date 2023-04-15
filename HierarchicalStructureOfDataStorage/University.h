@@ -29,9 +29,11 @@ public:
 
     void deleteAll();
 
-    void writeToFile(std::ofstream &out);
+    std::vector<std::string> findStudent(int mode);
 
-    bool readFromFile(std::ifstream &in);
+    void writeToFile(bool isItSafe);
+
+    bool readFromFile(bool isItSafe);
 
     void setFaculties(const std::vector<Faculty> &faculties);
 };

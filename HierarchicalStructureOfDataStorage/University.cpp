@@ -28,11 +28,11 @@ University::University() {}
 void University::addFaculty() {
     Faculty faculty;
     char permission;
-    faculty.setTitle(validateString("Введите название факультета", true));
-    showInfoMessage("Создать кафедры прямо сейчас?(1 - Да, 2 - Нет)");
+    faculty.setTitle(validateString("введите название факультета", true));
+    showInfoMessage("создать кафедры прямо сейчас?(1 - да, 2 - нет)");
     choice(permission);
     if (permission == '1') {
-        showInfoMessage("Введите кол-во создаваемых кафедр");
+        showInfoMessage("введите кол-во создаваемых кафедр");
         int quantity = validation();
         for (int i = 0; i < quantity; ++i) {
             faculty.addDepartment();
@@ -46,7 +46,7 @@ Faculty *University::findFaculty(const std::string &data) {
         if (f.getTitle() == data)
             return &f;
     }
-    showErrorMessage("Факультет не был найден");
+    showErrorMessage("факультет не был найден");
     return nullptr;
 }
 
@@ -64,7 +64,7 @@ bool University::deleteFaculty(const std::string &data) {
     if (index != -1) {
         faculties.erase(faculties.begin() + index);
         return true;
-    } else showErrorMessage("Такого факультета не существует");
+    } else showErrorMessage("такого факультета не существует");
     return false;
 }
 
@@ -75,75 +75,168 @@ void University::deleteAll() {
     faculties.clear();
 }
 
-void University::writeToFile(std::ofstream &out) {
-    out << std::bitset<8>(IDENTITY_UNIVERSITY) << ' ' << std::endl;
+void University::writeToFile(bool isItSafe) {
+    std::string path;
+    if (!isItSafe) path = "D:\\Coding\\Programming-projects-LETI\\HierarchicalStructureOfDataStorage\\data.bin";
+    else path = "D:\\Coding\\Programming-projects-LETI\\HierarchicalStructureOfDataStorage\\cmake-build-debug\\data.bin";
+    std::ofstream out(path, std::ios_base::binary | std::ios_base::out);
+    out << std::bitset<8>((int) 'U') << ' ' << std::endl;
     writeStringToFile(out, title);
     for (Faculty &faculty: faculties)
         faculty.writeToFile(out);
+    out.close();
 }
 
-bool University::readFromFile(std::ifstream &in) {
-    if (readAndCheckIdentity(in, 'U')) {
-        deleteAll();
-        title = readStringFromFile(in);
-        char status;
-        Faculty *nowF = nullptr;
-        Department *nowD = nullptr;
-        Group *nowG = nullptr;
-        bool notMistake = true, mistake = false;
-        while (!in.eof()) {
-            status = readIdentity(in);
-            if (status == 0) break;
-            if (mistake) {
-                std::cout << 1;
-                notMistake = false;
-            }
-            if (notMistake) {
-                switch (status) {
-                    case 'F': {
-                        Faculty faculty(readStringFromFile(in));
-                        faculties.push_back(faculty);
-                        nowF = &faculties.at(faculties.size() - 1);
-                    }
-                        break;
-                    case 'D': {
-                        Department department(readStringFromFile(in));
-                        if (nowF != nullptr) {
-                            nowF->getDepartments().push_back(department);
-                            nowD = &nowF->getDepartments().at(nowF->getDepartments().size() - 1);
-                        } else mistake = true;
-                    }
-                        break;
-                    case 'G': {
-                        Group group(readIntFromFile(in));
-                        if (nowD != nullptr) {
-                            nowD->getGroups().push_back(group);
-                            nowG = &nowD->getGroups().at(nowD->getGroups().size() - 1);
-                        } else mistake = true;
-                    }
-                        break;
-                    case 'S': {
-                        Student student;
-                        student.setFirstname(readStringFromFile(in));
-                        student.setSurname(readStringFromFile(in));
-                        student.setPatronymic(readStringFromFile(in));
-                        if (readIntFromFile(in) == 0) student.setGender(MEN);
-                        else student.setGender(WOMEN);
-                        if (nowG != nullptr) {
-                            nowG->getStudents().push_back(student);
-                        } else mistake = true;
-                    }
-                        break;
+bool University::readFromFile(bool isItSafe) {
+    std::string path;
+    if (!isItSafe) {
+        path = "D:\\Coding\\Programming-projects-LETI\\HierarchicalStructureOfDataStorage\\data.bin";
+        writeToFile(true);
+    } else path = "D:\\Coding\\Programming-projects-LETI\\HierarchicalStructureOfDataStorage\\cmake-build-debug\\data.bin";
+    std::ifstream in(
+            path,
+            std::ios_base::binary | std::ios_base::in);
+    try {
+        if (readAndCheckIdentity(in, 'U')) {
+            deleteAll();
+            title = readStringFromFile(in);
+            char status;
+            Faculty *nowF = nullptr;
+            Department *nowD = nullptr;
+            Group *nowG = nullptr;
+            bool notMistake = true, mistake = false;
+            while (!in.eof()) {
+                status = readIdentity(in);
+                if (status == 0) break;
+                if (mistake) {
+                    std::cout << 1;
+                    notMistake = false;
                 }
-            } else {
-                showErrorMessage("Данные в файле хранятся в неправильном формате");
-                return false;
+                if (notMistake) {
+                    switch (status) {
+                        case 'F': {
+                            Faculty faculty(readStringFromFile(in));
+                            faculties.push_back(faculty);
+                            nowF = &faculties.at(faculties.size() - 1);
+                        }
+                            break;
+                        case 'D': {
+                            Department department(readStringFromFile(in));
+                            if (nowF != nullptr) {
+                                nowF->getDepartments().push_back(department);
+                                nowD = &nowF->getDepartments().at(nowF->getDepartments().size() - 1);
+                            } else mistake = true;
+                        }
+                            break;
+                        case 'G': {
+                            Group group(readIntFromFile(in));
+                            if (nowD != nullptr) {
+                                nowD->getGroups().push_back(group);
+                                nowG = &nowD->getGroups().at(nowD->getGroups().size() - 1);
+                            } else mistake = true;
+                        }
+                            break;
+                        case 'S': {
+                            Student student;
+                            student.setFirstname(readStringFromFile(in));
+                            student.setSurname(readStringFromFile(in));
+                            student.setPatronymic(readStringFromFile(in));
+                            if (readIntFromFile(in) == 0) student.setGender(MEN);
+                            else student.setGender(WOMEN);
+                            if (nowG != nullptr) {
+                                nowG->getStudents().push_back(student);
+                            } else mistake = true;
+                        }
+                            break;
+                    }
+                } else {
+                    showErrorMessage("данные в файле хранятся в неправильном формате");
+                    in.close();
+                    readFromFile(true);
+                    return false;
+                }
             }
+        } else {
+            showErrorMessage("данные в файле хранятся в неправильном формате");
+            in.close();
+            readFromFile(true);
+            return false;
         }
-    } else {
-        showErrorMessage("Данные в файле хранятся в неправильном формате");
+        in.close();
+        return true;
+    }
+    catch (std::invalid_argument exception) {
+        showErrorMessage("данные в файле хранятся в неправильном формате");
+        readFromFile(true);
         return false;
     }
-    return true;
 }
 
+std::vector<std::string> University::findStudent(int mode) {
+    std::vector<std::string> students;
+    std::string gender;
+    switch (mode) {
+        case 0: {
+            std::string surname = validateString("введите фамилию студента для поиска", false);
+            for (Faculty &f: faculties)
+                for (Department &d: f.getDepartments())
+                    for (Group &g: d.getGroups())
+                        for (Student &s: g.getStudents())
+                            if (s.getSurname() == surname) {
+                                gender = (s.getGender() == MEN) ? " - men" : " - women";
+                                students.push_back(
+                                        s.getFirstname() + " " + s.getSurname() + " " + s.getPatronymic() + gender + " "
+                                        + std::to_string(g.getNumber()) + " " + d.getTitle() + " " + f.getTitle());
+                            }
+        }
+            break;
+        case 1: {
+            std::string name = validateString("введите имя студента для поиска", false);
+            for (Faculty &f: faculties)
+                for (Department &d: f.getDepartments())
+                    for (Group &g: d.getGroups())
+                        for (Student &s: g.getStudents())
+                            if (s.getFirstname() == name) {
+                                gender = (s.getGender() == MEN) ? " - men" : " - women";
+                                students.push_back(
+                                        s.getFirstname() + " " + s.getSurname() + " " + s.getPatronymic() + gender + " "
+                                        + std::to_string(g.getNumber()) + " " + d.getTitle() + " " + f.getTitle());
+                            }
+        }
+            break;
+        case 2: {
+            std::string patronymic = validateString("введите отчество студента для поиска", false);
+            for (Faculty &f: faculties)
+                for (Department &d: f.getDepartments())
+                    for (Group &g: d.getGroups())
+                        for (Student &s: g.getStudents())
+                            if (s.getPatronymic() == patronymic) {
+                                gender = (s.getGender() == MEN) ? " - men" : " - women";
+                                students.push_back(
+                                        s.getFirstname() + " " + s.getSurname() + " " + s.getPatronymic() + gender + " "
+                                        + std::to_string(g.getNumber()) + " " + d.getTitle() + " " + f.getTitle());
+                            }
+        }
+            break;
+        case 3 : {
+            Gender gen;
+            char permission;
+            showInfoMessage("мужчина или женщина?(1/2)");
+            choice(permission);
+            if (permission == '1') gen = MEN;
+            else gen = WOMEN;
+            for (Faculty &f: faculties)
+                for (Department &d: f.getDepartments())
+                    for (Group &g: d.getGroups())
+                        for (Student &s: g.getStudents())
+                            if (s.getGender() == gen) {
+                                gender = (s.getGender() == MEN) ? " - men" : " - women";
+                                students.push_back(
+                                        s.getFirstname() + " " + s.getSurname() + " " + s.getPatronymic() + gender + " "
+                                        + std::to_string(g.getNumber()) + " " + d.getTitle() + " " + f.getTitle());
+                            }
+        }
+            break;
+    }
+    return students;
+}

@@ -24,11 +24,11 @@ Faculty::Faculty() {}
 void Faculty::addDepartment() {
     Department department;
     char permission;
-    department.setTitle(validateString("Введите название кафедры", true));
-    showInfoMessage("Создать группы прямо сейчас?(1 - Да, 2 - Нет)");
+    department.setTitle(validateString("введите название кафедры", true));
+    showInfoMessage("создать группы прямо сейчас?(1 - Да, 2 - Нет)");
     choice(permission);
     if (permission == '1') {
-        showInfoMessage("Введите кол-во создаваемых групп");
+        showInfoMessage("введите кол-во создаваемых групп");
         int quantity = validation();
         for (int i = 0; i < quantity; ++i) {
             department.addGroup();
@@ -49,7 +49,7 @@ Department *Faculty::findDepartment(const std::string &data) {
         if (d.getTitle() == data)
             return &d;
     }
-    showErrorMessage("Кафедра не была найдена");
+    showErrorMessage("кафедра не была найдена");
     return nullptr;
 }
 
@@ -67,8 +67,7 @@ bool Faculty::deleteDepartment(const std::string &data) {
     if (index != -1) {
         departments.erase(departments.begin() + index);
         return true;
-    }
-    else showErrorMessage("Такой кафедры не существует");
+    } else showErrorMessage("такой кафедры не существует");
     return false;
 
 }

@@ -5,19 +5,30 @@
 #include "Messages.h"
 #include "validationFunctions.h"
 
+void showStudents(std::vector<std::string> students) {
+    std::cout << "найденные студенты:" << std::endl;
+    if (!students.empty())
+        for (const std::string &student: students) {
+            std::cout << student
+                      << std::endl;
+        }
+    else showErrorMessage("никто не нашелся...");
+}
+
 void showMenuForUniversity(int position, University &university) {
     system("cls");
     bool flag = false;
-    printf("Выберите действие:\n");
-    printf("1) Добавить факультет%s\n", position == 1 ? " <--" : " ");
-    printf("2) Удалить факультет%s\n", position == 2 ? " <--" : " ");
-    printf("3) Сменить название университета%s\n", position == 3 ? " <--" : " ");
-    printf("4) Выбрать факультет для редактирования%s\n", position == 4 ? " <--" : " ");
-    printf("5) Сохранить данные%s\n", position == 5 ? " <--" : " ");
-    printf("6) Загрузить данные%s\n", position == 6 ? " <--" : " ");
-    printf("7) Выход%s\n", position == 7 ? " <--" : " ");
-    std::cout << "Название университета: " << university.getTitle() << std::endl;
-    std::cout << "Факультеты университета: ";
+    printf("выберите действие:\n");
+    printf("1) добавить факультет%s\n", position == 1 ? " <--" : " ");
+    printf("2) удалить факультет%s\n", position == 2 ? " <--" : " ");
+    printf("3) сменить название университета%s\n", position == 3 ? " <--" : " ");
+    printf("4) выбрать факультет для редактирования%s\n", position == 4 ? " <--" : " ");
+    printf("5) найти студента(ов)%s\n", position == 5 ? " <--" : " ");
+    printf("6) сохранить данные%s\n", position == 6 ? " <--" : " ");
+    printf("7) загрузить данные%s\n", position == 7 ? " <--" : " ");
+    printf("8) выход%s\n", position == 8 ? " <--" : " ");
+    std::cout << "название университета: " << university.getTitle() << std::endl;
+    std::cout << "факультеты университета: ";
     if (university.getFaculties().empty()) std::cout << std::endl;
     else
         for (const Faculty &faculty: university.getFaculties()) {
@@ -42,20 +53,20 @@ void consoleInterfaceForUniversity(University &university) {
             case ARROW_UP:
                 if (0 != position - 1)
                     position--;
-                else position = MAX_ARROW_POSITION_UNI;
+                else position = MAX_ARROW_POSITION_UNI_AND_STUD;
                 break;
             case ARROW_DOWN:
-                if (position < MAX_ARROW_POSITION_UNI) position++;
+                if (position < MAX_ARROW_POSITION_UNI_AND_STUD) position++;
                 else
                     position = MIN_ARROW_POSITION;
                 break;
             case W:
                 if (0 != position - 1)
                     position--;
-                else position = MAX_ARROW_POSITION_UNI;
+                else position = MAX_ARROW_POSITION_UNI_AND_STUD;
                 break;
             case S:
-                if (position < MAX_ARROW_POSITION_UNI) position++;
+                if (position < MAX_ARROW_POSITION_UNI_AND_STUD) position++;
                 else
                     position = MIN_ARROW_POSITION;
                 break;
@@ -101,16 +112,16 @@ void consoleInterfaceForUniversity(University &university) {
                 if (permissionFlag) {
                     if (!university.getFaculties().empty()) {
                         if (university.deleteFaculty(
-                                validateString("Введите название факультета", true)))
+                                validateString("введите название факультета", true)))
                             showMenuForUniversity(position, university);
-                    } else showErrorMessage("Факультеты отсутствуют");
+                    } else showErrorMessage("факультеты отсутствуют");
                 }
                 break;
             case 3:
                 if (permissionFlag) {
-                    std::cout << "Введите новое название!" << std::endl;
+                    std::cout << "введите новое название!" << std::endl;
                     std::cin >> title;
-                    if (title.empty()) showErrorMessage("Название не может быть пустым!");
+                    if (title.empty()) showErrorMessage("название не может быть пустым!");
                     else {
                         university.setTitle(title);
                         showMenuForUniversity(position, university);
@@ -120,45 +131,42 @@ void consoleInterfaceForUniversity(University &university) {
             case 4:
                 if (permissionFlag) {
                     if (!university.getFaculties().empty()) {
-                        Faculty *f = university.findFaculty(validateString("Введите название факультета", true));
+                        Faculty *f = university.findFaculty(validateString("введите название факультета", true));
                         if (f != nullptr) {
                             showMenuForFaculty(1, *f);
                             consoleInterfaceForFaculty(*f, university);
                             showMenuForUniversity(position, university);
                         }
-                    } else showErrorMessage("Факультеты отсутствуют");
+                    } else showErrorMessage("факультеты отсутствуют");
                 }
                 break;
             case 5:
                 if (permissionFlag) {
-                    std::ofstream out(
-                            R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
-                            std::ios_base::binary | std::ios_base::out);
-                    university.writeToFile(out);
-                    out.close();
+                    int mode;
+                    std::cout << "выберите параметр поиска(0 - по фамилии, 1 - по имени, 2 - по отчеству, 3 - по полу"
+                              << std::endl;
+                    mode = validationWithArgument(0, 3);
+                    showStudents(university.findStudent(mode));
                 }
                 break;
             case 6:
                 if (permissionFlag) {
-                    std::ifstream in(
-                            R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
-                            std::ios_base::binary | std::ios_base::in);
-                    if (university.readFromFile(in)) {
-                        in.close();
-                        showMenuForUniversity(position, university);
-                    }
+                    university.writeToFile(false);
                 }
                 break;
             case 7:
                 if (permissionFlag) {
-                    std::cout << "Сохранится перед выходом?(1 - да, 2 - нет)" << std::endl;
+                    if (university.readFromFile(false)) {
+                        showMenuForUniversity(position, university);
+                    }
+                }
+                break;
+            case 8:
+                if (permissionFlag) {
+                    std::cout << "сохранится перед выходом?(1 - да, 2 - нет)" << std::endl;
                     choice(YN);
                     if (YN == '1') {
-                        std::ofstream out(
-                                R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
-                                std::ios_base::binary | std::ios_base::out);
-                        university.writeToFile(out);
-                        out.close();
+                        university.writeToFile(false);
                     }
                     exit(0);
                 }
@@ -171,17 +179,18 @@ void consoleInterfaceForUniversity(University &university) {
 void showMenuForFaculty(int position, Faculty &faculty) {
     system("cls");
     bool flag = false;
-    printf("Выберите действие:\n");
-    printf("1) Добавить кафедру%s\n", position == 1 ? " <--" : " ");
-    printf("2) Удалить кафедру%s\n", position == 2 ? " <--" : " ");
-    printf("3) Сменить название факультета%s\n", position == 3 ? " <--" : " ");
-    printf("4) Выбрать кафедру для редактирования%s\n", position == 4 ? " <--" : " ");
-    printf("5) Сохранить данные%s\n", position == 5 ? " <--" : " ");
-    printf("6) Загрузить данные%s\n", position == 6 ? " <--" : " ");
-    printf("7) Вернуться на уровень университета%s\n", position == 7 ? " <--" : " ");
-    printf("8) Выход%s\n", position == 8 ? " <--" : " ");
-    std::cout << "Название факультета: " << faculty.getTitle() << std::endl;
-    std::cout << "Кафедры факультета: ";
+    printf("выберите действие:\n");
+    printf("1) добавить кафедру%s\n", position == 1 ? " <--" : " ");
+    printf("2) удалить кафедру%s\n", position == 2 ? " <--" : " ");
+    printf("3) сменить название факультета%s\n", position == 3 ? " <--" : " ");
+    printf("4) выбрать кафедру для редактирования%s\n", position == 4 ? " <--" : " ");
+    printf("5) найти студента(ов)%s\n", position == 5 ? " <--" : " ");
+    printf("6) сохранить данные%s\n", position == 6 ? " <--" : " ");
+    printf("7) загрузить данные%s\n", position == 7 ? " <--" : " ");
+    printf("8) вернуться на уровень университета%s\n", position == 8 ? " <--" : " ");
+    printf("9) выход%s\n", position == 9 ? " <--" : " ");
+    std::cout << "название факультета: " << faculty.getTitle() << std::endl;
+    std::cout << "кафедры факультета: ";
     if (faculty.getDepartments().empty()) std::cout << std::endl;
     else
         for (const Department &department: faculty.getDepartments()) {
@@ -267,16 +276,16 @@ void consoleInterfaceForFaculty(Faculty &faculty, University &university) {
                 if (permissionFlag) {
                     if (!faculty.getDepartments().empty()) {
                         if (faculty.deleteDepartment(
-                                validateString("Введите название кафедры", true)))
+                                validateString("введите название кафедры", true)))
                             showMenuForFaculty(position, faculty);
-                    } else showErrorMessage("Кафедра с таким названием отсутствует");
+                    } else showErrorMessage("кафедра с таким названием отсутствует");
                 }
                 break;
             case 3:
                 if (permissionFlag) {
-                    std::cout << "Введите новое название!" << std::endl;
+                    std::cout << "введите новое название!" << std::endl;
                     std::cin >> title;
-                    if (title.empty()) showErrorMessage("Название не может быть пустым!");
+                    if (title.empty()) showErrorMessage("название не может быть пустым!");
                     else {
                         faculty.setTitle(title);
                         showMenuForFaculty(position, faculty);
@@ -286,50 +295,47 @@ void consoleInterfaceForFaculty(Faculty &faculty, University &university) {
             case 4:
                 if (permissionFlag) {
                     if (!faculty.getDepartments().empty()) {
-                        Department *d = faculty.findDepartment(validateString("Введите название кафедры", true));
+                        Department *d = faculty.findDepartment(validateString("введите название кафедры", true));
                         if (d != nullptr) {
                             consoleInterfaceForDepartment(*d, university);
                             showMenuForFaculty(position, faculty);
                         }
-                    } else showErrorMessage("Кафедры с таким названием не существует");
+                    } else showErrorMessage("кафедры с таким названием не существует");
                 }
                 break;
             case 5:
                 if (permissionFlag) {
-                    std::ofstream out(
-                            R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
-                            std::ios_base::binary | std::ios_base::out);
-                    university.writeToFile(out);
-                    out.close();
+                    int mode;
+                    std::cout << "выберите параметр поиска(0 - по фамилии, 1 - по имени, 2 - по отчеству, 3 - по полу"
+                              << std::endl;
+                    mode = validationWithArgument(0, 3);
+                    showStudents(university.findStudent(mode));
                 }
                 break;
             case 6:
                 if (permissionFlag) {
-                    std::ifstream in(
-                            R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
-                            std::ios_base::binary | std::ios_base::in);
-                    if (university.readFromFile(in)) {
-                        in.close();
+                    university.writeToFile(false);
+                }
+                break;
+            case 7:
+                if (permissionFlag) {
+                    if (university.readFromFile(false)) {
                         showMenuForFaculty(position, faculty);
                     }
                 }
                 break;
-            case 7:
+            case 8:
                 if (permissionFlag) {
                     showMenuForUniversity(1, university);
                     return;
                 }
                 break;
-            case 8:
+            case 9:
                 if (permissionFlag) {
-                    std::cout << "Сохранится перед выходом?(1 - да, 2 - нет)" << std::endl;
+                    std::cout << "сохранится перед выходом?(1 - да, 2 - нет)" << std::endl;
                     choice(YN);
                     if (YN == '1') {
-                        std::ofstream out(
-                                R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
-                                std::ios_base::binary | std::ios_base::out);
-                        university.writeToFile(out);
-                        out.close();
+                        university.writeToFile(false);
                     }
                     exit(0);
                 }
@@ -342,17 +348,18 @@ void consoleInterfaceForFaculty(Faculty &faculty, University &university) {
 void showMenuForDepartment(int position, Department &department) {
     system("cls");
     bool flag = false;
-    printf("Выберите действие:\n");
-    printf("1) Добавить группу%s\n", position == 1 ? " <--" : " ");
-    printf("2) Удалить группу%s\n", position == 2 ? " <--" : " ");
-    printf("3) Сменить название кафедры%s\n", position == 3 ? " <--" : " ");
-    printf("4) Выбрать группу для редактирования%s\n", position == 4 ? " <--" : " ");
-    printf("5) Сохранить данные%s\n", position == 5 ? " <--" : " ");
-    printf("6) Загрузить данные%s\n", position == 6 ? " <--" : " ");
-    printf("7) Вернуться на уровень факультета%s\n", position == 7 ? " <--" : " ");
-    printf("8) Выход%s\n", position == 8 ? " <--" : " ");
-    std::cout << "Название кафедры: " << department.getTitle() << std::endl;
-    std::cout << "Группы кафедры: ";
+    printf("выберите действие:\n");
+    printf("1) добавить группу%s\n", position == 1 ? " <--" : " ");
+    printf("2) удалить группу%s\n", position == 2 ? " <--" : " ");
+    printf("3) сменить название кафедры%s\n", position == 3 ? " <--" : " ");
+    printf("4) выбрать группу для редактирования%s\n", position == 4 ? " <--" : " ");
+    printf("5) найти студента(ов)%s\n", position == 5 ? " <--" : " ");
+    printf("6) сохранить данные%s\n", position == 6 ? " <--" : " ");
+    printf("7) загрузить данные%s\n", position == 7 ? " <--" : " ");
+    printf("8) вернуться на уровень факультета%s\n", position == 8 ? " <--" : " ");
+    printf("9) выход%s\n", position == 9 ? " <--" : " ");
+    std::cout << "название кафедры: " << department.getTitle() << std::endl;
+    std::cout << "группы кафедры: ";
     if (department.getGroups().empty()) std::cout << std::endl;
     else
         for (const Group &group: department.getGroups()) {
@@ -437,18 +444,18 @@ void consoleInterfaceForDepartment(Department &department, University &universit
             case 2:
                 if (permissionFlag) {
                     if (!department.getGroups().empty()) {
-                        std::cout << "Введите номер группы" << std::endl;
+                        std::cout << "введите номер группы" << std::endl;
                         if (department.deleteGroup(
                                 validationWithArgument(0, 10000)))
                             showMenuForDepartment(position, department);
-                    } else showErrorMessage("Группа с таким номером отсутствует");
+                    } else showErrorMessage("группа с таким номером отсутствует");
                 }
                 break;
             case 3:
                 if (permissionFlag) {
-                    std::cout << "Введите новое название!" << std::endl;
+                    std::cout << "введите новое название!" << std::endl;
                     std::cin >> title;
-                    if (title.empty()) showErrorMessage("Название не может быть пустым!");
+                    if (title.empty()) showErrorMessage("название не может быть пустым!");
                     else {
                         department.setTitle(title);
                         showMenuForDepartment(position, department);
@@ -458,50 +465,47 @@ void consoleInterfaceForDepartment(Department &department, University &universit
             case 4:
                 if (permissionFlag) {
                     if (!department.getGroups().empty()) {
-                        std::cout << "Введите номер группы" << std::endl;
+                        std::cout << "введите номер группы" << std::endl;
                         Group *g = department.findGroup(validation());
                         if (g != nullptr) {
                             consoleInterfaceForGroup(*g, university);
                             showMenuForDepartment(position, department);
                         }
-                    } else showErrorMessage("Кафедры с таким названием не существует");
+                    } else showErrorMessage("кафедры с таким названием не существует");
                 }
                 break;
             case 5:
                 if (permissionFlag) {
-                    std::ofstream out(
-                            R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
-                            std::ios_base::binary | std::ios_base::out);
-                    university.writeToFile(out);
-                    out.close();
+                    int mode;
+                    std::cout << "выберите параметр поиска(0 - по фамилии, 1 - по имени, 2 - по отчеству, 3 - по полу"
+                              << std::endl;
+                    mode = validationWithArgument(0, 3);
+                    showStudents(university.findStudent(mode));
                 }
                 break;
             case 6:
                 if (permissionFlag) {
-                    std::ifstream in(
-                            R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
-                            std::ios_base::binary | std::ios_base::in);
-                    if (university.readFromFile(in)) {
-                        in.close();
-                        showMenuForDepartment(position, department);
-                    }
+                    university.writeToFile(false);
                 }
                 break;
             case 7:
                 if (permissionFlag) {
-                    return;
+                    if (university.readFromFile(false)) {
+                        showMenuForDepartment(position, department);
+                    }
                 }
                 break;
             case 8:
                 if (permissionFlag) {
-                    std::cout << "Сохранится перед выходом?(1 - да, 2 - нет)" << std::endl;
+                    return;
+                }
+                break;
+            case 9:
+                if (permissionFlag) {
+                    std::cout << "сохранится перед выходом?(1 - да, 2 - нет)" << std::endl;
                     choice(YN);
                     if (YN == '1') {
-                        std::ofstream out(
-                                R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
-                                std::ios_base::binary | std::ios_base::out);
-                        university.writeToFile(out);
-                        out.close();
+                        university.writeToFile(false);
                     }
                     exit(0);
                 }
@@ -514,17 +518,17 @@ void showMenuForGroup(int position, Group &group) {
     system("cls");
     bool flag = false;
     std::string gender;
-    printf("Выберите действие:\n");
-    printf("1) Добавить студента%s\n", position == 1 ? " <--" : " ");
-    printf("2) Отчислить студента%s\n", position == 2 ? " <--" : " ");
-    printf("3) Сменить номер группы%s\n", position == 3 ? " <--" : " ");
-    printf("4) Изменить данные студента%s\n", position == 4 ? " <--" : " ");
-    printf("5) Сохранить данные%s\n", position == 5 ? " <--" : " ");
-    printf("6) Загрузить данные%s\n", position == 6 ? " <--" : " ");
-    printf("7) Вернуться на уровень группы%s\n", position == 7 ? " <--" : " ");
-    printf("8) Выход%s\n", position == 8 ? " <--" : " ");
-    std::cout << "Номер группы: " << group.getNumber() << std::endl;
-    std::cout << "Студенты: " << std::endl;
+    printf("выберите действие:\n");
+    printf("1) добавить студента%s\n", position == 1 ? " <--" : " ");
+    printf("2) отчислить студента%s\n", position == 2 ? " <--" : " ");
+    printf("3) сменить номер группы%s\n", position == 3 ? " <--" : " ");
+    printf("4) изменить данные студента%s\n", position == 4 ? " <--" : " ");
+    printf("5) сохранить данные%s\n", position == 5 ? " <--" : " ");
+    printf("6) загрузить данные%s\n", position == 6 ? " <--" : " ");
+    printf("7) вернуться на уровень группы%s\n", position == 7 ? " <--" : " ");
+    printf("8) выход%s\n", position == 8 ? " <--" : " ");
+    std::cout << "номер группы: " << group.getNumber() << std::endl;
+    std::cout << "студенты: " << std::endl;
     for (const Student &student: group.getStudents()) {
         gender = (student.getGender() == MEN) ? "- men" : "- women";
         std::cout << student.getFirstname() << " " << student.getSurname() << " " << student.getPatronymic() << " "
@@ -548,20 +552,20 @@ void consoleInterfaceForGroup(Group &group, University &university) {
             case ARROW_UP:
                 if (0 != position - 1)
                     position--;
-                else position = MAX_ARROW_POSITION;
+                else position = MAX_ARROW_POSITION_UNI_AND_STUD;
                 break;
             case ARROW_DOWN:
-                if (position < MAX_ARROW_POSITION) position++;
+                if (position < MAX_ARROW_POSITION_UNI_AND_STUD) position++;
                 else
                     position = MIN_ARROW_POSITION;
                 break;
             case W:
                 if (0 != position - 1)
                     position--;
-                else position = MAX_ARROW_POSITION;
+                else position = MAX_ARROW_POSITION_UNI_AND_STUD;
                 break;
             case S:
-                if (position < MAX_ARROW_POSITION) position++;
+                if (position < MAX_ARROW_POSITION_UNI_AND_STUD) position++;
                 else
                     position = MIN_ARROW_POSITION;
                 break;
@@ -609,14 +613,14 @@ void consoleInterfaceForGroup(Group &group, University &university) {
                 if (permissionFlag) {
                     if (!group.getStudents().empty()) {
                         if (group.deleteStudent(
-                                validateString("Введите фамилию студента", true)))
+                                validateString("введите фамилию студента", true)))
                             showMenuForGroup(position, group);
-                    } else showErrorMessage("Группа с таким номером отсутствует");
+                    } else showErrorMessage("группа с таким номером отсутствует");
                 }
                 break;
             case 3:
                 if (permissionFlag) {
-                    std::cout << "Введите новый номер" << std::endl;
+                    std::cout << "введите новый номер" << std::endl;
                     group.setNumber(validationWithArgument(0, 10000));
                     showMenuForGroup(position, group);
                 }
@@ -624,49 +628,41 @@ void consoleInterfaceForGroup(Group &group, University &university) {
             case 4:
                 if (permissionFlag) {
                     if (!group.getStudents().empty()) {
-                        Student *s = group.findStudent(validateString("Введите фамилию студента", true));
+                        Student *s = group.findStudent(validateString("введите фамилию студента", true));
                         if (s != nullptr) {
-                            std::cout << "Выберите что хотите изменить(1 - фамилия, 2 - имя, 3 - отчество, 4 - пол)"
+                            std::cout << "выберите что хотите изменить(1 - фамилия, 2 - имя, 3 - отчество, 4 - пол)"
                                       << std::endl;
                             int choice = validationWithArgument(1, 4);
                             switch (choice) {
                                 case 1:
-                                    s->setSurname(validateString("Введите новую фамилию", true));
+                                    s->setSurname(validateString("введите новую фамилию", true));
                                     break;
                                 case 2:
-                                    s->setFirstname(validateString("Введите новое имя", true));
+                                    s->setFirstname(validateString("введите новое имя", true));
                                     break;
                                 case 3:
-                                    s->setPatronymic(validateString("Введите новое отчество", true));
+                                    s->setPatronymic(validateString("введите новое отчество", true));
                                     break;
                                 case 4:
-                                    std::cout << "Выберите пол(1 - мужской, 2 - женский)" << std::endl;
+                                    std::cout << "выберите пол(1 - мужской, 2 - женский)" << std::endl;
                                     choice = validationWithArgument(1, 2);
                                     if (choice == 1) s->setGender(MEN);
                                     else s->setGender(WOMEN);
                                     break;
                             }
-                            showMenuForGroup(position,group);
+                            showMenuForGroup(position, group);
                         }
-                    } else showErrorMessage("Студента с таким ФИО не существует");
+                    } else showErrorMessage("студента с таким ФИО не существует");
                 }
                 break;
             case 5:
                 if (permissionFlag) {
-                    std::ofstream out(
-                            R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
-                            std::ios_base::binary | std::ios_base::out);
-                    university.writeToFile(out);
-                    out.close();
+                    university.writeToFile(false);
                 }
                 break;
             case 6:
                 if (permissionFlag) {
-                    std::ifstream in(
-                            R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
-                            std::ios_base::binary | std::ios_base::in);
-                    if (university.readFromFile(in)) {
-                        in.close();
+                    if (university.readFromFile(false)) {
                         showMenuForGroup(position, group);
                     }
                 }
@@ -678,14 +674,10 @@ void consoleInterfaceForGroup(Group &group, University &university) {
                 break;
             case 8:
                 if (permissionFlag) {
-                    std::cout << "Сохранится перед выходом?(1 - да, 2 - нет)" << std::endl;
+                    std::cout << "сохранится перед выходом?(1 - да, 2 - нет)" << std::endl;
                     choice(YN);
                     if (YN == '1') {
-                        std::ofstream out(
-                                R"(E:\C_C++\Programming-projects-LETI\HierarchicalStructureOfDataStorage\data.bin)",
-                                std::ios_base::binary | std::ios_base::out);
-                        university.writeToFile(out);
-                        out.close();
+                        university.writeToFile(false);
                     }
                     exit(0);
                 }
