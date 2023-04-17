@@ -24,6 +24,8 @@ find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS AxContainer REQUIRED)
+
 
 
 set(PROJECT_SOURCES
@@ -36,7 +38,7 @@ set(PROJECT_SOURCES
 
         mainwindow.ui
 
-        findwidget.cpp findwidget.h findwidget.ui showresultwidget.cpp showresultwidget.h showresultwidget.ui calendarwidget.cpp calendarwidget.h calendarwidget.ui)
+        findwidget.cpp findwidget.h findwidget.ui showresultwidget.cpp showresultwidget.h showresultwidget.ui calendarwidget.cpp calendarwidget.h calendarwidget.ui models/Student.cpp models/Student.h models/Subject.cpp models/Subject.h)
 
 
 
@@ -87,6 +89,8 @@ endif()
 
 
 target_link_libraries(DesktopApplicationStudentProgressReport PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+
+target_link_libraries(DesktopApplicationStudentProgressReport PRIVATE Qt${QT_VERSION_MAJOR}::AxContainer)
 
 
 
