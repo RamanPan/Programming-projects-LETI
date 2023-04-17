@@ -16,8 +16,23 @@ public:
 
     ~FindWidget() override;
 
+signals:
+
+    void insertData(bool flag);
+
+    void dataForView(QString fio, QString numberGroup, int gender);
+
+public slots:
+
+    void signalInsertDataOn();
+
+public:
+    void prepareData();
+
 private:
     Ui::FindWidget *ui;
+
+    void initConnections();
 };
 
 

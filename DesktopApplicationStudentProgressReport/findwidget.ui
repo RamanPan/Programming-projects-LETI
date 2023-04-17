@@ -103,17 +103,17 @@
    </item>
    <item>
     <property name="text">
-     <string>2373</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
      <string>2374</string>
     </property>
    </item>
    <item>
     <property name="text">
      <string>2375</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>2395</string>
     </property>
    </item>
   </widget>
@@ -153,7 +153,7 @@
     <string>Мужчина</string>
    </property>
   </widget>
-  <widget class="QRadioButton" name="radioButton">
+  <widget class="QRadioButton" name="isWomen">
    <property name="geometry">
     <rect>
      <x>470</x>
