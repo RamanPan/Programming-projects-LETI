@@ -5,30 +5,63 @@
 #include "calendarwidget.h"
 
 #include <QGridLayout>
+#include <utility>
 
 
 MainWindow::MainWindow(QWidget *parent)
         : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
-    this->setWindowTitle("Лучшее приложение на свете");
-    QTabWidget *tabWidget = new QTabWidget(this);
-    tabWidget->setTabShape(QTabWidget::Triangular);
-    tabWidget->setTabPosition(QTabWidget::North);
+    setWindowTitle("Лучшее приложение на свете");
+    resize(950, 500);
+    initWidgets();
+    initConnections();
+    setCentralWidget(tabWidget);
+}
 
-    QWidget *pageWidget_0 = new FindWidget(this);
-    QWidget *pageWidget_1 = new ShowResultWidget(this);
-    QWidget *pageWidget_2 = new CalendarWidget(this);
-
-    tabWidget->addTab(pageWidget_0, "Поиск студента");
-    tabWidget->addTab(pageWidget_1, "Результаты поиска");
-    tabWidget->addTab(pageWidget_2, "Календарь");
-//    tabWidget->setTabEnabled(1,false);
-    this->resize(950, 500);
-    this->setCentralWidget(tabWidget);
+void MainWindow::enableTab(bool flag) {
+    tabWidget->setTabEnabled(1, flag);
 }
 
 MainWindow::~MainWindow() {
     delete ui;
+    delete findWidget;
+    delete viewWidget;
+    delete calendarWidget;
+}
+
+void MainWindow::initWidgets() {
+    tabWidget = new QTabWidget(this);
+    tabWidget->setTabShape(QTabWidget::Triangular);
+    tabWidget->setTabPosition(QTabWidget::North);
+
+    findWidget = new FindWidget(this);
+    viewWidget = new ShowResultWidget(this);
+    calendarWidget = new CalendarWidget(this);
+
+    tabWidget->addTab(findWidget, "Поиск студента");
+    tabWidget->addTab(viewWidget, "Результаты поиска");
+    tabWidget->addTab(calendarWidget, "Календарь");
+    tabWidget->setTabEnabled(1, false);
+
+}
+
+void MainWindow::initConnections() {
+    connect(findWidget, SIGNAL(insertData(bool)),
+            this, SLOT(enableTab(bool)));
+    connect(tabWidget, SIGNAL(tabBarClicked(int)),
+            this, SLOT(checkNumberTabClicked(int)));
+    connect(findWidget, SIGNAL(dataForView(QString, QString, int)),
+            this, SLOT(sendRightData(QString, QString, int)));
+}
+
+void MainWindow::checkNumberTabClicked(int num) {
+    if (num == 1) {
+        findWidget->prepareData();
+    }
+}
+
+void MainWindow::sendRightData(QString fio, QString numberGroup, int gender) {
+    viewWidget->findRightData(std::move(fio), std::move(numberGroup), gender);
 }
 
 
