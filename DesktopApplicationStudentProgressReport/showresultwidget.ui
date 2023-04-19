@@ -25,66 +25,16 @@
    <property name="font">
     <font>
      <family>Arial</family>
-     <pointsize>14</pointsize>
+     <pointsize>12</pointsize>
     </font>
    </property>
-  </widget>
-  <widget class="QPushButton" name="sortButton">
-   <property name="geometry">
-    <rect>
-     <x>110</x>
-     <y>390</y>
-     <width>151</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>14</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>Сортировать</string>
-   </property>
-  </widget>
-  <widget class="QComboBox" name="sortBox">
-   <property name="geometry">
-    <rect>
-     <x>290</x>
-     <y>390</y>
-     <width>191</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-     <pointsize>14</pointsize>
-    </font>
-   </property>
-   <item>
-    <property name="text">
-     <string>ФИО</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Оценки</string>
-    </property>
-   </item>
-   <item>
-    <property name="text">
-     <string>Дисциплины</string>
-    </property>
-   </item>
   </widget>
   <widget class="QPushButton" name="exportButton">
    <property name="geometry">
     <rect>
-     <x>670</x>
+     <x>580</x>
      <y>390</y>
-     <width>161</width>
+     <width>181</width>
      <height>41</height>
     </rect>
    </property>
@@ -96,6 +46,24 @@
    </property>
    <property name="text">
     <string>Экспорт в xlsx</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>380</y>
+     <width>541</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Для сортировки кликните по заголовку</string>
    </property>
   </widget>
  </widget>
