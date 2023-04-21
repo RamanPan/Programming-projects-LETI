@@ -11,6 +11,6 @@
 ## 1 - Single Linked List with Аrrow and Number Сontrol (Односвязный связной список с стрелочным и цифровым управлением) - сдано 02.03.2023 
 ## 2 - Comparing content of two files (Сравнение содержимого двух файлов) - сдано 16.03.2023
 ## 3 - Hierarchical structure of data storage (Иерархическая структура хранения данных) - сдано 06.04.2023
-## 4 - QtFirstProject (Первый проект на Qt)
+## 4 - QtFirstProject (Первый проект на Qt) - сдано 19.04.2023
 # Курсовой проект:
 
