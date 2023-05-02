@@ -6,16 +6,11 @@
 
 
 Client::Client(QWidget *parent)
-    : QDialog(parent)
-    , hostCombo(new QComboBox)
-    , portLineEdit(new QLineEdit)
-    , getFortuneButton(new QPushButton(tr("Get Fortune")))
-    , tcpSocket(new QTcpSocket(this))
-    , ui(new Ui::Client)
-{
-    //! [0]
+        : QDialog(parent), hostCombo(new QComboBox), portLineEdit(new QLineEdit),
+          getFortuneButton(new QPushButton(tr("Get Fortune"))), tcpSocket(new QTcpSocket(this)),
+          keys(new QList<QString>({"familystudent ", "namestudent ", "groupstudent ", "genderstudent "})),
+          ui(new Ui::Client) {
     hostCombo->setEditable(true);
-    // find out name of this machine
     QString name = QHostInfo::localHostName();
     if (!name.isEmpty()) {
         hostCombo->addItem(name);
@@ -28,55 +23,30 @@ Client::Client(QWidget *parent)
     // find out IP addresses of this machine
     const QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
     // add non-localhost addresses
-    for (const QHostAddress &entry : ipAddressesList) {
+    for (const QHostAddress &entry: ipAddressesList) {
         if (!entry.isLoopback())
             hostCombo->addItem(entry.toString());
     }
     // add localhost addresses
-    for (const QHostAddress &entry : ipAddressesList) {
+    for (const QHostAddress &entry: ipAddressesList) {
         if (entry.isLoopback())
             hostCombo->addItem(entry.toString());
     }
-
     portLineEdit->setValidator(new QIntValidator(1, 65535, this));
-
     auto hostLabel = new QLabel(tr("&Название сервера"));
     hostLabel->setBuddy(hostCombo);
     auto portLabel = new QLabel(tr("&Порт"));
     portLabel->setBuddy(portLineEdit);
-
     statusLabel = new QLabel(tr("                                       "));
-
     getFortuneButton->setDefault(true);
     getFortuneButton->setEnabled(false);
-
     auto quitButton = new QPushButton(tr("Quit"));
-
     auto buttonBox = new QDialogButtonBox;
     buttonBox->addButton(getFortuneButton, QDialogButtonBox::ActionRole);
     buttonBox->addButton(quitButton, QDialogButtonBox::RejectRole);
-
-    //! [1]
     in.setDevice(tcpSocket);
     in.setVersion(QDataStream::Qt_6_5);
-    //! [1]
-
-    connect(hostCombo, &QComboBox::editTextChanged,
-            this, &Client::enableGetFortuneButton);
-    connect(portLineEdit, &QLineEdit::textChanged,
-            this, &Client::enableGetFortuneButton);
-    connect(getFortuneButton, &QAbstractButton::clicked,
-            this, &Client::requestNewFortune);
-    connect(quitButton, &QAbstractButton::clicked, this, &QWidget::close);
-    //! [2] //! [3]
-    connect(tcpSocket, &QIODevice::readyRead, this, &Client::readFortune);
-    //! [2] //! [4]
-    connect(tcpSocket, &QAbstractSocket::errorOccurred,
-            //! [3]
-            this, &Client::displayError);
-    //! [4]
-
-    QGridLayout *mainLayout = nullptr;
+    QGridLayout *mainLayout;
     if (QGuiApplication::styleHints()->showIsFullScreen() || QGuiApplication::styleHints()->showIsMaximized()) {
         auto outerVerticalLayout = new QVBoxLayout(this);
         outerVerticalLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Ignored, QSizePolicy::MinimumExpanding));
@@ -100,83 +70,145 @@ Client::Client(QWidget *parent)
 
     setWindowTitle(QGuiApplication::applicationDisplayName());
     portLineEdit->setFocus();
+    getFortuneButton->hide();
     ui->setupUi(this);
-    //! [5]
-}
-//! [5]
+    ui->addButton->setEnabled(false);
+    buttonBox->hide();
+    initConnections();
 
-//! [6]
-void Client::requestNewFortune()
-{
-    getFortuneButton->setEnabled(false);
+}
+
+void Client::signalInsertDataOn() {
+    ui->addButton->setEnabled(!ui->familyEdit->text().isEmpty()
+                              && !ui->nameEdit->text().isEmpty()
+                              && ui->groupBox->currentIndex() != 0
+                              && ui->genderBox->currentIndex() != 0);
+}
+
+void Client::sendRequestToSelect() {
     tcpSocket->abort();
-    //! [7]
     tcpSocket->connectToHost(hostCombo->currentText(),
                              portLineEdit->text().toInt());
-    //! [7]
-}
-//! [6]
+    tcpSocket->write("SELECT ");
+    std::string text;
+    if (!ui->familyEdit->text().isEmpty()) {
+        tcpSocket->write(keys->at(0).toStdString().c_str());
+        text = ui->familyEdit->text().toStdString() + " ";
+        tcpSocket->write(text.c_str());
+    }
+    if (!ui->nameEdit->text().isEmpty()) {
+        tcpSocket->write(keys->at(1).toStdString().c_str());
+        text = ui->nameEdit->text().toStdString() + " ";
+        tcpSocket->write(text.c_str());
 
-//! [8]
-void Client::readFortune()
-{
-    in.startTransaction();
-
-    QString nextFortune;
-    in >> nextFortune;
-
-    if (!in.commitTransaction())
-        return;
-
-    if (nextFortune == currentFortune) {
-        QTimer::singleShot(0, this, &Client::requestNewFortune);
-        return;
+    }
+    if (ui->groupBox->currentIndex() != 0) {
+        tcpSocket->write(keys->at(2).toStdString().c_str());
+        text = ui->groupBox->currentText().toStdString() + " ";
+        tcpSocket->write(text.c_str());
+    }
+    if (ui->genderBox->currentIndex() != 0) {
+        tcpSocket->write(keys->at(3).toStdString().c_str());
+        text = ui->genderBox->currentText().toStdString();
+        tcpSocket->write(text.c_str());
     }
 
-    currentFortune = nextFortune;
-    statusLabel->setText(currentFortune);
-    getFortuneButton->setEnabled(true);
 }
-//! [8]
 
-//! [13]
-void Client::displayError(QAbstractSocket::SocketError socketError)
-{
+void Client::sendRequestToInsert() {
+    tcpSocket->abort();
+    tcpSocket->connectToHost(hostCombo->currentText(),
+                             portLineEdit->text().toInt());
+    tcpSocket->write("INSERT ");
+    std::string text;
+    text = "'" + ui->familyEdit->text().toStdString() + "' ";
+    tcpSocket->write(text.c_str());
+    text = "'" + ui->nameEdit->text().toStdString() + "' ";
+    tcpSocket->write(text.c_str());
+    text = "'" + ui->groupBox->currentText().toStdString() + "' ";
+    tcpSocket->write(text.c_str());
+    text = "'" + ui->genderBox->currentText().toStdString() + "'";
+    tcpSocket->write(text.c_str());
+
+}
+
+void Client::sendRequestToDelete() {
+    tcpSocket->abort();
+    tcpSocket->connectToHost(hostCombo->currentText(),
+                             portLineEdit->text().toInt());
+    tcpSocket->write("DELETE ");
+    std::string text;
+    if (!ui->familyEdit->text().isEmpty()) {
+        tcpSocket->write(keys->at(0).toStdString().c_str());
+        text = ui->familyEdit->text().toStdString() + " ";
+        tcpSocket->write(text.c_str());
+    }
+    if (!ui->nameEdit->text().isEmpty()) {
+        tcpSocket->write(keys->at(1).toStdString().c_str());
+        text = ui->nameEdit->text().toStdString() + " ";
+        tcpSocket->write(text.c_str());
+
+    }
+    if (ui->groupBox->currentIndex() != 0) {
+        tcpSocket->write(keys->at(2).toStdString().c_str());
+        text = ui->groupBox->currentText().toStdString() + " ";
+        tcpSocket->write(text.c_str());
+    }
+    if (ui->genderBox->currentIndex() != 0) {
+        tcpSocket->write(keys->at(3).toStdString().c_str());
+        text = ui->genderBox->currentText().toStdString();
+        tcpSocket->write(text.c_str());
+    }
+
+}
+
+
+void Client::readResponse() {
+    QMessageBox::information(this, "Результат запроса", tcpSocket->readAll());
+}
+
+void Client::initConnections() {
+    connect(ui->findButton, &QAbstractButton::clicked,
+            this, &Client::sendRequestToSelect);
+    connect(ui->addButton, &QAbstractButton::clicked,
+            this, &Client::sendRequestToInsert);
+    connect(ui->deleteButton, &QAbstractButton::clicked,
+            this, &Client::sendRequestToDelete);
+    connect(tcpSocket, &QIODevice::readyRead, this, &Client::readResponse);
+    connect(tcpSocket, &QAbstractSocket::errorOccurred,
+            this, &Client::displayError);
+    connect(ui->familyEdit, SIGNAL(textEdited(QString)), this, SLOT(signalInsertDataOn()));
+    connect(ui->groupBox, SIGNAL(currentIndexChanged(int)), this, SLOT(signalInsertDataOn()));
+    connect(ui->nameEdit, SIGNAL(textEdited(QString)), this, SLOT(signalInsertDataOn()));
+    connect(ui->genderBox, SIGNAL(currentIndexChanged(int)), this, SLOT(signalInsertDataOn()));
+
+}
+
+void Client::displayError(QAbstractSocket::SocketError socketError) {
     switch (socketError) {
-    case QAbstractSocket::RemoteHostClosedError:
-        break;
-    case QAbstractSocket::HostNotFoundError:
-        QMessageBox::information(this, tr("Fortune Client"),
-                                 tr("The host was not found. Please check the "
-                                    "host name and port settings."));
-        break;
-    case QAbstractSocket::ConnectionRefusedError:
-        QMessageBox::information(this, tr("Fortune Client"),
-                                 tr("The connection was refused by the peer. "
-                                    "Make sure the fortune server is running, "
-                                    "and check that the host name and port "
-                                    "settings are correct."));
-        break;
-    default:
-        QMessageBox::information(this, tr("Fortune Client"),
-                                 tr("The following error occurred: %1.")
-                                     .arg(tcpSocket->errorString()));
+        case QAbstractSocket::RemoteHostClosedError:
+            break;
+        case QAbstractSocket::HostNotFoundError:
+            QMessageBox::information(this, tr("Client Part"),
+                                     tr("Хост не был найден. Проверьте имя хоста и номер порта."));
+            break;
+        case QAbstractSocket::ConnectionRefusedError:
+            QMessageBox::information(this, tr("Client Part"),
+                                     tr("Связь не была установлена. "
+                                        "Убедитесь что сервер включен "
+                                        "и проверьте имя хоста и номер порта."));
+            break;
+        default:
+            QMessageBox::information(this, tr("Client Part"),
+                                     tr("Ошибка: Проверьте имя хоста и номер порта.")
+                                             .arg(tcpSocket->errorString()));
     }
 
     getFortuneButton->setEnabled(true);
 }
-//! [13]
-
-void Client::enableGetFortuneButton()
-{
-    getFortuneButton->setEnabled(!hostCombo->currentText().isEmpty() &&
-                                 !portLineEdit->text().isEmpty());
-
-}
 
 
-Client::~Client()
-{
+Client::~Client() {
     delete ui;
 }
 
