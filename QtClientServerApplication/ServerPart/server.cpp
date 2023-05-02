@@ -2,6 +2,7 @@
 #include <QtNetwork>
 #include <QtCore>
 #include <QDataStream>
+#include <QSqlQuery>
 
 #include "server.h"
 
@@ -19,7 +20,7 @@ Server::Server(QWidget *parent)
     auto quitButton = new QPushButton(tr("Выход"));
     quitButton->setAutoDefault(false);
     connect(quitButton, &QAbstractButton::clicked, this, &QWidget::close);
-    connect(tcpServer, &QTcpServer::newConnection, this, &Server::processingRequest);
+    connect(tcpServer, &QTcpServer::newConnection, this, &Server::getNextPending);
     auto buttonLayout = new QHBoxLayout;
     buttonLayout->addStretch(1);
     buttonLayout->addWidget(quitButton);
@@ -47,6 +48,11 @@ Server::Server(QWidget *parent)
     setWindowTitle(QGuiApplication::applicationDisplayName());
 }
 
+void Server::getNextPending() {
+    conn = tcpServer->nextPendingConnection();
+    connect(conn, &QTcpSocket::readyRead, this, &Server::processingRequest);
+}
+
 void Server::initServer() {
     tcpServer = new QTcpServer(this);
     if (!tcpServer->listen()) {
@@ -72,74 +78,229 @@ void Server::initServer() {
                                  .arg(ipAddress).arg(tcpServer->serverPort()));
     db = QSqlDatabase::addDatabase("QPSQL");
     db.setDatabaseName("LastLab");
+    db.setPort(5432);
     db.setPassword("1234");
     db.setUserName("postgres");
-    db.setHostName("LastLabOnEarth");
+    db.setHostName("localhost");
+    db.open();
 }
 
 
 void Server::processingRequest() {
-//    QByteArray block;
-//    QDataStream out(&block, QIODevice::WriteOnly);
-//    out.setVersion(QDataStream::Qt_DefaultCompiledVersion);
-
-//    out << fortunes[QRandomGenerator::global()->bounded(fortunes.size())];
     QList<QString> list;
-    QTcpSocket *conn = tcpServer->nextPendingConnection();
-    while (conn->canReadLine()) {
-        QString data = QString(conn->readLine());
-        list.append(data);
+    for (const auto &arr: conn->readAll().split(' ')) {
+        list.append(QString(arr));
     }
     std::string firstLine = list.at(0).toStdString();
     if (firstLine == "SELECT") {
         switch (list.size()) {
-            case 1:
-                sendSelectAll(conn);
+            default:
+                sendSelectAll();
                 break;
             case 3:
-                sendSelectWithOneCondition(conn, list.at(1), list.at(2));
+            case 4:
+                sendSelectWithOneCondition(list.at(1), list.at(2));
                 break;
             case 5:
-                sendSelectWithTwoCondition(conn, list.at(1), list.at(2), list.at(3), list.at(4));
+            case 6:
+                sendSelectWithTwoCondition(list.at(1), list.at(2), list.at(3), list.at(4));
                 break;
             case 7:
-                sendSelectWithThreeCondition(conn, list.at(1), list.at(2), list.at(3), list.at(4), list.at(5),
+            case 8:
+                sendSelectWithThreeCondition(list.at(1), list.at(2), list.at(3), list.at(4), list.at(5),
                                              list.at(6));
                 break;
             case 9:
-                sendSelectWithAllCondition(conn, list.at(1), list.at(2), list.at(3), list.at(4), list.at(5), list.at(6),
+            case 10:
+                sendSelectWithAllCondition(list.at(1), list.at(2), list.at(3), list.at(4), list.at(5), list.at(6),
                                            list.at(7), list.at(8));
                 break;
         }
     } else if (firstLine == "DELETE") {
         switch (list.size()) {
-            case 1:
-                sendDeleteAll(conn);
+            default:
+                sendDeleteAll();
                 break;
             case 3:
-                sendDeleteWithOneCondition(conn, list.at(1), list.at(2));
+            case 4:
+                sendDeleteWithOneCondition(list.at(1), list.at(2));
                 break;
             case 5:
-                sendDeleteWithTwoCondition(conn, list.at(1), list.at(2), list.at(3), list.at(4));
+            case 6:
+                sendDeleteWithTwoCondition(list.at(1), list.at(2), list.at(3), list.at(4));
                 break;
             case 7:
-                sendDeleteWithThreeCondition(conn, list.at(1), list.at(2), list.at(3), list.at(4), list.at(5),
+            case 8:
+                sendDeleteWithThreeCondition(list.at(1), list.at(2), list.at(3), list.at(4), list.at(5),
                                              list.at(6));
                 break;
             case 9:
-                sendDeleteWithAllCondition(conn, list.at(1), list.at(2), list.at(3), list.at(4), list.at(5), list.at(6),
+            case 10:
+                sendDeleteWithAllCondition(list.at(1), list.at(2), list.at(3), list.at(4), list.at(5), list.at(6),
                                            list.at(7), list.at(8));
                 break;
         }
-    } else if (firstLine == "INSERT") sendInsertData(conn, list.at(1), list.at(2), list.at(3), list.at(4));
-//    connect(conn, &QAbstractSocket::disconnected,
-//            conn, &QObject::deleteLater);
-
-//    conn->write(block);
-//    conn->disconnectFromHost();
+    } else if (firstLine == "INSERT") sendInsertData(list.at(1), list.at(2), list.at(3), list.at(4));
+    connect(conn, &QAbstractSocket::disconnected,
+            conn, &QObject::deleteLater);
+    conn->disconnectFromHost();
 }
 
-void Server::sendSelectAll(QTcpSocket *conn) {
+void Server::sendSelectAll() {
+    QSqlQuery query("SELECT * FROM student", db);
+    QString column;
+    if (query.exec("SELECT * FROM student")) {
+        while (query.next()) {
+            column +=
+                    query.value(1).toString() + " " + query.value(2).toString() + " " + query.value(3).toString() +
+                    " " + query.value(4).toString() + "\n";
+        }
+    }
+    if (column.isEmpty()) column = "По заданным параметрам записей в БД нет";
+    conn->write(column.toStdString().c_str());
+}
 
+void Server::sendSelectWithOneCondition(const QString &key, const QString &value) {
+    QSqlQuery query(db);
+    QString column;
+    if (query.exec("SELECT * FROM student WHERE " + key + " = " + '\'' + value + '\'')) {
+        while (query.next()) {
+            column +=
+                    query.value(1).toString() + " " + query.value(2).toString() + " " + query.value(3).toString() +
+                    " " + query.value(4).toString() + "\n";
+        }
+    } else column = "Ошибка";
+    if (column.isEmpty()) column = "По заданным параметрам записей в БД нет";
+    conn->write(column.toStdString().c_str());
+}
+
+void Server::sendSelectWithTwoCondition(const QString &key1, const QString &value1, const QString &key2,
+                                        const QString &value2) {
+    QSqlQuery query(db);
+    QString column;
+    if (query.exec("SELECT * FROM student WHERE " + key1 + " = " + '\'' + value1 + '\'' + " AND " +
+                   key2 + " = " + '\'' + value2 + '\'')) {
+
+        while (query.next()) {
+            column +=
+                    query.value(1).toString() + " " + query.value(2).toString() + " " + query.value(3).toString() +
+                    " " + query.value(4).toString() + "\n";
+        }
+    } else column = "Ошибка";
+    if (column.isEmpty()) column = "По заданным параметрам записей в БД нет";
+    conn->write(column.toStdString().c_str());
+}
+
+void Server::sendSelectWithThreeCondition(const QString &key1, const QString &value1, const QString &key2,
+                                          const QString &value2,
+                                          const QString &key3, const QString &value3) {
+    QSqlQuery query(db);
+    QString column;
+    if (query.exec("SELECT * FROM student WHERE " + key1 + " = " + '\'' + value1 + '\'' + " AND " +
+                   key2 + " = " + '\'' + value2 + '\'' + " AND " +
+                   key3 + " = " + '\'' + value3 + '\'')) {
+        while (query.next()) {
+            column +=
+                    query.value(1).toString() + " " + query.value(2).toString() + " " + query.value(3).toString() +
+                    " " + query.value(4).toString() + "\n";
+        }
+    } else column = "Ошибка";
+    if (column.isEmpty()) column = "По заданным параметрам записей в БД нет";
+    conn->write(column.toStdString().c_str());
+}
+
+void Server::sendSelectWithAllCondition(const QString &key1, const QString &value1,
+                                        const QString &key2, const QString &value2, const QString &key3,
+                                        const QString &value3,
+                                        const QString &key4, const QString &value4) {
+    QSqlQuery query(db);
+    QString column;
+    if (query.exec("SELECT * FROM student WHERE " + key1 + " = " + '\'' + value1 + '\'' + " AND " +
+                   key2 + " = " + '\'' + value2 + '\'' + " AND " +
+                   key3 + " = " + '\'' + value3 + '\'' + " AND " +
+                   key4 + " = " + '\'' + value4 + '\'')) {
+        while (query.next()) {
+            column +=
+                    query.value(1).toString() + " " + query.value(2).toString() + " " + query.value(3).toString() +
+                    " " + query.value(4).toString() + "\n";
+        }
+    }
+    if (column.isEmpty()) column = "По заданным параметрам записей в БД нет";
+    conn->write(column.toStdString().c_str());
+
+}
+
+void Server::sendDeleteAll() {
+    QSqlQuery query(db);
+    QString column;
+    if (query.exec("DELETE FROM student")) {
+        column = "Все записи успешно удалены";
+    } else column = "Не удалось удалить";
+    conn->write(column.toStdString().c_str());
+}
+
+void Server::sendDeleteWithOneCondition(const QString &key, const QString &value) {
+    QSqlQuery query(db);
+    QString column;
+    if (query.exec("DELETE FROM student WHERE " + key + " = " + '\'' + value + '\'')) column = "Запись успешно удалена";
+    else column = "Ошибка: Запись не найдена";
+    conn->write(column.toStdString().c_str());
+}
+
+void Server::sendDeleteWithTwoCondition(const QString &key1, const QString &value1, const QString &key2,
+                                        const QString &value2) {
+    QSqlQuery query(db);
+    QString column;
+    if (query.exec("DELETE FROM student WHERE " + key1 + " = " + '\'' + value1 + '\'' + " AND " +
+                   key2 + " = " + '\'' + value2 + '\''))
+        column = "Запись успешно удалена";
+    else column = "Ошибка: Запись не найдена";
+    conn->write(column.toStdString().c_str());
+}
+
+void Server::sendDeleteWithThreeCondition(const QString &key1, const QString &value1, const QString &key2,
+                                          const QString &value2,
+                                          const QString &key3, const QString &value3) {
+    QSqlQuery query(db);
+    QString column;
+    if (query.exec("DELETE FROM student WHERE " + key1 + " = " + '\'' + value1 + '\'' + " AND " +
+                   key2 + " = " + '\'' + value2 + '\'' + " AND " +
+                   key3 + " = " + '\'' + value3 + '\''))
+        column = "Запись успешна удалена";
+    else column = "Ошибка: Запись не найдена";
+    conn->write(column.toStdString().c_str());
+}
+
+void Server::sendDeleteWithAllCondition(const QString &key1, const QString &value1,
+                                        const QString &key2, const QString &value2, const QString &key3,
+                                        const QString &value3,
+                                        const QString &key4, const QString &value4) {
+    QSqlQuery query(db);
+    QString column;
+    if (query.exec("DELETE FROM student WHERE " + key1 + " = " + '\'' + value1 + '\'' + " AND " +
+                   key2 + " = " + '\'' + value2 + '\'' + " AND " +
+                   key3 + " = " + '\'' + value3 + '\'' + " AND " +
+                   key4 + " = " + '\'' + value4 + '\''))
+        column = "Запись успешна удалена";
+    else column = "Ошибка: Запись не найдена";
+    conn->write(column.toStdString().c_str());
+}
+
+void Server::sendInsertData(const QString &valueF, const QString &valueN, const QString &valueGroup,
+                            const QString &valueGender) {
+    QSqlQuery query(db);
+    QString column;
+    if (query.exec("INSERT INTO student(familystudent,namestudent,groupstudent,genderstudent) VALUES("
+                   + valueF + ", " + valueN + ", " + valueGroup + ", " + valueGender +
+                   ")"))
+        column = "Запись успешна добавлена";
+    else column = "Ошибка: Запись не добавлена";
+    conn->write(column.toStdString().c_str());
+}
+
+Server::~Server() {
+    delete conn;
+    delete statusLabel;
+    db.close();
 }
 
