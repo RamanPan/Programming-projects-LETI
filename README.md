@@ -13,5 +13,6 @@
 ## 3 - Hierarchical structure of data storage (Иерархическая структура хранения данных) - сдано 06.04.2023
 ## 4 - QtFirstProject (Первый проект на Qt) - сдано 19.04.2023
 ## 5 - DesktopApplicationStudentProgressReport (Десктопное приложение для отслеживания оценок студентов) - сдано 19.04.2023
+## 6 - ClientServerApplicationOnQt (Клиент-серверное приложение на Qt)
 # Курсовой проект:
 
